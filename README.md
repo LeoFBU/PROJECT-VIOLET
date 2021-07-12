@@ -75,8 +75,7 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
    * To App's Stream of Videos
    * ...
 
-##############################################################################################
-##############################################################################################
+
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
 <img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
@@ -86,10 +85,39 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
 ### [BONUS] Interactive Prototype
 
 ## Schema 
-[This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+
+Post
+| Property         | Type                   | Description                  |
+| ------------     | --------------         | --------------               |
+| author           | pointer to user        | author of post/video         |
+| object id        | String                 | unique id for the post       |
+| likesCount       | int                    | amount of likes on a post    |
+| commentsCount    | int                    | amount of comments on a post |
+| description      | String                 | user caption under video     |
+| createdAt        | Date                   | timestamp of upload time     |
+| video            | File                   | video/image user uploads     |
+
+User
+| Property         | Type                   | Description                                     |
+| ------------     | --------------         | --------------                                  |
+| objectId         | String                 | unique id for each user                         |
+| email            | String                 | email of user's account                         |
+| username         | String                 | name of user's account                          |
+| password         | String                 | key to login to user account                    |
+| profileImage     | File                   | profilep picture of user                        |
+| following        | Array of Strings       | array with objectId of users one is following   |
+| followers        | Array of Strings       | array with objectId of users one is followed by |
+
+
 ### Networking
 - [Add list of network requests by screen ]
+- Home Feed
+  - (Read/GET) all posts from accounts User follows
+  - (Create/POST) a new like when a user likes a post
+  - (Create/POST) a new comment when a user comment on a post
+  - (Delete) delete existing like
+  - (Delete) delete existing commend
+  - 
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
