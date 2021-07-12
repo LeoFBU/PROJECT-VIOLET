@@ -36,6 +36,7 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
 * Double tap to like
 * (At least basic) User Profiles
 * Users can create new accounts
+* User can update their games.
 
 **Optional Nice-to-have Stories**
 
