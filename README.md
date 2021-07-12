@@ -45,7 +45,6 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
   - feed will only reflect the games they specify
 * (At least basic) User Profiles
   - User settings for them to update their games
-* User can ad
 
 **Optional Nice-to-have Stories**
 
