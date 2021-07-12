@@ -32,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.btnLogin);
         tvCreateAccount = findViewById(R.id.tvCreateAccount);
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etPassword);
 
         if( ParseUser.getCurrentUser() != null){
             goMainActivity();
@@ -56,13 +58,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(String username, String password){
-        //TODO implement login
+
         Log.i(TAG, "Attempting to login user: " + username);
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
                 if(e != null){
-                    //TODO: better error handling
                     Log.e(TAG, "Issue with login\nInvalid Username and Password",e);
                     Toast.makeText(LoginActivity.this, "Invalid Username and Password", Toast.LENGTH_SHORT).show();
                     return;
