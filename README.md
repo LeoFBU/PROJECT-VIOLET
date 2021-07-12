@@ -59,6 +59,9 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
 * "Tags" a user can click to only see clips from that game
 * Very detailed user profiles
   - displays views, likes, and commnets from UI
+* "Explore" fragment
+  - The app will "suggest" other game clips for users from accounts they might not follow
+  - Can even include "trending" clips
 
 
 ### 2. Screen Archetypes
