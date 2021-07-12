@@ -53,6 +53,10 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
   - keep track of who follows user
   - keep track of who user follows
   - only show videos from accounts the user follows
+* Notifications system
+  - for likes
+  - commnents
+  - follows
 * Clear and defined aesthetic
   - Purple/violet?
 * User can choose from a tracked list of games to specify the game their clip is from.
@@ -62,6 +66,7 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
 * "Explore" fragment
   - The app will "suggest" other game clips for users from accounts they might not follow
   - Can even include "trending" clips
+* Tagging friends in comments
 
 
 ### 2. Screen Archetypes
