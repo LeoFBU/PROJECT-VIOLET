@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateAccountActivity"
+    android:background="@drawable/login_background"
+    >
+
+
+    <Button
+        android:id="@+id/btnSignInCreate"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etCreatePassword"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="87dp"
+        android:layout_marginEnd="88dp"
+        android:text="Sign In" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="215dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/text_background"
+        android:hint="  email"
+        tools:layout_editor_absoluteX="223dp"
+        tools:layout_editor_absoluteY="58dp" />
+
+    <EditText
+        android:id="@+id/etCreateUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_below="@+id/etEmail"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/text_background"
+        android:hint="   username"
+        tools:layout_editor_absoluteX="223dp"
+        tools:layout_editor_absoluteY="58dp" />
+
+    <EditText
+        android:id="@+id/etCreatePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_below="@+id/etCreateUsername"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/text_background"
+        android:foregroundGravity="fill"
+        android:hint="  password"
+        tools:layout_editor_absoluteX="223dp"
+        tools:layout_editor_absoluteY="58dp" />
+</RelativeLayout>
