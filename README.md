@@ -30,20 +30,36 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
 ### 1. User Stories (Required and Optional)
 
 **Required Must-have Stories**
-
+* User can create an account
+  - full login/logout system that maintains persistence
 * User can upload 30-40 second clip
+  - uploaded straight from user galler
+  - (consider other sources?)
+  - User can add a caption to their video
 * Must have infinite scrolling through the feed.
-* Double tap to like
+* User Gestures
+  - double tap to like
+  - drag fingers opposite for landscape
+* Keep track of Likes, Comments (and maybe views?)
+* Ask the user of their genre/games they prefer
+  - feed will only reflect the games they specify
 * (At least basic) User Profiles
-* Users can create new accounts
-* User can update their games.
+  - User settings for them to update their games
+* User can ad
 
 **Optional Nice-to-have Stories**
 
 * Follow system
+  - keep track of who follows user
+  - keep track of who user follows
+  - only show videos from accounts the user follows
 * Clear and defined aesthetic
+  - Purple/violet?
 * User can choose from a tracked list of games to specify the game their clip is from.
-* User can add a caption to their video.
+* "Tags" a user can click to only see clips from that game
+* Very detailed user profiles
+  - displays views, likes, and commnets from UI
+
 
 ### 2. Screen Archetypes
 
@@ -78,8 +94,9 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
 
 
 ## Wireframes
-[Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src="violetWireframe1" width=600>
+<img src="violetWireframe2" width=600>
+
 
 ### [BONUS] Digital Wireframes & Mockups
 
@@ -109,6 +126,9 @@ User
 | profileImage     | File                   | profilep picture of user                        |
 | following        | Array of Strings       | array with objectId of users one is following   |
 | followers        | Array of Strings       | array with objectId of users one is followed by |
+| posts            | Array of Strings       | array with objectId of user's posts             |
+
+
 
 
 ### Networking
