@@ -100,8 +100,6 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
 
 ### [BONUS] Digital Wireframes & Mockups
 
-### [BONUS] Interactive Prototype
-
 ## Schema 
 ### Models
 
