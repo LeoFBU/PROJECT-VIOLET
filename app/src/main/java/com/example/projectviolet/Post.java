@@ -8,7 +8,7 @@ import com.parse.ParseUser;
 @ParseClassName("Post")
 public class Post extends ParseObject {
 
-    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_CAPTION = "caption";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
     public static final String KEY_PROFILE_IMAGE = "profileImage";
@@ -16,11 +16,11 @@ public class Post extends ParseObject {
     public static final String KEY_FOLLOWERS = "followers";
     public static final String KEY_FOLLOWING = "following";
 
-    public String getDescription(){
-        return getString(KEY_DESCRIPTION);
+    public String getCaption(){
+        return getString(KEY_CAPTION);
     }
-    public void setDescription(String description){
-        put(KEY_DESCRIPTION, description);
+    public void setCaption(String description){
+        put(KEY_CAPTION, description);
     }
 
     public ParseFile getImage(){

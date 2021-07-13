@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivProfilePicFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="115dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="32dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvUsernameFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfilePicFeed"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-111dp"
+        android:layout_toEndOf="@+id/ivProfilePicFeed"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvCaptionFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfilePicFeed"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="-47dp"
+        android:layout_toEndOf="@+id/ivProfilePicFeed"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvNumLikesFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfilePicFeed"
+        android:layout_marginStart="-101dp"
+        android:layout_marginTop="25dp"
+        android:layout_toEndOf="@+id/ivProfilePicFeed"
+        android:text="TextView" />
+</RelativeLayout>
