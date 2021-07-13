@@ -1,11 +1,17 @@
 package com.example.projectviolet;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +58,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvCaptionFeed;
         private TextView tvNumLikesFeed;
         private ImageView ivProfilePicFeed;
+        private VideoView vvVideo;
+        private ImageButton ibPlay;
+        private MediaController mediaController;
 
 
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -61,6 +70,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
             tvNumLikesFeed = itemView.findViewById(R.id.tvNumLikesFeed);
             ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
+            vvVideo = itemView.findViewById(R.id.vvVideo);
+            ibPlay = itemView.findViewById(R.id.ibPlay);
+
 
         }
 
@@ -69,10 +81,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvCaptionFeed.setText(post.getCaption());
             tvUsernameFeed.setText(post.getUser().getUsername());
             tvNumLikesFeed.setText(post.getLikes());
-
             ParseFile profileImage = post.getUserProfileImage();
             Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
 
+            ParseFile video = post.getVideo();
+            vvVideo.setVideoPath(video.getUrl());
+            mediaController = new MediaController(context);
+            vvVideo.setMediaController(mediaController);
+            mediaController.setAnchorView(vvVideo);
+            vvVideo.requestFocus();
+            vvVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    vvVideo.start();
+                }
+            });
         }
     }
 

@@ -7,12 +7,11 @@
 
     <ImageView
         android:id="@+id/ivProfilePicFeed"
-        android:layout_width="wrap_content"
-        android:layout_height="115dp"
+        android:layout_width="97dp"
+        android:layout_height="93dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="53dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="250dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -20,8 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfilePicFeed"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="-111dp"
+        android:layout_marginStart="-80dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/ivProfilePicFeed"
         android:text="TextView" />
 
@@ -30,8 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfilePicFeed"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="-47dp"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="-85dp"
         android:layout_toEndOf="@+id/ivProfilePicFeed"
         android:text="TextView" />
 
@@ -40,8 +39,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfilePicFeed"
-        android:layout_marginStart="-101dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="6dp"
         android:layout_toEndOf="@+id/ivProfilePicFeed"
         android:text="TextView" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <VideoView
+            android:id="@+id/vvVideo"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp" />
+
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/ibPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="300dp"
+        android:layout_toEndOf="@+id/ivProfilePicFeed"
+        app:srcCompat="@android:drawable/ic_media_play" />
+
 </RelativeLayout>

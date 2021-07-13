@@ -15,6 +15,7 @@ public class Post extends ParseObject {
     public static final String KEY_LIKES = "likes";
     public static final String KEY_FOLLOWERS = "followers";
     public static final String KEY_FOLLOWING = "following";
+    public static final String KEY_VIDEO = "video";
 
     public String getCaption(){
         return getString(KEY_CAPTION);
@@ -51,6 +52,10 @@ public class Post extends ParseObject {
     }
     public void setLikes(int numberOfLikes){
         put(KEY_LIKES, numberOfLikes);
+    }
+
+    public ParseFile getVideo(){
+        return getParseFile(KEY_VIDEO);
     }
 
 }
