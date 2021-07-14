@@ -1,6 +1,8 @@
 package com.example.projectviolet.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +20,13 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.example.projectviolet.LoginActivity;
+import com.example.projectviolet.MainActivity;
 import com.example.projectviolet.Post;
 import com.example.projectviolet.PostsAdapter;
 import com.example.projectviolet.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -64,7 +69,14 @@ public class FeedFragment extends Fragment {
         LinearLayoutManager Manager = new LinearLayoutManager(getContext());
         rvPosts.setLayoutManager(Manager);
 
-        queryPosts(0);
+        // TODO: Still deciding on which implementation of a videoplayer I want to use.
+            //      as of right now, Fenster is the SDK that is commented out, and I am using
+            //      https://github.com/yqritc/Android-ScalableVideoView.
+            //      Video functionality is not working as intended right now.
+
+        checkSystemWritePermission();       // This and any associated code is for Fenster, it requires permissions.
+
+
 
     }
 
@@ -97,4 +109,29 @@ public class FeedFragment extends Fragment {
         });
 
     }
+
+
+    private boolean checkSystemWritePermission() {
+        boolean retVal = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            retVal = Settings.System.canWrite(getContext());
+            Log.d("TAG", "Can Write Settings: " + retVal);
+            if(retVal){
+                ///Permission granted by the user
+                queryPosts(0);
+            }else{
+                //permission not granted navigate to permission screen
+                openAndroidPermissionsMenu();
+            }
+        }
+        return retVal;
+    }
+
+    private void openAndroidPermissionsMenu() {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+        intent.setData(Uri.parse("package:" + getContext().getPackageName()));
+        startActivity(intent);
+    }
+
+
 }

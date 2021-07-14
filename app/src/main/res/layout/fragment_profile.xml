@@ -8,14 +8,77 @@
     tools:context=".fragments.ProfileFragment">
 
 
+    <TextView
+        android:id="@+id/tvFollowingNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFollowingTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="46dp"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvPostsNumber"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPostsTitle"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="154dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="154dp"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvFollowersNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFollowersTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvFollowingTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="43dp"
+        android:layout_marginEnd="47dp"
+        android:gravity="center"
+        android:text="Following"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvPostsTitle"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="159dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginEnd="159dp"
+        android:gravity="center"
+        android:text="Posts"
+        android:textStyle="bold" />
+
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/ivProfilePicProfile"
         android:layout_width="110dp"
         android:layout_height="112dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="147dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="147dp"
         android:src="@drawable/ic_baseline_person_24" />
 
     <ImageButton
@@ -24,8 +87,34 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="337dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="331dp"
+        android:layout_marginTop="611dp"
         android:src="@android:drawable/ic_delete" />
+
+    <TextView
+        android:id="@+id/tvUsernameProfile"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfilePicProfile"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="141dp"
+        android:layout_marginTop="54dp"
+        android:layout_marginEnd="142dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tvFollowersTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="43dp"
+        android:gravity="center"
+        android:text="Followers"
+        android:textStyle="bold" />
 
 </RelativeLayout>
