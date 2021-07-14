@@ -76,9 +76,7 @@ public class FeedFragment extends Fragment {
             //      https://github.com/yqritc/Android-ScalableVideoView.
             //      Video functionality is not working as intended right now.
 
-        checkSystemWritePermission();       // This and any associated code is for Fenster, it requires permissions.
-
-
+        queryPosts(0);
 
     }
 
@@ -112,28 +110,6 @@ public class FeedFragment extends Fragment {
 
     }
 
-
-    private boolean checkSystemWritePermission() {
-        boolean retVal = true;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            retVal = Settings.System.canWrite(getContext());
-            Log.d("TAG", "Can Write Settings: " + retVal);
-            if(retVal){
-                ///Permission granted by the user
-                queryPosts(0);
-            }else{
-                //permission not granted navigate to permission screen
-                openAndroidPermissionsMenu();
-            }
-        }
-        return retVal;
-    }
-
-    private void openAndroidPermissionsMenu() {
-        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-        intent.setData(Uri.parse("package:" + getContext().getPackageName()));
-        startActivity(intent);
-    }
 
 
 }

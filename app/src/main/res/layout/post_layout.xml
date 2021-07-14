@@ -57,51 +57,11 @@
         android:layout_toEndOf="@+id/ivProfilePicFeed"
         app:srcCompat="@android:drawable/ic_media_play" />
 
-    <FrameLayout
+    <ImageView
+        android:id="@+id/ivThumbnail"
         android:layout_width="match_parent"
-        android:layout_height="230dp">
+        android:layout_height="232dp"
+        app:srcCompat="@drawable/ic_baseline_4k_24" />
 
-        <VideoView
-            android:id="@+id/vvVideo"
-            android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp" />
-
-        <com.yqritc.scalablevideoview.ScalableVideoView
-            android:id="@+id/video_view"
-            android:layout_width="match_parent"
-            android:layout_height="232dp"
-            android:layout_marginBottom="100dp"
-            app:scalableType="fitCenter" />
-
-    </FrameLayout>
-
-<!--        <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        tools:context=".DemoActivity">
-
-        <com.malmstein.fenster.view.FensterVideoView
-            android:id="@+id/play_video_texture"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:fitsSystemWindows="true"
-            android:keepScreenOn="true" />
-
-        <com.malmstein.fenster.controller.MediaFensterPlayerController
-            android:id="@+id/play_video_controller"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_alignParentBottom="true"
-            android:animateLayoutChanges="true"
-            android:fitsSystemWindows="true" />
-
-    </FrameLayout>-->
 
 </RelativeLayout>

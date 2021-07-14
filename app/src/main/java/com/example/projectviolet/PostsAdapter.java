@@ -22,12 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.malmstein.fenster.controller.FensterPlayerController;
-import com.malmstein.fenster.controller.FensterPlayerControllerVisibilityListener;
-import com.malmstein.fenster.view.FensterVideoView;
 import com.parse.ParseFile;
-import com.sprylab.android.widget.TextureVideoView;
-import com.yqritc.scalablevideoview.ScalableVideoView;
+
 
 import org.jetbrains.annotations.NotNull;
 
@@ -68,15 +64,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        View parent;
         private TextView tvUsernameFeed;
         private TextView tvCaptionFeed;
         private TextView tvNumLikesFeed;
         private ImageView ivProfilePicFeed;
+        private ImageView ivThumbnailPlaceholder;
         private VideoView vvVideo;
         private ImageButton ibPlay;
-        private MediaController mediaController;
 
-        private ScalableVideoView svVideo;
 
         // TODO: Still deciding on which implementation of a videoplayer I want to use.
         //      as of right now, Fenster is the SDK that is commented out, and I am using
@@ -85,81 +81,36 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         // THIS VERSION IS HARDLY FUNCTIONAL, A BUNCH OF CODE IS HERE FOR DIFFERENT VIDEO PLAYERS.
         // THIS COMMIT IS PURELY BEFORE A LARGE IMPLEMENTATION OF EXOPLAYER CODE
 
-        private FensterVideoView textureVideoView;
-        private FensterPlayerController playerController;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
+
+            parent = itemView;
 
             tvCaptionFeed = itemView.findViewById(R.id.tvCaptionFeed);
             tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
             tvNumLikesFeed = itemView.findViewById(R.id.tvNumLikesFeed);
             ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
-
-            //vvVideo = itemView.findViewById(R.id.vvVideo);
-
-            svVideo = itemView.findViewById(R.id.video_view);
+            ivThumbnailPlaceholder = itemView.findViewById(R.id.ivThumbnail);
 
 
             ibPlay = itemView.findViewById(R.id.ibPlay);
 
 
-//            textureVideoView = itemView.findViewById(R.id.play_video_texture);
-//            playerController = itemView.findViewById(R.id.play_video_controller);
-
         }
 
         public void bind(Post post, String url) {
+
+            parent.setTag(context);
+
             tvCaptionFeed.setText(post.getCaption());
             tvUsernameFeed.setText(post.getUser().getUsername());
             tvNumLikesFeed.setText(post.getLikes());
             ParseFile profileImage = post.getUserProfileImage();
             Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
 
-         //   ParseFile video = post.getVideo();
+            ParseFile video = post.getVideo();
 
-
-            //vvVideo.setVideoPath(video.getUrl());
-            mediaController = new MediaController(context);
-            //          vvVideo.setMediaController(mediaController);
- //           mediaController.setAnchorView(vvVideo);
-//            vvVideo.requestFocus();
-//            vvVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                @Override
-//                public void onPrepared(MediaPlayer mp) {
-//                    vvVideo.start();
-//                }
-//            });
-
-//
-            try{
-                svVideo.setDataSource(url);
-                svVideo.prepareAsync(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        Log.e(TAG, "onClick: CLICKED THE PLAY BUTTON");
-                        svVideo.start();
-                    }});
-
-//
-
-//                svVideo.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                        Log.e(TAG, "onClick: CLICKED THE PLAY BUTTON");
-//                        svVideo.start();
-//
-//                    }
-//                });
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-//            textureVideoView.setVideo(url);
-//            textureVideoView.start();
 
 
         }
