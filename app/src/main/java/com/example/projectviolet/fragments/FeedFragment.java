@@ -45,6 +45,7 @@ public class FeedFragment extends Fragment {
     private RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> feedPosts;
+    protected List<String> urls;
 
 
     public FeedFragment() {
@@ -64,7 +65,8 @@ public class FeedFragment extends Fragment {
 
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         feedPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), feedPosts);
+        urls = new ArrayList<>();
+        adapter = new PostsAdapter(getContext(), feedPosts, urls);
         rvPosts.setAdapter(adapter);
         LinearLayoutManager Manager = new LinearLayoutManager(getContext());
         rvPosts.setLayoutManager(Manager);
@@ -81,7 +83,6 @@ public class FeedFragment extends Fragment {
     }
 
     private void queryPosts(int skipAmount) {
-
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.setLimit(10);
@@ -100,6 +101,7 @@ public class FeedFragment extends Fragment {
                 }
                 for(Post post : posts){
                     Log.i(TAG, "Post: " + post.getUser().getUsername() + ": " + post.getCaption());
+                    urls.add(post.getVideo().getUrl());
                 }
 
                 feedPosts.addAll(posts);

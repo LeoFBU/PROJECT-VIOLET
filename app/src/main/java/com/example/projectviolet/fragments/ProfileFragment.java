@@ -69,31 +69,43 @@ public class ProfileFragment extends Fragment {
         // TODO: finish setting up profile page with correct information.
 
         tvUsername = view.findViewById(R.id.tvUsernameProfile);
+        tvNumOfPosts = view.findViewById(R.id.tvPostsNumber);
         tvNumOfFollowers = view.findViewById(R.id.tvFollowersNumber);
         tvNumOfFollowing = view.findViewById(R.id.tvFollowingNumber);
         ivProfilePic = view.findViewById(R.id.ivProfilePicProfile);
 
-
-        Post post = new Post();
-        post.setUser(ParseUser.getCurrentUser());
         ParseUser user = ParseUser.getCurrentUser();
+        String numberOfFollowers = String.valueOf(user.getNumber("numOfFollowing"));
+        String numberOfFollowing = String.valueOf(user.getNumber("numOfFollowers"));
+        String numberOfPosts = String.valueOf(user.getNumber("numOfPosts"));
+        String username = user.getUsername();
+        tvNumOfFollowers.setText(numberOfFollowers);
+        tvNumOfFollowing.setText(numberOfFollowing);
+        tvNumOfPosts.setText(numberOfPosts);
+        tvUsername.setText(username);
 
-        user.fetchInBackground(new GetCallback<ParseUser>() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                tvNumOfFollowers.setText(String.valueOf(post.getAmountFollowers()));
+//
+//        user.fetchInBackground(new GetCallback<ParseUser>() {
+//            @Override
+//            public void done(ParseUser user, ParseException e) {
+//                //tvNumOfFollowers.setText(String.valueOf(post.getNumFollowers()));
+//                //tvNumOfFollowing.setText(String.valueOf(post.getNumFollowing()));
+//                String numberOfFollowing = String.valueOf(user.getNumber("numOfPosts"));
+//                tvNumOfPosts.setText(String.valueOf(numberOfFollowing));
+//                //tvUsername.setText(user.getUsername());
+//            }
+//        });
 
-            }
-        });
 
 
 
 
-
-        ParseFile profileImage = post.getUserProfileImage();
+        ParseFile profileImage = user.getParseFile("profileImage");
         Glide.with(getContext()).load(profileImage.getUrl()).circleCrop().into(ivProfilePic);
 
 
-
     }
+
+
+
 }

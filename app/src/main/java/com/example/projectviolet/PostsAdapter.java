@@ -38,11 +38,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     public static final String TAG =  "PostsAdapter: ";
     private List<Post> posts;
+    private List<String> urls;
     private Context context;
 
-    public PostsAdapter(Context context, List<Post> posts){
+    public PostsAdapter(Context context, List<Post> posts, List<String> urls){
         this.context = context;
         this.posts = posts;
+        this.urls = urls;
     }
 
     @NotNull
@@ -55,7 +57,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         Post post = posts.get(position);
-        holder.bind(post);
+        String url = urls.get(position);
+        holder.bind(post, url);
     }
 
     @Override
@@ -79,6 +82,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         //      as of right now, Fenster is the SDK that is commented out, and I am using
         //      https://github.com/yqritc/Android-ScalableVideoView.
         //      Video functionality is not working as intended right now.
+        // THIS VERSION IS HARDLY FUNCTIONAL, A BUNCH OF CODE IS HERE FOR DIFFERENT VIDEO PLAYERS.
+        // THIS COMMIT IS PURELY BEFORE A LARGE IMPLEMENTATION OF EXOPLAYER CODE
 
         private FensterVideoView textureVideoView;
         private FensterPlayerController playerController;
@@ -91,33 +96,34 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvNumLikesFeed = itemView.findViewById(R.id.tvNumLikesFeed);
             ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
 
-            vvVideo = itemView.findViewById(R.id.vvVideo);
+            //vvVideo = itemView.findViewById(R.id.vvVideo);
+
             svVideo = itemView.findViewById(R.id.video_view);
 
 
             ibPlay = itemView.findViewById(R.id.ibPlay);
+
 
 //            textureVideoView = itemView.findViewById(R.id.play_video_texture);
 //            playerController = itemView.findViewById(R.id.play_video_controller);
 
         }
 
-        public void bind(Post post) {
-
+        public void bind(Post post, String url) {
             tvCaptionFeed.setText(post.getCaption());
             tvUsernameFeed.setText(post.getUser().getUsername());
             tvNumLikesFeed.setText(post.getLikes());
             ParseFile profileImage = post.getUserProfileImage();
             Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
 
-            ParseFile video = post.getVideo();
+         //   ParseFile video = post.getVideo();
 
 
-            vvVideo.setVideoPath(video.getUrl());
+            //vvVideo.setVideoPath(video.getUrl());
             mediaController = new MediaController(context);
-            vvVideo.setMediaController(mediaController);
-            mediaController.setAnchorView(vvVideo);
-            vvVideo.requestFocus();
+            //          vvVideo.setMediaController(mediaController);
+ //           mediaController.setAnchorView(vvVideo);
+//            vvVideo.requestFocus();
 //            vvVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 //                @Override
 //                public void onPrepared(MediaPlayer mp) {
@@ -125,28 +131,34 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 //                }
 //            });
 
+//
             try{
-                svVideo.setDataSource(video.getUrl());
-                svVideo.prepareAsync();
-                svVideo.setOnClickListener(new View.OnClickListener() {
+                svVideo.setDataSource(url);
+                svVideo.prepareAsync(new MediaPlayer.OnPreparedListener() {
                     @Override
-                    public void onClick(View v) {
-
+                    public void onPrepared(MediaPlayer mp) {
                         Log.e(TAG, "onClick: CLICKED THE PLAY BUTTON");
                         svVideo.start();
+                    }});
 
-                    }
-                });
+//
 
-
+//                svVideo.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        Log.e(TAG, "onClick: CLICKED THE PLAY BUTTON");
+//                        svVideo.start();
+//
+//                    }
+//                });
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 
-//            textureVideoView.setMediaController(playerController);
-//            textureVideoView.setVideo(video.getUrl());
+//            textureVideoView.setVideo(url);
 //            textureVideoView.start();
 
 
