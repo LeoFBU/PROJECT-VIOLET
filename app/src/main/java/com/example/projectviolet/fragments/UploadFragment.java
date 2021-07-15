@@ -76,10 +76,12 @@ public class UploadFragment extends Fragment {
                     return;
                 }
 
-                getYoutubeDownloadUrl(youtubeUrl);
-
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                savePost(youtubeUrl, caption, currentUser);
+                //savePost(youtubeUrl, caption, currentUser);
+                extractYoutubeUrl(youtubeUrl, caption, currentUser);
+
+
+
             }
         });
 
@@ -125,27 +127,29 @@ public class UploadFragment extends Fragment {
     }
 
 
-    @SuppressLint("StaticFieldLeak")
-    private void getYoutubeDownloadUrl(String youtubeLink){
-
-
-        new YouTubeExtractor(getContext()) {
+//    @SuppressLint("StaticFieldLeak")
+//    private void extractYoutubeUrl(String youtubeLink, String caption, ParseUser currentUser) {
+//        new YouTubeExtractor(getContext()) {
+//            @Override
+//            public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
+//                if (ytFiles != null) {
+//                    //playVideo(ytFiles.get(17).getUrl());
+//                    savePost(ytFiles.get(17).getUrl(), caption, currentUser);
+//                }
+//            }
+//        }.extract(youtubeLink, true, true);
+//    }
+    private void extractYoutubeUrl(String youtubeLink, String caption, ParseUser user) {
+        @SuppressLint("StaticFieldLeak") YouTubeExtractor mExtractor = new YouTubeExtractor(getContext()) {
             @Override
-            public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
-
-                if (ytFiles == null) {
-                    // Something went wrong we got no urls. Always check this.
-                    return;
-                }
-                // Iterate over itags
-                for (int i = 0, itag; i < ytFiles.size(); i++) {
-                    itag = ytFiles.keyAt(i);
-                    // ytFile represents one file with its url and meta data
-                    YtFile ytFile = ytFiles.get(itag);
-
+            protected void onExtractionComplete(SparseArray<YtFile> sparseArray, VideoMeta videoMeta) {
+                
+                if (sparseArray != null) {
+                    savePost(sparseArray.get(22).getUrl(), caption, user);
                 }
             }
-        }.extract(youtubeLink, true, false);
+    };
+    mExtractor.extract(youtubeLink, true, true);
+}
 
-    }
 }

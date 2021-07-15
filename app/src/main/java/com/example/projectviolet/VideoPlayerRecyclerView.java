@@ -314,6 +314,7 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         catch(Exception e){
             if(mediaUrl == null){
                 mediaUrl = postObjects.get(targetPosition).getYoutubeLink();
+
             }
         }
 
