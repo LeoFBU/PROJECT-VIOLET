@@ -1,20 +1,13 @@
 package com.example.projectviolet;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -27,34 +20,31 @@ import com.parse.ParseFile;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPosts> {
 
     public static final String TAG =  "PostsAdapter: ";
-    private List<Post> posts;
-    private List<String> urls;
+    private ArrayList<Post> posts;
     private Context context;
 
-    public PostsAdapter(Context context, List<Post> posts, List<String> urls){
+    public PostsAdapter(Context context, ArrayList<Post> posts){
         this.context = context;
         this.posts = posts;
-        this.urls = urls;
     }
 
     @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.post_layout, parent, false);
-        return new ViewHolder(view);
+    public ViewHolderPosts onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_layout, parent, false);
+        return new ViewHolderPosts(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolderPosts holder, int position) {
         Post post = posts.get(position);
-        String url = urls.get(position);
-        holder.bind(post, url);
+        holder.bind(post);
     }
 
     @Override
@@ -62,16 +52,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return posts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolderPosts extends RecyclerView.ViewHolder {
 
         View parent;
-        private TextView tvUsernameFeed;
-        private TextView tvCaptionFeed;
-        private TextView tvNumLikesFeed;
-        private ImageView ivProfilePicFeed;
-        private ImageView ivThumbnailPlaceholder;
-        private VideoView vvVideo;
-        private ImageButton ibPlay;
+        TextView tvUsernameFeed;
+        TextView tvCaptionFeed;
+        TextView tvNumLikesFeed;
+        ImageView ivProfilePicFeed;
+        VideoView vvVideo;
+        ImageButton ibPlay;
+
+        ImageView ivThumbnailPlaceholder;
+        ImageView ivVolumeControl;
+        ProgressBar progressBar;
+        FrameLayout media_container;
 
 
         // TODO: Still deciding on which implementation of a videoplayer I want to use.
@@ -82,34 +76,41 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         // THIS COMMIT IS PURELY BEFORE A LARGE IMPLEMENTATION OF EXOPLAYER CODE
 
 
-        public ViewHolder(@NonNull @NotNull View itemView) {
+        public ViewHolderPosts(@NonNull @NotNull View itemView) {
             super(itemView);
 
             parent = itemView;
 
-            tvCaptionFeed = itemView.findViewById(R.id.tvCaptionFeed);
-            tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
-            tvNumLikesFeed = itemView.findViewById(R.id.tvNumLikesFeed);
-            ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
-            ivThumbnailPlaceholder = itemView.findViewById(R.id.ivThumbnail);
+//            tvCaptionFeed = itemView.findViewById(R.id.tvCaptionFeed);
+//            tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
+//            tvNumLikesFeed = itemView.findViewById(R.id.tvNumLikesFeed);
+//            ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
+//            ivThumbnailPlaceholder = itemView.findViewById(R.id.ivThumbnail);
+//            ibPlay = itemView.findViewById(R.id.ibPlay);
 
-
-            ibPlay = itemView.findViewById(R.id.ibPlay);
+            media_container = itemView.findViewById(R.id.media_container);
+            ivThumbnailPlaceholder = itemView.findViewById(R.id.thumbnail);
+            tvCaptionFeed = itemView.findViewById(R.id.title);
+            progressBar = itemView.findViewById(R.id.progressBar);
+            ivVolumeControl = itemView.findViewById(R.id.volume_control);
 
 
         }
 
-        public void bind(Post post, String url) {
+        public void bind(Post post) {
 
             parent.setTag(context);
 
-            tvCaptionFeed.setText(post.getCaption());
-            tvUsernameFeed.setText(post.getUser().getUsername());
-            tvNumLikesFeed.setText(post.getLikes());
+//            tvCaptionFeed.setText(post.getCaption());
+//            tvUsernameFeed.setText(post.getUser().getUsername());
+//            tvNumLikesFeed.setText(post.getLikes());
             ParseFile profileImage = post.getUserProfileImage();
-            Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
+//            Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
 
             ParseFile video = post.getVideo();
+
+            tvCaptionFeed.setText(post.getCaption());
+
 
 
 

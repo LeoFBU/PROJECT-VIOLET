@@ -6,8 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".fragments.FeedFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPostsFeed"
+    <com.example.projectviolet.VideoPlayerRecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view"
+        android:orientation="vertical">
+    </com.example.projectviolet.VideoPlayerRecyclerView>
+
 </FrameLayout>

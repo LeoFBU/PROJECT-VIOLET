@@ -2,6 +2,7 @@ package com.example.projectviolet;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.View;
@@ -50,11 +51,13 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.parse.ParseFile;
 
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VideoPlayerRecyclerView extends RecyclerView {
 
@@ -70,7 +73,7 @@ public class VideoPlayerRecyclerView extends RecyclerView {
     private SimpleExoPlayer epVideoPLayer;
 
     // utilized for variable logic
-    private ArrayList<Post> postObjects = new ArrayList<>();
+    private List<Post> postObjects = new ArrayList<>();
     private int videoSurfaceDefaultHeight = 0;
     private int screenDefaultHeight = 0;
     private Context context;
@@ -300,13 +303,30 @@ public class VideoPlayerRecyclerView extends RecyclerView {
             return;
         }
 
-        ViewHolder holder = (ViewHolder) child.getTag();
+        PostsAdapter.ViewHolderPosts holder = (PostsAdapter.ViewHolderPosts) child.getTag();
         if(holder == null){
             playPosition = -1;
             return;
         }
 
-        ivThumbnail = holder.itemView.
+        ivThumbnail = holder.ivThumbnailPlaceholder;
+        progressBar = holder.progressBar;
+        ivVolumeControl = holder.ivVolumeControl;
+        viewHolderParent = holder.itemView;
+        frameLayout = holder.itemView.findViewById(R.id.media_container);
+
+        pvVideoSurfaceView.setPlayer(epVideoPLayer);
+        viewHolderParent.setOnClickListener(videoViewClickListener);
+
+        ParseFile videoFile = postObjects.get(targetPosition).getParseFile("video");
+
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, "RecyclerView VideoPlayer"));
+        String mediaUrl = videoFile.getUrl();
+        if(mediaUrl != null){
+            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(mediaUrl));
+            epVideoPLayer.prepare(videoSource);
+            epVideoPLayer.setPlayWhenReady(true);
+        }
 
     }
 
@@ -396,6 +416,40 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         }
     }
 
+    private OnClickListener videoViewClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            toggleVolume();
+        }
+    };
+
+    private void toggleVolume() {
+        if (epVideoPLayer != null) {
+            if (volumeState == VolumeState.OFF) {
+                Log.d(TAG, "togglePlaybackState: enabling volume.");
+                setVolumeControl(VolumeState.ON);
+
+            } else if(volumeState == VolumeState.ON) {
+                Log.d(TAG, "togglePlaybackState: disabling volume.");
+                setVolumeControl(VolumeState.OFF);
+
+            }
+        }
+    }
+
+    public void setPostObjects(ArrayList<Post> postObjects){
+        this.postObjects = postObjects;
+    }
+
+    public void releasePlayer() {
+
+        if (epVideoPLayer != null) {
+            epVideoPLayer.release();
+            epVideoPLayer = null;
+        }
+
+        viewHolderParent = null;
+    }
 
 
 }

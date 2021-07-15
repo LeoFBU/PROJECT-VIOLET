@@ -1,67 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/ivProfilePicFeed"
-        android:layout_width="113dp"
-        android:layout_height="99dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="240dp"
-        tools:srcCompat="@tools:sample/avatars" />
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:weightSum="100"
+    android:id="@+id/parent"
+    android:background="#fff">
 
     <TextView
-        android:id="@+id/tvUsernameFeed"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_below="@+id/ivProfilePicFeed"
-        android:layout_marginStart="-80dp"
-        android:layout_marginTop="8dp"
-        android:layout_toEndOf="@+id/ivProfilePicFeed"
-        android:text="TextView"
-        android:textColor="#000000"
-        android:textStyle="bold" />
-
-
-    <TextView
-        android:id="@+id/tvCaptionFeed"
-        android:layout_width="183dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivProfilePicFeed"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="-102dp"
-        android:layout_toEndOf="@+id/ivProfilePicFeed"
-        android:text="TextView"
-        android:textStyle="italic" />
-
-    <TextView
-        android:id="@+id/tvNumLikesFeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivProfilePicFeed"
-        android:layout_marginStart="220dp"
-        android:layout_marginTop="-91dp"
-        android:layout_toEndOf="@+id/ivProfilePicFeed"
-        android:text="TextView" />
-
-    <ImageButton
-        android:id="@+id/ibPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="225dp"
-        android:layout_marginTop="300dp"
-        android:layout_toEndOf="@+id/ivProfilePicFeed"
-        app:srcCompat="@android:drawable/ic_media_play" />
-
-    <ImageView
-        android:id="@+id/ivThumbnail"
+        android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="232dp"
-        app:srcCompat="@drawable/ic_baseline_4k_24" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="15dp"
+        android:padding="10dp"
+        android:textColor="#000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/media_container"
+        android:text="This is the title"/>
 
 
-</RelativeLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:background="#000"
+        android:scaleType="center"
+        android:id="@+id/media_container">
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:scaleType="centerInside"
+            android:src="@drawable/white_background" />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_volume_up_grey_24dp"
+            android:layout_gravity="end|bottom"
+            android:id="@+id/volume_control"
+            android:alpha="0"
+            android:animateLayoutChanges="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:visibility="gone"
+            android:layout_gravity="center" />
+
+
+    </FrameLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

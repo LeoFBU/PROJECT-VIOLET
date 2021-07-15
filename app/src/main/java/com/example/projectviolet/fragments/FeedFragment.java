@@ -24,6 +24,8 @@ import com.example.projectviolet.MainActivity;
 import com.example.projectviolet.Post;
 import com.example.projectviolet.PostsAdapter;
 import com.example.projectviolet.R;
+import com.example.projectviolet.VideoPlayerRecyclerView;
+import com.example.projectviolet.util.verticalSpacingItem;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -33,6 +35,7 @@ import com.parse.ParseUser;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,8 +47,10 @@ public class FeedFragment extends Fragment {
     private ImageButton ibLogout;
     private RecyclerView rvPosts;
     protected PostsAdapter adapter;
-    protected List<Post> feedPosts;
+    protected ArrayList<Post> feedPosts;
     protected List<String> urls;
+
+    private VideoPlayerRecyclerView newRecyclerView;
 
 
     public FeedFragment() {
@@ -60,23 +65,14 @@ public class FeedFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rvPosts = view.findViewById(R.id.rvPostsFeed);
+        newRecyclerView = view.findViewById(R.id.recycler_view);
         feedPosts = new ArrayList<>();
-        urls = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), feedPosts, urls);
-        rvPosts.setAdapter(adapter);
-        LinearLayoutManager Manager = new LinearLayoutManager(getContext());
-        rvPosts.setLayoutManager(Manager);
-
-        // TODO: Still deciding on which implementation of a videoplayer I want to use.
-            //      as of right now, Fenster is the SDK that is commented out, and I am using
-            //      https://github.com/yqritc/Android-ScalableVideoView.
-            //      Video functionality is not working as intended right now.
 
         queryPosts(0);
+        //initRecyclerView(feedPosts);
 
     }
 
@@ -99,12 +95,10 @@ public class FeedFragment extends Fragment {
                 }
                 for(Post post : posts){
                     Log.i(TAG, "Post: " + post.getUser().getUsername() + ": " + post.getCaption());
-                    urls.add(post.getVideo().getUrl());
                 }
-
+                posts.size();
                 feedPosts.addAll(posts);
-                adapter.notifyDataSetChanged();
-
+                initRecyclerView(feedPosts);
             }
         });
 
@@ -112,4 +106,22 @@ public class FeedFragment extends Fragment {
 
 
 
+    private void initRecyclerView(ArrayList<Post> postList){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        newRecyclerView.setLayoutManager(layoutManager);
+        verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(10);
+        newRecyclerView.addItemDecoration(itemDecorator);
+
+        ArrayList<Post> mediaObjects = new ArrayList<Post>(postList);
+        newRecyclerView.setPostObjects(mediaObjects);
+        PostsAdapter adapter = new PostsAdapter(getContext(), postList);
+        newRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onDestroy() {
+        if(newRecyclerView!=null)
+            newRecyclerView.releasePlayer();
+        super.onDestroy();
+    }
 }
