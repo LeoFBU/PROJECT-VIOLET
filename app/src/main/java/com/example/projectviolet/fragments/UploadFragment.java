@@ -1,23 +1,43 @@
 package com.example.projectviolet.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.projectviolet.Post;
 import com.example.projectviolet.R;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
+
+import at.huber.youtubeExtractor.VideoMeta;
+import at.huber.youtubeExtractor.YouTubeExtractor;
+import at.huber.youtubeExtractor.YtFile;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class UploadFragment extends Fragment {
+
+    public static final String TAG = "UploadFragment.java: ";
+
+    private ImageButton ibUpload;
+    private EditText etYoutubeLink;
+    private EditText etCaption;
 
     public UploadFragment() {
         // Required empty public constructor
@@ -36,7 +56,96 @@ public class UploadFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
+        ibUpload = view.findViewById(R.id.ibUploadClip);
+        etYoutubeLink = view.findViewById(R.id.etYoutubeLink);
+        etCaption = view.findViewById(R.id.etCaption);
 
+        ibUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String caption = etCaption.getText().toString();
+                String youtubeUrl = etYoutubeLink.getText().toString();
+
+                if(caption.isEmpty()){
+                    Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                boolean validYoutubeUrl = isYoutubeUrl(youtubeUrl);
+                if(!validYoutubeUrl){
+                    Toast.makeText(getContext(), "Not a valid YouTube link!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                getYoutubeDownloadUrl(youtubeUrl);
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                savePost(youtubeUrl, caption, currentUser);
+            }
+        });
+
+    }
+
+    public static boolean isYoutubeUrl(String youTubeURl)
+    {
+        boolean success;
+        String pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
+        if (!youTubeURl.isEmpty() && youTubeURl.matches(pattern))
+        {
+            success = true;
+        }
+        else
+        {
+            // Not Valid youtube URL
+            success = false;
+        }
+        return success;
+    }
+
+    private void savePost(String YoutubeUrl, String caption, ParseUser currentUser){
+
+
+        Post newPost = new Post();
+        newPost.setCaption(caption);
+        newPost.setYoutubeLink(YoutubeUrl);
+        newPost.setUser(currentUser);
+
+
+        newPost.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e!=null){
+                    Log.e(TAG, "error while saving post");
+                    Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
+                }
+                Log.e(TAG, "Post was successful!!");
+                etCaption.setText("");
+            }
+        });
+
+    }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private void getYoutubeDownloadUrl(String youtubeLink){
+
+
+        new YouTubeExtractor(getContext()) {
+            @Override
+            public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
+
+                if (ytFiles == null) {
+                    // Something went wrong we got no urls. Always check this.
+                    return;
+                }
+                // Iterate over itags
+                for (int i = 0, itag; i < ytFiles.size(); i++) {
+                    itag = ytFiles.keyAt(i);
+                    // ytFile represents one file with its url and meta data
+                    YtFile ytFile = ytFiles.get(itag);
+
+                }
+            }
+        }.extract(youtubeLink, true, false);
 
     }
 }

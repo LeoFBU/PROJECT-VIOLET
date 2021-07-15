@@ -302,10 +302,21 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         pvVideoSurfaceView.setPlayer(epVideoPLayer);
         viewHolderParent.setOnClickListener(videoViewClickListener);
 
-        ParseFile videoFile = postObjects.get(targetPosition).getParseFile("video");
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, "RecyclerView VideoPlayer"));
-        String mediaUrl = videoFile.getUrl();
+
+
+        String mediaUrl = null;
+        try{
+            ParseFile videoFile = postObjects.get(targetPosition).getParseFile("video");
+            mediaUrl = videoFile.getUrl();
+        }
+        catch(Exception e){
+            if(mediaUrl == null){
+                mediaUrl = postObjects.get(targetPosition).getYoutubeLink();
+            }
+        }
+
         if(mediaUrl != null){
             MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(mediaUrl));
             epVideoPLayer.prepare(videoSource);
@@ -434,6 +445,9 @@ public class VideoPlayerRecyclerView extends RecyclerView {
 
         viewHolderParent = null;
     }
+
+
+
 
 
 }
