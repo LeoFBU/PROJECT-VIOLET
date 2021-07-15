@@ -99,7 +99,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
         public void bind(Post post) {
 
-            parent.setTag(context);
+            parent.setTag(this);
 
 //            tvCaptionFeed.setText(post.getCaption());
 //            tvUsernameFeed.setText(post.getUser().getUsername());

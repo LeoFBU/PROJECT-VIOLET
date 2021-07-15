@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -380,11 +381,11 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         if(ivVolumeControl != null){
             ivVolumeControl.bringToFront();
             if(volumeState == VolumeState.OFF){
-                requestManager.load(R.drawable.ic_volume_off_grey_24dp)
+                Glide.with(context).load(R.drawable.ic_volume_off_grey_24dp)
                         .into(ivVolumeControl);
             }
             else if(volumeState == VolumeState.ON){
-                requestManager.load(R.drawable.ic_volume_up_grey_24dp)
+                Glide.with(context).load(R.drawable.ic_volume_up_grey_24dp)
                         .into(ivVolumeControl);
             }
             ivVolumeControl.animate().cancel();
