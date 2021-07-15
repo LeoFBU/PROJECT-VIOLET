@@ -1,6 +1,7 @@
 package com.example.projectviolet;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.parse.Parse;
 import com.parse.ParseFile;
 
 
@@ -93,6 +95,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             tvCaptionFeed = itemView.findViewById(R.id.title);
             progressBar = itemView.findViewById(R.id.progressBar);
             ivVolumeControl = itemView.findViewById(R.id.volume_control);
+            ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
 
 
         }
@@ -101,17 +104,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
             parent.setTag(this);
 
+            tvCaptionFeed.setText(post.getCaption());
+
 //            tvCaptionFeed.setText(post.getCaption());
 //            tvUsernameFeed.setText(post.getUser().getUsername());
 //            tvNumLikesFeed.setText(post.getLikes());
+
             ParseFile profileImage = post.getUserProfileImage();
-//            Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
+            Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
 
-            ParseFile video = post.getVideo();
-
-            tvCaptionFeed.setText(post.getCaption());
-
-
+//            ParseFile video = post.getVideo();
+//            Bitmap thumbnailBitmap = post.getVideoThumb(video.getUrl());
+//            Glide.with(context).load(thumbnailBitmap).placeholder(R.drawable.video_player_placeholder).into(ivThumbnailPlaceholder);
 
 
         }

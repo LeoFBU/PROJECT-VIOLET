@@ -167,19 +167,13 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         epVideoPLayer.addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, @Nullable @org.jetbrains.annotations.Nullable Object manifest, int reason) {
-
             }
-
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
             }
-
             @Override
             public void onLoadingChanged(boolean isLoading) {
-
             }
-
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 switch(playbackState){
@@ -213,35 +207,23 @@ public class VideoPlayerRecyclerView extends RecyclerView {
                         break;
                 }
             }
-
             @Override
             public void onRepeatModeChanged(int repeatMode) {
-
             }
-
             @Override
             public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
             }
-
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-
             }
-
             @Override
             public void onPositionDiscontinuity(int reason) {
-
             }
-
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
             }
-
             @Override
             public void onSeekProcessed() {
-
             }
         });
 
@@ -315,6 +297,7 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         ivVolumeControl = holder.ivVolumeControl;
         viewHolderParent = holder.itemView;
         frameLayout = holder.itemView.findViewById(R.id.media_container);
+
 
         pvVideoSurfaceView.setPlayer(epVideoPLayer);
         viewHolderParent.setOnClickListener(videoViewClickListener);

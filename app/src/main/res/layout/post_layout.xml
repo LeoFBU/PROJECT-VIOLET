@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#fff"
     android:orientation="vertical"
@@ -24,12 +25,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <FrameLayout
         android:id="@+id/media_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_width="414dp"
+        android:layout_height="242dp"
         android:background="#000"
         android:scaleType="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,16 +37,16 @@
 
         <ImageView
             android:id="@+id/thumbnail"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_width="414dp"
+            android:layout_height="match_parent"
             android:background="#fff"
-            android:scaleType="fitStart"
+            android:scaleType="centerInside"
             android:src="@drawable/white_background" />
 
         <ImageView
             android:id="@+id/volume_control"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
@@ -67,5 +66,14 @@
 
     </FrameLayout>
 
+    <ImageView
+        android:id="@+id/ivProfilePicFeed"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/media_container"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
