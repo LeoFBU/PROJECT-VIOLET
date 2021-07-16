@@ -5,7 +5,7 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fff"
+    android:background="#9B52AF"
     android:orientation="vertical"
     android:weightSum="100">
 
@@ -18,8 +18,9 @@
         android:layout_marginBottom="15dp"
         android:padding="10dp"
         android:text="This is the title"
-        android:textColor="#000"
+        android:textColor="#E3CEEF"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/media_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,10 +71,35 @@
         android:id="@+id/ivProfilePicFeed"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/media_container"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="50dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="216dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toEndOf="@+id/ivProfilePicFeed"
+        app:layout_constraintTop_toBottomOf="@+id/media_container"
+        app:srcCompat="@drawable/comments_icon"
+        tools:srcCompat="@drawable/comments_icon" />
+
+    <TextView
+        android:id="@+id/tvUsernameFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#F9EDFB"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfilePicFeed"
+        tools:text="username" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -84,18 +84,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             parent = itemView;
 
 //            tvCaptionFeed = itemView.findViewById(R.id.tvCaptionFeed);
-//            tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
 //            tvNumLikesFeed = itemView.findViewById(R.id.tvNumLikesFeed);
 //            ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
 //            ivThumbnailPlaceholder = itemView.findViewById(R.id.ivThumbnail);
 //            ibPlay = itemView.findViewById(R.id.ibPlay);
 
             media_container = itemView.findViewById(R.id.media_container);
-            ivThumbnailPlaceholder = itemView.findViewById(R.id.thumbnail);
             tvCaptionFeed = itemView.findViewById(R.id.title);
+            tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
             progressBar = itemView.findViewById(R.id.progressBar);
             ivVolumeControl = itemView.findViewById(R.id.volume_control);
             ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
+            ivThumbnailPlaceholder = itemView.findViewById(R.id.thumbnail);
 
 
         }
@@ -105,7 +105,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             parent.setTag(this);
 
             tvCaptionFeed.setText(post.getCaption());
-
+            tvUsernameFeed.setText(post.getUser().getUsername());
 //            tvCaptionFeed.setText(post.getCaption());
 //            tvUsernameFeed.setText(post.getUser().getUsername());
 //            tvNumLikesFeed.setText(post.getLikes());
@@ -113,6 +113,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             ParseFile profileImage = post.getUserProfileImage();
             Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
 
+            Glide.with(context).load(R.drawable.video_player_placeholder).into(ivThumbnailPlaceholder);
 //            ParseFile video = post.getVideo();
 //            Bitmap thumbnailBitmap = post.getVideoThumb(video.getUrl());
 //            Glide.with(context).load(thumbnailBitmap).placeholder(R.drawable.video_player_placeholder).into(ivThumbnailPlaceholder);
