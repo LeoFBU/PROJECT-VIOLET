@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeContainerFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.FeedFragment">
+    android:layout_height="match_parent">
 
-    <com.example.projectviolet.VideoPlayerRecyclerView
+    <FrameLayout
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_view"
-        android:orientation="vertical">
-    </com.example.projectviolet.VideoPlayerRecyclerView>
+        tools:context=".fragments.FeedFragment">
 
-</FrameLayout>
+            <com.example.projectviolet.VideoPlayerRecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_view"
+            android:orientation="vertical">
+            </com.example.projectviolet.VideoPlayerRecyclerView>
+
+    </FrameLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

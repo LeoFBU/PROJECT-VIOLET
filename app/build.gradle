@@ -71,4 +71,12 @@ dependencies {
     // For youtube Url Extractor
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
 
+    // For Swipe refresh layout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
+    // For Parcelable
+    implementation 'org.parceler:parceler-api:1.1.12'
+    annotationProcessor 'org.parceler:parceler:1.1.12'
+
+
 }

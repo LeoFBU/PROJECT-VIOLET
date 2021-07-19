@@ -31,6 +31,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,6 +51,7 @@ public class FeedFragment extends Fragment {
     protected PostsAdapter adapter;
     protected ArrayList<Post> feedPosts;
     protected List<String> urls;
+    private SwipeRefreshLayout swipeRefresher;
 
     private VideoPlayerRecyclerView newRecyclerView;
 
@@ -71,8 +74,31 @@ public class FeedFragment extends Fragment {
         newRecyclerView = view.findViewById(R.id.recycler_view);
         feedPosts = new ArrayList<>();
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        newRecyclerView.setLayoutManager(layoutManager);
+        verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(10);
+        newRecyclerView.addItemDecoration(itemDecorator);
+
+        swipeRefresher = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainerFragment);
+
+
         queryPosts(0);
-        //initRecyclerView(feedPosts);
+
+
+        swipeRefresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d(TAG, "onRefresh: Refresh Listener Triggered");
+                feedPosts.clear();
+                queryPosts(0);
+                swipeRefresher.setRefreshing(false);
+            }
+        });
+        swipeRefresher.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
 
     }
 
@@ -107,14 +133,16 @@ public class FeedFragment extends Fragment {
 
 
     private void initRecyclerView(ArrayList<Post> postList){
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        newRecyclerView.setLayoutManager(layoutManager);
-        verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(10);
-        newRecyclerView.addItemDecoration(itemDecorator);
+        // TODO: Look over the recyclerview code, i think it might be unnecessary to call
+        // initRecyclerView everytime a refresh call is made.
+
+
 
         ArrayList<Post> mediaObjects = new ArrayList<Post>(postList);
         newRecyclerView.setPostObjects(mediaObjects);
+
         PostsAdapter adapter = new PostsAdapter(getContext(), postList);
+
         newRecyclerView.setAdapter(adapter);
     }
 
