@@ -22,10 +22,13 @@ import android.widget.Toast;
 import com.example.projectviolet.Post;
 import com.example.projectviolet.R;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 import at.huber.youtubeExtractor.VideoMeta;
 import at.huber.youtubeExtractor.YouTubeExtractor;
@@ -42,7 +45,7 @@ public class UploadFragment extends Fragment {
     private ImageButton ibUpload;
     private EditText etYoutubeLink;
     private EditText etCaption;
-
+    private Uri video;
     public UploadFragment() {
         // Required empty public constructor
     }
@@ -159,13 +162,26 @@ public class UploadFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            Uri selectedMediaUri = data.getData();
-            if (selectedMediaUri.toString().contains("image")) {
-                //handle image
-            } else  if (selectedMediaUri.toString().contains("video")) {
+
                 //handle video
                 Uri uri = data.getData();
-                
+                Post newPost = new Post();
+                newPost.setCaption("testing uploading files rectly");
+                newPost.setUser(ParseUser.getCurrentUser());
+                newPost.setVideo(uri);
+
+                newPost.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e!=null){
+                            Log.e(TAG, "error while saving post");
+                            Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
+                        }
+                        Log.e(TAG, "Post was successful!!");
+                        etCaption.setText("");
+                    }
+                });
+
             }
-    }
+
 }

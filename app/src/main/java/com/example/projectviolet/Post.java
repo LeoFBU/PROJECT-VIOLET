@@ -2,6 +2,7 @@ package com.example.projectviolet;
 
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -70,6 +71,9 @@ public class Post extends ParseObject {
 
     public ParseFile getVideo() {
         return getParseFile(KEY_VIDEO);
+    }
+    public void setVideo(Uri video){
+        put(KEY_VIDEO, video);
     }
 
     public String getYoutubeLink(){

@@ -308,7 +308,7 @@ public class VideoPlayerRecyclerView extends RecyclerView {
 
         String mediaUrl = null;
         try{
-            ParseFile videoFile = postObjects.get(targetPosition).getParseFile("video");
+            ParseFile videoFile = postObjects.get(targetPosition).getVideo();
             mediaUrl = videoFile.getUrl();
         }
         catch(Exception e){
