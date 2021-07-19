@@ -1,27 +1,18 @@
 package com.example.projectviolet.fragments;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 
 import com.example.projectviolet.EndlessRecyclerViewScrollListener;
-import com.example.projectviolet.LoginActivity;
-import com.example.projectviolet.MainActivity;
 import com.example.projectviolet.Post;
 import com.example.projectviolet.PostsAdapter;
 import com.example.projectviolet.R;
@@ -29,16 +20,14 @@ import com.example.projectviolet.VideoPlayerRecyclerView;
 import com.example.projectviolet.util.verticalSpacingItem;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
+
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,14 +36,11 @@ import java.util.List;
 public class FeedFragment extends Fragment {
 
     public static final String TAG = "FeedFragment: ";
-    protected List<String> urls;
-    private ImageButton ibLogout;
-    private RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected ArrayList<Post> feedPosts;
     private SwipeRefreshLayout swipeRefresher;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private VideoPlayerRecyclerView newRecyclerView;
+    private VideoPlayerRecyclerView feedRecyclerView;
 
 
     public FeedFragment() {
@@ -71,14 +57,16 @@ public class FeedFragment extends Fragment {
     public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        newRecyclerView = view.findViewById(R.id.recycler_view);
+        feedRecyclerView = view.findViewById(R.id.recycler_view);
         feedPosts = new ArrayList<>();
+
         adapter = new PostsAdapter(getContext(), feedPosts);
-        newRecyclerView.setAdapter(adapter);
+        feedRecyclerView.setAdapter(adapter);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        newRecyclerView.setLayoutManager(layoutManager);
+        feedRecyclerView.setLayoutManager(layoutManager);
         verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(5);
-        newRecyclerView.addItemDecoration(itemDecorator);
+        feedRecyclerView.addItemDecoration(itemDecorator);
 
         queryPosts(0);
 
@@ -89,7 +77,7 @@ public class FeedFragment extends Fragment {
                 queryPosts(totalItemsCount);
             }
         };
-        newRecyclerView.addOnScrollListener(scrollListener);
+        feedRecyclerView.addOnScrollListener(scrollListener);
 
 
         swipeRefresher = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainerFragment);
@@ -103,10 +91,8 @@ public class FeedFragment extends Fragment {
                 swipeRefresher.setRefreshing(false);
             }
         });
-        swipeRefresher.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        setRefreshColors();
+
     }
 
     private void queryPosts(int skipAmount) {
@@ -132,27 +118,23 @@ public class FeedFragment extends Fragment {
                 posts.size();
                 feedPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
-                initRecyclerView(feedPosts);
+                feedRecyclerView.setPostObjects(feedPosts);
             }
         });
     }
 
 
-
-    private void initRecyclerView(ArrayList<Post> postList){
-        // TODO: Look over the recyclerview code, i think it might be unnecessary to call
-        // initRecyclerView everytime a refresh call is made.
-
-
-        ArrayList<Post> mediaObjects = new ArrayList<Post>(postList);
-        newRecyclerView.setPostObjects(mediaObjects);
-
+    private void setRefreshColors(){
+        swipeRefresher.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     @Override
     public void onDestroy() {
-        if(newRecyclerView!=null)
-            newRecyclerView.releasePlayer();
+        if(feedRecyclerView !=null)
+            feedRecyclerView.releasePlayer();
         super.onDestroy();
     }
 }

@@ -54,6 +54,16 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="178dp"
         android:layout_marginTop="69dp"
-        android:src="@drawable/exo_controls_play" />?
+        android:src="@drawable/exo_controls_play" />
+
+    <Button
+        android:id="@+id/btnUploadFromGallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="229dp"
+        android:layout_marginTop="264dp"
+        android:text="From Gallery" />?
 
 </RelativeLayout>

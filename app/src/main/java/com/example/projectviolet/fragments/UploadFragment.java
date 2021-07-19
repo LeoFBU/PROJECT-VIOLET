@@ -1,6 +1,8 @@
 package com.example.projectviolet.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ public class UploadFragment extends Fragment {
 
     public static final String TAG = "UploadFragment.java: ";
 
+    private Button btnUploadGallery;
     private ImageButton ibUpload;
     private EditText etYoutubeLink;
     private EditText etCaption;
@@ -59,6 +63,7 @@ public class UploadFragment extends Fragment {
         ibUpload = view.findViewById(R.id.ibUploadClip);
         etYoutubeLink = view.findViewById(R.id.etYoutubeLink);
         etCaption = view.findViewById(R.id.etCaption);
+        btnUploadGallery = view.findViewById(R.id.btnUploadFromGallery);
 
         ibUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +86,17 @@ public class UploadFragment extends Fragment {
                 extractYoutubeUrl(youtubeUrl, caption, currentUser);
 
 
+            }
+        });
 
+
+        btnUploadGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                final int ACTIVITY_SELECT_IMAGE = 1234;
+                startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
             }
         });
 
@@ -126,19 +141,6 @@ public class UploadFragment extends Fragment {
 
     }
 
-
-//    @SuppressLint("StaticFieldLeak")
-//    private void extractYoutubeUrl(String youtubeLink, String caption, ParseUser currentUser) {
-//        new YouTubeExtractor(getContext()) {
-//            @Override
-//            public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
-//                if (ytFiles != null) {
-//                    //playVideo(ytFiles.get(17).getUrl());
-//                    savePost(ytFiles.get(17).getUrl(), caption, currentUser);
-//                }
-//            }
-//        }.extract(youtubeLink, true, true);
-//    }
     private void extractYoutubeUrl(String youtubeLink, String caption, ParseUser user) {
         @SuppressLint("StaticFieldLeak") YouTubeExtractor mExtractor = new YouTubeExtractor(getContext()) {
             @Override
@@ -152,4 +154,18 @@ public class UploadFragment extends Fragment {
     mExtractor.extract(youtubeLink, true, true);
 }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+            Uri selectedMediaUri = data.getData();
+            if (selectedMediaUri.toString().contains("image")) {
+                //handle image
+            } else  if (selectedMediaUri.toString().contains("video")) {
+                //handle video
+                Uri uri = data.getData();
+                
+            }
+    }
 }
