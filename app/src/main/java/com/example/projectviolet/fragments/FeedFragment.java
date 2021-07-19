@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.example.projectviolet.EndlessRecyclerViewScrollListener;
 import com.example.projectviolet.LoginActivity;
 import com.example.projectviolet.MainActivity;
 import com.example.projectviolet.Post;
@@ -46,13 +47,13 @@ import java.util.List;
 public class FeedFragment extends Fragment {
 
     public static final String TAG = "FeedFragment: ";
+    protected List<String> urls;
     private ImageButton ibLogout;
     private RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected ArrayList<Post> feedPosts;
-    protected List<String> urls;
     private SwipeRefreshLayout swipeRefresher;
-
+    private EndlessRecyclerViewScrollListener scrollListener;
     private VideoPlayerRecyclerView newRecyclerView;
 
 
@@ -63,7 +64,6 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_feed, container, false);
     }
 
@@ -73,23 +73,32 @@ public class FeedFragment extends Fragment {
 
         newRecyclerView = view.findViewById(R.id.recycler_view);
         feedPosts = new ArrayList<>();
-
+        adapter = new PostsAdapter(getContext(), feedPosts);
+        newRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         newRecyclerView.setLayoutManager(layoutManager);
-        verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(10);
+        verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(5);
         newRecyclerView.addItemDecoration(itemDecorator);
-
-        swipeRefresher = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainerFragment);
-
 
         queryPosts(0);
 
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.e(TAG, "onLoadMore: page = " + page + "\nTotal items count= " + totalItemsCount);
+                queryPosts(totalItemsCount);
+            }
+        };
+        newRecyclerView.addOnScrollListener(scrollListener);
 
+
+        swipeRefresher = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainerFragment);
         swipeRefresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Log.d(TAG, "onRefresh: Refresh Listener Triggered");
                 feedPosts.clear();
+                adapter.notifyDataSetChanged();
                 queryPosts(0);
                 swipeRefresher.setRefreshing(false);
             }
@@ -98,14 +107,12 @@ public class FeedFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
-
     }
 
     private void queryPosts(int skipAmount) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
-        query.setLimit(10);
+        query.setLimit(5);
 
         if(skipAmount != 0){
             query.setSkip(skipAmount);
@@ -124,10 +131,10 @@ public class FeedFragment extends Fragment {
                 }
                 posts.size();
                 feedPosts.addAll(posts);
+                adapter.notifyDataSetChanged();
                 initRecyclerView(feedPosts);
             }
         });
-
     }
 
 
@@ -137,13 +144,9 @@ public class FeedFragment extends Fragment {
         // initRecyclerView everytime a refresh call is made.
 
 
-
         ArrayList<Post> mediaObjects = new ArrayList<Post>(postList);
         newRecyclerView.setPostObjects(mediaObjects);
 
-        PostsAdapter adapter = new PostsAdapter(getContext(), postList);
-
-        newRecyclerView.setAdapter(adapter);
     }
 
     @Override
