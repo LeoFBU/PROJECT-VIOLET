@@ -28,7 +28,10 @@ import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import at.huber.youtubeExtractor.VideoMeta;
 import at.huber.youtubeExtractor.YouTubeExtractor;
@@ -165,10 +168,21 @@ public class UploadFragment extends Fragment {
 
                 //handle video
                 Uri uri = data.getData();
+        File inputFile = new File(uri.toString());
+        try{
+            FileInputStream fis = new FileInputStream(inputFile);
+            ByteArrayOutputStream bos= new ByteArrayOutputStream();
+            byte[] buf = new byte[(int)inputFile.length()];
+                for (int readNum; (readNum=fis.read(buf)) != -1;) {
+                    bos.write(buf, 0, readNum);
+                }
+                byte[] bytes = bos.toByteArray();
+                ParseFile file = new ParseFile("testVideo1.mp4", bytes);
+
                 Post newPost = new Post();
                 newPost.setCaption("testing uploading files rectly");
                 newPost.setUser(ParseUser.getCurrentUser());
-                newPost.setVideo(uri);
+                newPost.setVideo(file);
 
                 newPost.saveInBackground(new SaveCallback() {
                     @Override
@@ -181,6 +195,15 @@ public class UploadFragment extends Fragment {
                         etCaption.setText("");
                     }
                 });
+
+            }
+        catch(Exception IOException){
+            Log.e(TAG, "onActivityResult: ERROR UPLOADING VIDEO", IOException);
+        }
+
+
+
+
 
             }
 

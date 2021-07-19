@@ -72,7 +72,7 @@ public class Post extends ParseObject {
     public ParseFile getVideo() {
         return getParseFile(KEY_VIDEO);
     }
-    public void setVideo(Uri video){
+    public void setVideo(ParseFile video){
         put(KEY_VIDEO, video);
     }
 
