@@ -151,12 +151,10 @@ public class UploadFragment extends Fragment {
 
     private void savePost(String YoutubeUrl, String caption, ParseUser currentUser){
 
-
         Post newPost = new Post();
         newPost.setCaption(caption);
         newPost.setYoutubeLink(YoutubeUrl);
         newPost.setUser(currentUser);
-
 
         newPost.saveInBackground(new SaveCallback() {
             @Override
@@ -190,15 +188,19 @@ public class UploadFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //TODO: Add request permissions to read/write on storage, right now this only works
+        // if the user goes to their own settings and explicitly allows the app on their own.
 
-        //handle video
         if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+
             Uri uri = data.getData();
             String realPath = getRealPathFromUri(getContext(), uri);
             realPaths = getRealPathFromUri(getContext(), uri);
+
             File inputFile = new File(realPath);
-            boolean hmmm = inputFile.mkdirs();
+
             try {
+
                 FileInputStream fis = new FileInputStream(inputFile);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 byte[] buf = new byte[(int) inputFile.length()];
@@ -208,8 +210,6 @@ public class UploadFragment extends Fragment {
                 byte[] bytes = bos.toByteArray();
                 ParseFile file = new ParseFile("testVideo1.mp4", bytes);
 
-                data.putExtra("video_key", file);
-                getActivity().setResult(Activity.RESULT_OK, data);
                 Glide.with(getContext())
                         .asBitmap()
                         .load(Uri.fromFile(new File(realPath)))
@@ -225,7 +225,6 @@ public class UploadFragment extends Fragment {
                     }
                 });
 
-
             } catch (Exception IOException) {
                 Log.e(TAG, "onActivityResult: ERROR UPLOADING VIDEO", IOException);
             }
@@ -236,15 +235,14 @@ public class UploadFragment extends Fragment {
 
     public void uploadMediaVideo(ParseFile video, String realPath){
 
-
         Post newPost = new Post();
+        newPost.setUser(ParseUser.getCurrentUser());
+        newPost.setVideo(video);
         newPost.setCaption(etCaption.getText().toString());
         if(etCaption.getText().toString().isEmpty()){
             Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
             return;
         }
-        newPost.setUser(ParseUser.getCurrentUser());
-        newPost.setVideo(video);
 
         newPost.saveInBackground(new SaveCallback() {
             @Override
@@ -255,29 +253,16 @@ public class UploadFragment extends Fragment {
                 }
 
                 Log.e(TAG, "Post was successful!!");
+
                 etCaption.setText("");
                 etYoutubeLink.setFocusable(true);
+                Glide.with(getContext())
+                        .load(R.drawable.video_player_placeholder)
+                        .into(ivPreviewThumbnail);
 
             }
         });
 
-    }
-
-    public File getPhotoFileUri(String fileName) {
-        Log.d(TAG, "Inside getPhotoFileUri");
-        // Get safe storage directory for photos
-        // Use `getExternalFilesDir` on Context to access package-specific directories.
-        // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d(TAG, "failed to create directory");
-        }
-
-        // Return the file target for the photo based on filename
-        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-        return file;
     }
 
     public static String getRealPathFromUri(Context context, Uri contentUri) {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="450dp"
     android:background="#9B52AF"
     android:orientation="vertical"
     android:weightSum="100">
@@ -76,6 +76,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/media_container"
+        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
@@ -91,15 +92,33 @@
 
     <TextView
         android:id="@+id/tvUsernameFeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_width="118dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="TextView"
         android:textColor="#F9EDFB"
+        android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfilePicFeed"
+        app:layout_constraintVertical_bias="0.272"
         tools:text="username" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="50dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="20dp"
+        android:adjustViewBounds="true"
+        android:background="#9B52AF"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/media_container"
+        app:srcCompat="@drawable/ic_like_unfilled" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

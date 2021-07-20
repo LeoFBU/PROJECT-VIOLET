@@ -376,11 +376,13 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         if(ivVolumeControl != null){
             ivVolumeControl.bringToFront();
             if(volumeState == VolumeState.OFF){
-                Glide.with(context).load(R.drawable.ic_volume_off_grey_24dp)
+                Glide.with(context)
+                        .load(R.drawable.ic_volume_off_grey_24dp)
                         .into(ivVolumeControl);
             }
             else if(volumeState == VolumeState.ON){
-                Glide.with(context).load(R.drawable.ic_volume_up_grey_24dp)
+                Glide.with(context)
+                        .load(R.drawable.ic_volume_up_grey_24dp)
                         .into(ivVolumeControl);
             }
             ivVolumeControl.animate().cancel();
