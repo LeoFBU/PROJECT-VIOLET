@@ -1,14 +1,25 @@
 package com.example.projectviolet.fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -17,10 +28,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.projectviolet.Post;
 import com.example.projectviolet.R;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -31,7 +45,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import at.huber.youtubeExtractor.VideoMeta;
 import at.huber.youtubeExtractor.YouTubeExtractor;
@@ -49,6 +65,8 @@ public class UploadFragment extends Fragment {
     private EditText etYoutubeLink;
     private EditText etCaption;
     private Uri video;
+    private String realPaths;
+    private ImageView ivPreviewThumbnail;
     public UploadFragment() {
         // Required empty public constructor
     }
@@ -70,6 +88,8 @@ public class UploadFragment extends Fragment {
         etYoutubeLink = view.findViewById(R.id.etYoutubeLink);
         etCaption = view.findViewById(R.id.etCaption);
         btnUploadGallery = view.findViewById(R.id.btnUploadFromGallery);
+        ivPreviewThumbnail = view.findViewById(R.id.ivThumbnailPreview);
+
 
         ibUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +105,10 @@ public class UploadFragment extends Fragment {
                 if(!validYoutubeUrl){
                     Toast.makeText(getContext(), "Not a valid YouTube link!", Toast.LENGTH_SHORT).show();
                     return;
+                }
+
+                if(youtubeUrl.isEmpty()){
+
                 }
 
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -103,9 +127,10 @@ public class UploadFragment extends Fragment {
                         android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 final int ACTIVITY_SELECT_IMAGE = 1234;
                 startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+                Parcelable e = i.getParcelableExtra("video_key");
+
             }
         });
-
     }
 
     public static boolean isYoutubeUrl(String youTubeURl)
@@ -166,9 +191,12 @@ public class UploadFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-                //handle video
-                Uri uri = data.getData();
-        File inputFile = new File(uri.toString());
+        //handle video
+        Uri uri = data.getData();
+        String realPath = getRealPathFromUri(getContext(), uri);
+        realPaths = getRealPathFromUri(getContext(), uri);
+        File inputFile = new File(realPath);
+        boolean hmmm = inputFile.mkdirs();
         try{
             FileInputStream fis = new FileInputStream(inputFile);
             ByteArrayOutputStream bos= new ByteArrayOutputStream();
@@ -178,6 +206,10 @@ public class UploadFragment extends Fragment {
                 }
                 byte[] bytes = bos.toByteArray();
                 ParseFile file = new ParseFile("testVideo1.mp4", bytes);
+
+                data.putExtra("video_key", file);
+                getActivity().setResult(Activity.RESULT_OK, data);
+
 
                 Post newPost = new Post();
                 newPost.setCaption("testing uploading files rectly");
@@ -191,6 +223,11 @@ public class UploadFragment extends Fragment {
                             Log.e(TAG, "error while saving post");
                             Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
                         }
+                        Glide.with(getContext())
+                                .asBitmap()
+                                .load(Uri.fromFile(new File(realPath)))
+                                .into(ivPreviewThumbnail);
+
                         Log.e(TAG, "Post was successful!!");
                         etCaption.setText("");
                     }
@@ -201,10 +238,39 @@ public class UploadFragment extends Fragment {
             Log.e(TAG, "onActivityResult: ERROR UPLOADING VIDEO", IOException);
         }
 
+    }
 
 
+    public File getPhotoFileUri(String fileName) {
+        Log.d(TAG, "Inside getPhotoFileUri");
+        // Get safe storage directory for photos
+        // Use `getExternalFilesDir` on Context to access package-specific directories.
+        // This way, we don't need to request external read/write runtime permissions.
+        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
 
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.d(TAG, "failed to create directory");
+        }
 
+        // Return the file target for the photo based on filename
+        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+        return file;
+    }
+
+    public static String getRealPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
+        }
+    }
 
 }
