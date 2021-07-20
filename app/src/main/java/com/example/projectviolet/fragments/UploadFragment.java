@@ -125,7 +125,7 @@ public class UploadFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                final int ACTIVITY_SELECT_IMAGE = 1234;
+                final int ACTIVITY_SELECT_IMAGE = 1;
                 startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
                 Parcelable e = i.getParcelableExtra("video_key");
 
@@ -192,16 +192,17 @@ public class UploadFragment extends Fragment {
 
 
         //handle video
-        Uri uri = data.getData();
-        String realPath = getRealPathFromUri(getContext(), uri);
-        realPaths = getRealPathFromUri(getContext(), uri);
-        File inputFile = new File(realPath);
-        boolean hmmm = inputFile.mkdirs();
-        try{
-            FileInputStream fis = new FileInputStream(inputFile);
-            ByteArrayOutputStream bos= new ByteArrayOutputStream();
-            byte[] buf = new byte[(int)inputFile.length()];
-                for (int readNum; (readNum=fis.read(buf)) != -1;) {
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            String realPath = getRealPathFromUri(getContext(), uri);
+            realPaths = getRealPathFromUri(getContext(), uri);
+            File inputFile = new File(realPath);
+            boolean hmmm = inputFile.mkdirs();
+            try {
+                FileInputStream fis = new FileInputStream(inputFile);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] buf = new byte[(int) inputFile.length()];
+                for (int readNum; (readNum = fis.read(buf)) != -1; ) {
                     bos.write(buf, 0, readNum);
                 }
                 byte[] bytes = bos.toByteArray();
@@ -209,37 +210,58 @@ public class UploadFragment extends Fragment {
 
                 data.putExtra("video_key", file);
                 getActivity().setResult(Activity.RESULT_OK, data);
+                Glide.with(getContext())
+                        .asBitmap()
+                        .load(Uri.fromFile(new File(realPath)))
+                        .into(ivPreviewThumbnail);
 
+                etYoutubeLink.setKeyListener(null);
+                etYoutubeLink.setFocusable(false);
 
-                Post newPost = new Post();
-                newPost.setCaption("testing uploading files rectly");
-                newPost.setUser(ParseUser.getCurrentUser());
-                newPost.setVideo(file);
-
-                newPost.saveInBackground(new SaveCallback() {
+                ibUpload.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void done(ParseException e) {
-                        if(e!=null){
-                            Log.e(TAG, "error while saving post");
-                            Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
-                        }
-                        Glide.with(getContext())
-                                .asBitmap()
-                                .load(Uri.fromFile(new File(realPath)))
-                                .into(ivPreviewThumbnail);
-
-                        Log.e(TAG, "Post was successful!!");
-                        etCaption.setText("");
+                    public void onClick(View v) {
+                        uploadMediaVideo(file, realPath);
                     }
                 });
 
-            }
-        catch(Exception IOException){
-            Log.e(TAG, "onActivityResult: ERROR UPLOADING VIDEO", IOException);
-        }
 
+            } catch (Exception IOException) {
+                Log.e(TAG, "onActivityResult: ERROR UPLOADING VIDEO", IOException);
+            }
+        }
+        else
+            Toast.makeText(getContext(), "Image not selected", Toast.LENGTH_SHORT).show();
     }
 
+    public void uploadMediaVideo(ParseFile video, String realPath){
+
+
+        Post newPost = new Post();
+        newPost.setCaption(etCaption.getText().toString());
+        if(etCaption.getText().toString().isEmpty()){
+            Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        newPost.setUser(ParseUser.getCurrentUser());
+        newPost.setVideo(video);
+
+        newPost.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e!=null){
+                    Log.e(TAG, "error while saving post");
+                    Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
+                }
+
+                Log.e(TAG, "Post was successful!!");
+                etCaption.setText("");
+                etYoutubeLink.setFocusable(true);
+
+            }
+        });
+
+    }
 
     public File getPhotoFileUri(String fileName) {
         Log.d(TAG, "Inside getPhotoFileUri");
