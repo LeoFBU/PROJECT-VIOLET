@@ -2,6 +2,7 @@ package com.example.projectviolet;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -141,6 +143,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                 @Override
                 public void done(ParseObject object, ParseException e) {
 
+                    List<String> usersThatLikedPost = post.getPostsLikedUsers();
+
                     List<String> likedPosts = user.getList("likedPosts");
                     assert likedPosts != null;
                     if(likedPosts.contains(post.getObjectId())){
@@ -155,8 +159,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                         public void liked( LikeButton likeButton ) {
 
                             likedPosts.add(post.getObjectId());
-                            user.put("likedPosts", likedPosts);
                             //user.saveEventually();
+                            user.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    user.put("likedPosts", likedPosts);
+                                    Log.e(TAG, "liked: saved hahahahaha", e);
+                                }
+                            });
                         }
 
                         @Override
@@ -167,16 +177,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                                 likedPosts.remove(indexToRemove);
                             }
 
-                            user.put("likedPosts", likedPosts);
                             //user.saveInBackground();
+                            user.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    user.put("likedPosts", likedPosts);
+                                    Log.e(TAG, "unliked: saved hahahahaha", e);
+                                }
+                            });
                         }
 
                     } );
-                    user.saveEventually();
+                    //user.put("likedPosts", likedPosts);
+
 
                 }
             });
-
+            //user.saveEventually();
 
 
 
@@ -197,9 +214,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 //                }
 //            } );
 
-
-
         }
+
+    }
+
+    static void Hahaha(){
+
     }
 
 
