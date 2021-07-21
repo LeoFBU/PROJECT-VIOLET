@@ -48,10 +48,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 import at.huber.youtubeExtractor.VideoMeta;
 import at.huber.youtubeExtractor.YouTubeExtractor;
 import at.huber.youtubeExtractor.YtFile;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,10 +70,12 @@ public class UploadFragment extends Fragment {
     private Uri video;
     private String realPaths;
     private ImageView ivPreviewThumbnail;
+    private static final int LOCATION_REQUEST = 222;
+
+
     public UploadFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,6 +94,8 @@ public class UploadFragment extends Fragment {
         etCaption = view.findViewById(R.id.etCaption);
         btnUploadGallery = view.findViewById(R.id.btnUploadFromGallery);
         ivPreviewThumbnail = view.findViewById(R.id.ivThumbnailPreview);
+
+        checkLocationRequest();
 
 
         ibUpload.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +130,7 @@ public class UploadFragment extends Fragment {
         btnUploadGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 final int ACTIVITY_SELECT_IMAGE = 1;
@@ -190,6 +198,7 @@ public class UploadFragment extends Fragment {
 
         //TODO: Add request permissions to read/write on storage, right now this only works
         // if the user goes to their own settings and explicitly allows the app on their own.
+        checkLocationRequest();
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
 
@@ -198,6 +207,8 @@ public class UploadFragment extends Fragment {
             realPaths = getRealPathFromUri(getContext(), uri);
 
             File inputFile = new File(realPath);
+
+
 
             try {
 
@@ -277,6 +288,25 @@ public class UploadFragment extends Fragment {
             if (cursor != null) {
                 cursor.close();
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions,grantResults);
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(LOCATION_REQUEST)
+    private void checkLocationRequest() {
+        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_MEDIA_LOCATION};
+        if (EasyPermissions.hasPermissions(requireContext(), perms)) {
+
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions((Activity) getContext(),"Please grant permission to access your gallery.",
+                    LOCATION_REQUEST, perms);
         }
     }
 

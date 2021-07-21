@@ -78,6 +78,10 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
 
+    // For developers using AndroidX in their applications
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    // For developers using the Android Support Library
+    implementation 'pub.devrel:easypermissions:2.0.1'
 
 
 
