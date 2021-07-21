@@ -131,58 +131,57 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
             //TODO: Find a moree efficient way of completing the Like task.
 
+//            List<String> likedByUsers = post.getPostsLikedUsers();
+//            if(likedByUsers.contains(user.getObjectId())){
+//                btnLike.setLiked(true);
+//            }
+
             ParseUser user = ParseUser.getCurrentUser();
             user.fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {
+
                     List<String> likedPosts = user.getList("likedPosts");
-                    for(int i = 0; i < likedPosts.size(); i++){
-                        String objectID = post.getObjectId();
-                        String ArrayOject = likedPosts.get(i);
-                        if(objectID.equals(ArrayOject)){
-                            btnLike.setLiked(true);
-                        }
+                    assert likedPosts != null;
+                    if(likedPosts.contains(post.getObjectId())){
+                        btnLike.setLiked(true);
                     }
+                    else
+                        btnLike.setLiked(false);
+
+
+                    btnLike.setOnLikeListener( new OnLikeListener(  ) {
+                        @Override
+                        public void liked( LikeButton likeButton ) {
+
+                            likedPosts.add(post.getObjectId());
+                            user.put("likedPosts", likedPosts);
+                            //user.saveEventually();
+                        }
+
+                        @Override
+                        public void unLiked( LikeButton likeButton ) {
+
+                            if(likedPosts.contains(post.getObjectId())){
+                                int indexToRemove = likedPosts.indexOf(post.getObjectId());
+                                likedPosts.remove(indexToRemove);
+                            }
+
+                            user.put("likedPosts", likedPosts);
+                            //user.saveInBackground();
+                        }
+
+                    } );
+                    user.saveEventually();
+
                 }
             });
 
-            btnLike.setOnLikeListener( new OnLikeListener(  ) {
-                @Override
-                public void liked( LikeButton likeButton ) {
-
-                    user.fetchInBackground(new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject object, ParseException e) {
-                            List<String> likedPosts = user.getList("likedPosts");
-                            likedPosts.add(post.getObjectId());
-                            user.put("likedPosts", likedPosts);
-                            user.saveInBackground();
-                        }
-                    });
-                }
-
-                @Override
-                public void unLiked( LikeButton likeButton ) {
-
-                    user.fetchInBackground(new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject object, ParseException e) {
-                            List<String> likedPosts = user.getList("likedPosts");
-                            for(int i = 0; i < likedPosts.size(); i++){
-                                String objectID = post.getObjectId();
-                                String ArrayObject = likedPosts.get(i);
-                                if(objectID.equals(ArrayObject)){
-                                    likedPosts.remove(i);
-                                }
-                            }
-                            user.put("likedPosts", likedPosts);
-                            user.saveInBackground();
-                        }
-                    });
-                }
-            } );
 
 
+
+
+            //TODO: Implement the same tracking for saving a post
 //            btnSave.setOnLikeListener( new OnLikeListener(  ) {
 //                @Override
 //                public void liked( LikeButton likeButton ) {

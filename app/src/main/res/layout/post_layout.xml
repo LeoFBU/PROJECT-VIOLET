@@ -28,8 +28,8 @@
 
     <FrameLayout
         android:id="@+id/media_container"
-        android:layout_width="414dp"
-        android:layout_height="242dp"
+        android:layout_width="415dp"
+        android:layout_height="294dp"
         android:background="#000"
         android:scaleType="center"
         app:layout_constraintEnd_toEndOf="parent"

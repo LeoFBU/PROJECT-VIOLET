@@ -135,8 +135,6 @@ public class UploadFragment extends Fragment {
                         android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 final int ACTIVITY_SELECT_IMAGE = 1;
                 startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
-                Parcelable e = i.getParcelableExtra("video_key");
-
             }
         });
     }
@@ -196,8 +194,7 @@ public class UploadFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //TODO: Add request permissions to read/write on storage, right now this only works
-        // if the user goes to their own settings and explicitly allows the app on their own.
+
         checkLocationRequest();
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
@@ -208,8 +205,6 @@ public class UploadFragment extends Fragment {
 
             File inputFile = new File(realPath);
 
-
-
             try {
 
                 FileInputStream fis = new FileInputStream(inputFile);
@@ -219,7 +214,8 @@ public class UploadFragment extends Fragment {
                     bos.write(buf, 0, readNum);
                 }
                 byte[] bytes = bos.toByteArray();
-                ParseFile file = new ParseFile("testVideo1.mp4", bytes);
+                // file name does not matter, caption is used to detail video
+                ParseFile file = new ParseFile("video.mp4", bytes);
 
                 Glide.with(getContext())
                         .asBitmap()
@@ -308,6 +304,10 @@ public class UploadFragment extends Fragment {
             EasyPermissions.requestPermissions((Activity) getContext(),"Please grant permission to access your gallery.",
                     LOCATION_REQUEST, perms);
         }
+    }
+
+    private void reset(){
+        // reset the fragments edit text and thumbnail
     }
 
 }
