@@ -10,14 +10,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
+import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -69,6 +76,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
         ProgressBar progressBar;
         FrameLayout media_container;
 
+        LikeButton btnLike;
+        //LikeButton btnSave;
+
 
         // TODO: Still deciding on which implementation of a videoplayer I want to use.
         //      as of right now, Fenster is the SDK that is commented out, and I am using
@@ -97,13 +107,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
             ivThumbnailPlaceholder = itemView.findViewById(R.id.thumbnail);
 
+            btnLike = itemView.findViewById(R.id.likeButton);
+            //btnSave = itemView.findViewById(R.id.saveButton);
 
         }
 
         public void bind(Post post) {
 
-            parent.setTag(this);
 
+            parent.setTag(this);
             tvCaptionFeed.setText(post.getCaption());
             tvUsernameFeed.setText(post.getUser().getUsername());
 //            tvNumLikesFeed.setText(post.getLikes());
@@ -116,6 +128,76 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 //            ParseFile video = post.getVideo();
 //            Bitmap thumbnailBitmap = post.getVideoThumb(video.getUrl());
 //            Glide.with(context).load(thumbnailBitmap).placeholder(R.drawable.video_player_placeholder).into(ivThumbnailPlaceholder);
+
+            //TODO: Find a moree efficient way of completing the Like task.
+
+            ParseUser user = ParseUser.getCurrentUser();
+            user.fetchInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject object, ParseException e) {
+                    List<String> likedPosts = user.getList("likedPosts");
+                    for(int i = 0; i < likedPosts.size(); i++){
+                        String objectID = post.getObjectId();
+                        String ArrayOject = likedPosts.get(i);
+                        if(objectID.equals(ArrayOject)){
+                            btnLike.setLiked(true);
+                        }
+                    }
+                }
+            });
+
+            btnLike.setOnLikeListener( new OnLikeListener(  ) {
+                @Override
+                public void liked( LikeButton likeButton ) {
+
+                    user.fetchInBackground(new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject object, ParseException e) {
+                            List<String> likedPosts = user.getList("likedPosts");
+                            likedPosts.add(post.getObjectId());
+                            user.put("likedPosts", likedPosts);
+                            user.saveInBackground();
+                        }
+                    });
+                }
+
+                @Override
+                public void unLiked( LikeButton likeButton ) {
+
+                    user.fetchInBackground(new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject object, ParseException e) {
+                            List<String> likedPosts = user.getList("likedPosts");
+                            for(int i = 0; i < likedPosts.size(); i++){
+                                String objectID = post.getObjectId();
+                                String ArrayObject = likedPosts.get(i);
+                                if(objectID.equals(ArrayObject)){
+                                    likedPosts.remove(i);
+                                }
+                            }
+                            user.put("likedPosts", likedPosts);
+                            user.saveInBackground();
+                        }
+                    });
+                }
+            } );
+
+
+//            btnSave.setOnLikeListener( new OnLikeListener(  ) {
+//                @Override
+//                public void liked( LikeButton likeButton ) {
+//                    //sowing simple Toast when liked
+//                    Toast.makeText( context, " Liked Now Music is On : )", Toast.LENGTH_SHORT ).show(  );
+//                }
+//
+//                @Override
+//                public void unLiked( LikeButton likeButton ) {
+//                    //sowing simple Toast when unLiked
+//                    Toast.makeText( context, " UnLiked Now Music is Off : )", Toast.LENGTH_SHORT ).show(  );
+//
+//                }
+//            } );
+
 
 
         }

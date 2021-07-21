@@ -83,6 +83,9 @@ dependencies {
     // For developers using the Android Support Library
     implementation 'pub.devrel:easypermissions:2.0.1'
 
+    //adding the like button library
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+
 
 
 }

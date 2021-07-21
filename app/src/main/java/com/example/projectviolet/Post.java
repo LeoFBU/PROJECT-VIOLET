@@ -9,6 +9,8 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.List;
+
 @ParseClassName("Post")
 public class Post extends ParseObject {
 
@@ -22,6 +24,7 @@ public class Post extends ParseObject {
     public static final String KEY_FOLLOWING_AMOUNT = "numOfFollowers";
     public static final String KEY_POSTS_AMOUNT = "numOfPosts";
     public static final String KEY_YOUTUBE_URL = "videoYoutube";
+    public static final String KEY_LIKED_LIST = "likedPosts";
 
     public String getCaption() {
         return getString(KEY_CAPTION);
@@ -81,6 +84,14 @@ public class Post extends ParseObject {
     }
     public void setYoutubeLink(String youtubeUrl){
         put(KEY_YOUTUBE_URL, youtubeUrl);
+    }
+
+    public List<String> getLikedPosts(){
+        ParseUser user = ParseUser.getCurrentUser();
+        return (user.getList(KEY_LIKED_LIST));
+    }
+    public void addLikedPost(String postID){
+        put(KEY_LIKED_LIST, postID);
     }
 
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeContainerFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#EF9EF1">
 
     <FrameLayout
 
@@ -14,12 +14,11 @@
         android:layout_height="match_parent"
         tools:context=".fragments.FeedFragment">
 
-            <com.example.projectviolet.VideoPlayerRecyclerView
+        <com.example.projectviolet.VideoPlayerRecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recycler_view"
-            android:orientation="vertical">
-            </com.example.projectviolet.VideoPlayerRecyclerView>
+            android:orientation="vertical"></com.example.projectviolet.VideoPlayerRecyclerView>
 
     </FrameLayout>
 
