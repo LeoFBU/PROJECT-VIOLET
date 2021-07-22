@@ -79,7 +79,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
         FrameLayout media_container;
 
         LikeButton btnLike;
-        //LikeButton btnSave;
+        LikeButton btnSave;
 
 
         // TODO: Still deciding on which implementation of a videoplayer I want to use.
@@ -110,7 +110,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             ivThumbnailPlaceholder = itemView.findViewById(R.id.thumbnail);
 
             btnLike = itemView.findViewById(R.id.likeButton);
-            //btnSave = itemView.findViewById(R.id.saveButton);
+            btnSave = itemView.findViewById(R.id.saveButton);
 
         }
 
@@ -143,28 +143,35 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                 @Override
                 public void done(ParseObject object, ParseException e) {
 
-                    List<String> usersThatLikedPost = post.getPostsLikedUsers();
+                    List<String> savedPosts = user.getList("savedPosts");
+                    List<String> likedByUsers = post.getList("usersThatLiked");
 
-                    List<String> likedPosts = user.getList("likedPosts");
-                    assert likedPosts != null;
-                    if(likedPosts.contains(post.getObjectId())){
+                    assert savedPosts != null;
+                    if(savedPosts.contains(post.getObjectId())){
+                        btnSave.setLiked(true);
+                    }
+                    else
+                        btnSave.setLiked(false);
+
+                    assert likedByUsers != null;
+                    if(likedByUsers.contains(user.getObjectId())){
                         btnLike.setLiked(true);
                     }
                     else
                         btnLike.setLiked(false);
 
 
-                    btnLike.setOnLikeListener( new OnLikeListener(  ) {
+                    btnSave.setOnLikeListener( new OnLikeListener(  ) {
                         @Override
                         public void liked( LikeButton likeButton ) {
 
-                            likedPosts.add(post.getObjectId());
+                            savedPosts.add(post.getObjectId());
                             //user.saveEventually();
                             user.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    user.put("likedPosts", likedPosts);
-                                    Log.e(TAG, "liked: saved hahahahaha", e);
+                                    user.put("savedPosts", savedPosts);
+                                    Log.e(TAG, "SAVED: saved hahahahaha", e);
                                 }
                             });
                         }
@@ -172,17 +179,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                         @Override
                         public void unLiked( LikeButton likeButton ) {
 
-                            if(likedPosts.contains(post.getObjectId())){
-                                int indexToRemove = likedPosts.indexOf(post.getObjectId());
-                                likedPosts.remove(indexToRemove);
+                            if(savedPosts.contains(post.getObjectId())){
+                                int indexToRemove = savedPosts.indexOf(post.getObjectId());
+                                savedPosts.remove(indexToRemove);
                             }
 
                             //user.saveInBackground();
                             user.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    user.put("likedPosts", likedPosts);
-                                    Log.e(TAG, "unliked: saved hahahahaha", e);
+                                    user.put("savedPosts", savedPosts);
+                                    Log.e(TAG, "UNSAVED: saved hahahahaha", e);
                                 }
                             });
                         }
@@ -190,6 +197,43 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                     } );
                     //user.put("likedPosts", likedPosts);
 
+                    //TODO: Implement the same tracking for saving a post
+                    btnLike.setOnLikeListener( new OnLikeListener(  ) {
+                        @Override
+                        public void liked( LikeButton likeButton ) {
+
+                            likedByUsers.add(user.getObjectId());
+                            //user.saveEventually();
+                            user.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    post.put("usersThatLiked", likedByUsers);
+                                    Log.e(TAG, "LIKED: liked hahahahaha", e);
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void unLiked( LikeButton likeButton ) {
+
+                            if(likedByUsers.contains(user.getObjectId())){
+                                int indexToRemove = likedByUsers.indexOf(user.getObjectId());
+                                likedByUsers.remove(indexToRemove);
+                            }
+
+                            //user.saveInBackground();
+                            user.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    post.put("usersThatLiked", likedByUsers);
+                                    Log.e(TAG, "UNLIKED: unliked hahahahaha", e);
+                                }
+                            });
+
+
+                        }
+                    } );
 
                 }
             });
@@ -198,21 +242,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
 
 
-            //TODO: Implement the same tracking for saving a post
-//            btnSave.setOnLikeListener( new OnLikeListener(  ) {
-//                @Override
-//                public void liked( LikeButton likeButton ) {
-//                    //sowing simple Toast when liked
-//                    Toast.makeText( context, " Liked Now Music is On : )", Toast.LENGTH_SHORT ).show(  );
-//                }
-//
-//                @Override
-//                public void unLiked( LikeButton likeButton ) {
-//                    //sowing simple Toast when unLiked
-//                    Toast.makeText( context, " UnLiked Now Music is Off : )", Toast.LENGTH_SHORT ).show(  );
-//
-//                }
-//            } );
+
 
         }
 

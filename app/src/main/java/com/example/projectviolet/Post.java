@@ -102,6 +102,11 @@ public class Post extends ParseObject {
         put(KEY_LIKED_BY_USERS, userID);
     }
 
+    public List<String> getUserSavedPosts(){
+        return getList("savedPosts");
+    }
+
+
     /**
      * Get video file screenshot
      *

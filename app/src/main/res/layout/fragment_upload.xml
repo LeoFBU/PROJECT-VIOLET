@@ -15,8 +15,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="399dp"
-        android:hint="Enter you youtube link"
+        android:layout_marginTop="398dp"
+        android:hint="Enter your youtube link"
         android:textColor="#E4BEF8"
         android:textColorHint="#E4BEF8" />
 
@@ -30,6 +30,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="25dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/video_player_placeholder" />
 
     <EditText

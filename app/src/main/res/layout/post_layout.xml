@@ -128,7 +128,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/media_container"
-        app:layout_constraintVertical_bias="0.07"
+        app:layout_constraintVertical_bias="0.061"
         app:like_drawable="@drawable/ic_like_filled"
         app:liked="false"
         app:unlike_drawable="@drawable/ic_like_unfilled" />
@@ -156,5 +156,27 @@
         app:like_drawable="@drawable/ic_save_filled"
         app:liked="false"
         app:unlike_drawable="@drawable/ic_save_unfilled" />
+
+    <TextView
+        android:id="@+id/tvNumLikesPost"
+        android:layout_width="52dp"
+        android:layout_height="19dp"
+        android:gravity="center"
+        android:text="0"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/likeButton"
+        app:layout_constraintTop_toBottomOf="@+id/likeButton"
+        tools:text="0" />
+
+    <TextView
+        android:id="@+id/tvNumCommentsPost"
+        android:layout_width="57dp"
+        android:layout_height="19dp"
+        android:gravity="center"
+        android:text="0"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/tvNumLikesPost"
+        app:layout_constraintTop_toBottomOf="@+id/btnComments"
+        tools:text="0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
