@@ -10,40 +10,40 @@
 
     <TextView
         android:id="@+id/tvFollowingNumber"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_width="81dp"
+        android:layout_height="64dp"
         android:layout_below="@+id/tvFollowingTitle"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="-27dp"
         android:layout_marginEnd="45dp"
-        android:gravity="center"
+        android:gravity="bottom|center"
         android:textSize="16sp"
         tools:text="textview" />
 
     <TextView
         android:id="@+id/tvPostsNumber"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="66dp"
         android:layout_below="@+id/tvPostsTitle"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="154dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="154dp"
-        android:gravity="center"
+        android:layout_marginTop="-29dp"
+        android:layout_marginEnd="153dp"
+        android:gravity="bottom|center"
         android:textSize="16sp"
         tools:text="textview" />
 
     <TextView
         android:id="@+id/tvFollowersNumber"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_height="61dp"
         android:layout_below="@+id/tvFollowersTitle"
         android:layout_alignParentStart="true"
         android:layout_marginStart="46dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="-23dp"
         android:foregroundGravity="center"
-        android:gravity="center"
+        android:gravity="bottom|center"
         android:textSize="16sp"
         tools:text="textview" />
 
@@ -57,6 +57,7 @@
         android:layout_marginEnd="47dp"
         android:gravity="center"
         android:text="Following"
+        android:textColor="#2D1F70"
         android:textSize="18sp"
         android:textStyle="bold" />
 

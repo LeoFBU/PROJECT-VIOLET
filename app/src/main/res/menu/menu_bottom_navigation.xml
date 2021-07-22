@@ -4,20 +4,20 @@
 
     <item
         android:id="@+id/action_Home"
-        android:icon="@android:drawable/ic_menu_compass"
+        android:enabled="true"
+        android:icon="@drawable/ic_feedhome_filled"
         android:title="Home"
-        app:showAsAction="always"
-        android:enabled="true"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_Compose"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="Compose"
-        app:showAsAction="always"
-        android:enabled="true"/>
+        android:enabled="true"
+        android:icon="@drawable/ic_upload_filled"
+        android:title="Upload"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_Profile"
-        android:icon="@drawable/ic_baseline_person_24"
+        android:enabled="true"
+        android:icon="@drawable/ic_user_filled"
         android:title="Profile"
-        app:showAsAction="always"
-        android:enabled="true"/>
+        app:showAsAction="always" />
 </menu>

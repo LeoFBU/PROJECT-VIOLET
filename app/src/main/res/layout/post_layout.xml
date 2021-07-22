@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent"
     android:layout_width="match_parent"
-    android:layout_height="450dp"
+    android:layout_height="520dp"
     android:background="#9B52AF"
     android:orientation="vertical"
     android:weightSum="100">
@@ -79,6 +79,8 @@
         app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <!-- Custom like button -->
+
     <ImageView
         android:id="@+id/btnComments"
         android:layout_width="57dp"
@@ -107,7 +109,6 @@
         app:layout_constraintVertical_bias="0.272"
         tools:text="username" />
 
-    <!-- Custom like button -->
     <com.like.LikeButton
         android:id="@+id/likeButton"
         android:layout_width="52dp"

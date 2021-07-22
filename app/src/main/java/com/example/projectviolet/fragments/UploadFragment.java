@@ -170,7 +170,7 @@ public class UploadFragment extends Fragment {
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
                 }
                 Log.e(TAG, "Post was successful!!");
-                etCaption.setText("");
+                resetFragment();
             }
         });
 
@@ -260,12 +260,7 @@ public class UploadFragment extends Fragment {
                 }
 
                 Log.e(TAG, "Post was successful!!");
-
-                etCaption.setText("");
-                etYoutubeLink.setFocusable(true);
-                Glide.with(getContext())
-                        .load(R.drawable.video_player_placeholder)
-                        .into(ivPreviewThumbnail);
+                resetFragment();
 
             }
         });
@@ -306,8 +301,12 @@ public class UploadFragment extends Fragment {
         }
     }
 
-    private void reset(){
+    private void resetFragment(){
         // reset the fragments edit text and thumbnail
+        etCaption.setText("");
+        etYoutubeLink.setText("");
+        etYoutubeLink.setFocusable(true);
+        Glide.with(requireContext()).load(R.drawable.video_player_placeholder).into(ivPreviewThumbnail);
     }
 
 }
