@@ -25,7 +25,7 @@ public class Post extends ParseObject {
     public static final String KEY_POSTS_AMOUNT = "numOfPosts";
     public static final String KEY_YOUTUBE_URL = "videoYoutube";
     public static final String KEY_LIKED_LIST = "likedPosts";
-    public static final String KEY_LIKED_BY_USERS = "likedByUsers";
+    public static final String KEY_LIKED_BY_USERS = "usersThatLiked";
 
     public String getCaption() {
         return getString(KEY_CAPTION);
@@ -98,8 +98,8 @@ public class Post extends ParseObject {
     public List<String> getPostsLikedUsers(){
         return getList(KEY_LIKED_BY_USERS);
     }
-    public void setPostsLikedUsers(String userID){
-        put(KEY_LIKED_BY_USERS, userID);
+    public void setPostsLikedUsers(List<String> list){
+        put(KEY_LIKED_BY_USERS, list);
     }
 
     public List<String> getUserSavedPosts(){

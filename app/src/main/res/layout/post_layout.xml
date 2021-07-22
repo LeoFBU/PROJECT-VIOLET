@@ -81,17 +81,6 @@
 
     <!-- Custom like button -->
 
-    <ImageView
-        android:id="@+id/btnComments"
-        android:layout_width="57dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/ivProfilePicFeed"
-        app:layout_constraintTop_toBottomOf="@+id/media_container"
-        app:srcCompat="@drawable/ic_comments_icon"
-        tools:srcCompat="@drawable/ic_comments_icon" />
-
     <TextView
         android:id="@+id/tvUsernameFeed"
         android:layout_width="118dp"
@@ -124,11 +113,11 @@
         app:icon_type="star"
         app:is_enabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnComments"
+        app:layout_constraintEnd_toStartOf="@+id/ibComments"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/media_container"
-        app:layout_constraintVertical_bias="0.061"
+        app:layout_constraintVertical_bias="0.068"
         app:like_drawable="@drawable/ic_like_filled"
         app:liked="false"
         app:unlike_drawable="@drawable/ic_like_unfilled" />
@@ -172,11 +161,25 @@
         android:id="@+id/tvNumCommentsPost"
         android:layout_width="57dp"
         android:layout_height="19dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="0"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tvNumLikesPost"
-        app:layout_constraintTop_toBottomOf="@+id/btnComments"
+        app:layout_constraintTop_toBottomOf="@+id/ibComments"
         tools:text="0" />
+
+    <ImageButton
+        android:id="@+id/ibComments"
+        android:layout_width="59dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="204dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:background="#9B52AF"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/ivProfilePicFeed"
+        app:layout_constraintTop_toBottomOf="@+id/media_container"
+        app:srcCompat="@drawable/ic_comments_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,13 @@
 package com.example.projectviolet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -78,6 +80,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
         ProgressBar progressBar;
         FrameLayout media_container;
 
+        ImageButton ibComments;
         LikeButton btnLike;
         LikeButton btnSave;
 
@@ -109,6 +112,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
             ivThumbnailPlaceholder = itemView.findViewById(R.id.thumbnail);
 
+            ibComments = itemView.findViewById(R.id.ibComments);
             btnLike = itemView.findViewById(R.id.likeButton);
             btnSave = itemView.findViewById(R.id.saveButton);
 
@@ -137,6 +141,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 //            if(likedByUsers.contains(user.getObjectId())){
 //                btnLike.setLiked(true);
 //            }
+
+            ibComments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CommentsActivity.class);
+                    intent.putExtra("post", post);
+                    v.getContext().startActivity(intent);
+                }
+            });
 
             ParseUser user = ParseUser.getCurrentUser();
             user.fetchInBackground(new GetCallback<ParseObject>() {
@@ -203,12 +216,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                         public void liked( LikeButton likeButton ) {
 
                             likedByUsers.add(user.getObjectId());
-                            //user.saveEventually();
                             user.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    post.put("usersThatLiked", likedByUsers);
-                                    Log.e(TAG, "LIKED: liked hahahahaha", e);
+                                    if(e!=null) {
+                                        //post.setPostsLikedUsers(likedByUsers);
+                                        Log.e(TAG, "error while saving post: ",e );
+                                    }
+                                    post.put("likedByUsers", likedByUsers);
+                                    Log.e(TAG, "Liking was successful!!");
                                 }
                             });
 
@@ -226,11 +242,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                             user.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    post.put("usersThatLiked", likedByUsers);
+                                    post.put("likedByUsers", likedByUsers);
                                     Log.e(TAG, "UNLIKED: unliked hahahahaha", e);
                                 }
                             });
-
 
                         }
                     } );
