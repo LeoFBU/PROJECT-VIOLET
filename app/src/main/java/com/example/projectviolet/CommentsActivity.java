@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +19,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +33,10 @@ public class CommentsActivity extends AppCompatActivity {
     private TextView tvPostCaption;
     private ImageView ivPostUserPfp;
     private ImageView ivPostThumbnail;
+    private ImageView ivCurrentUserPFP;
     private RecyclerView rvComments;
+    private EditText etSubmissionContent;
+    private Button btnSubmitComment;
     protected CommentsAdapter adapter;
     protected ArrayList<Comment> allComments;
 
@@ -55,6 +63,9 @@ public class CommentsActivity extends AppCompatActivity {
         tvPostCaption = findViewById(R.id.tvCommentsPostCaption);
         ivPostUserPfp = findViewById(R.id.ivCommentsPostUserPfp);
         ivPostThumbnail = findViewById(R.id.ivCommentsThumbnail);
+        ivCurrentUserPFP = findViewById(R.id.ivCommentCurrentUserPFP);
+        etSubmissionContent = findViewById(R.id.etCommentSubmit);
+        btnSubmitComment = findViewById(R.id.btnSubmitComment);
 
         tvPostUsername.setText(post.getUser().getUsername());
         tvPostCaption.setText(post.getCaption());
@@ -62,11 +73,20 @@ public class CommentsActivity extends AppCompatActivity {
         Glide.with(this).load(profileImage.getUrl()).circleCrop().into(ivPostUserPfp);
         ParseFile thumbnail = (ParseFile) post.get("videoThumbnail");
         Glide.with(this).load(thumbnail.getUrl()).into(ivPostThumbnail);
+        ParseFile currentUserImage = ParseUser.getCurrentUser().getParseFile("profileImage");
+        Glide.with(this).load(currentUserImage.getUrl()).circleCrop().into(ivCurrentUserPFP);
+
 
         List<String> validComments = post.getList("comments");
 
         queryComments(5, validComments, post);
 
+        btnSubmitComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitComment(etSubmissionContent.getText().toString(), post);
+            }
+        });
 
 //        List<String> commentIDS = post.getList("comments");
 //
@@ -86,6 +106,21 @@ public class CommentsActivity extends AppCompatActivity {
 
 
         Log.e(TAG, "onCreate: " + post.getObjectId());
+    }
+
+    private void submitComment(String toString, Post post) {
+        Comment newComment = new Comment();
+        newComment.put("user", ParseUser.getCurrentUser());
+        newComment.put("commentContent", toString);
+        //newComment.put("post", post.getObjectId());
+        newComment.put("postID", post.getObjectId());
+
+        newComment.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Log.e(TAG, "Post was successful!!" + e);
+            }
+        });
     }
 
     private void queryComments(int i, List<String> Dacomments, Post post) {
