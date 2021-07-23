@@ -263,9 +263,4 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
     }
 
-    static void Hahaha(){
-
-    }
-
-
 }
