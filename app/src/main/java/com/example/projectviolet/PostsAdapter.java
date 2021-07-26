@@ -70,10 +70,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
         View parent;
         TextView tvUsernameFeed;
         TextView tvCaptionFeed;
-        TextView tvNumLikesFeed;
         ImageView ivProfilePicFeed;
-        VideoView vvVideo;
-        ImageButton ibPlay;
+
 
         ImageView ivThumbnailPlaceholder;
         ImageView ivVolumeControl;
@@ -135,12 +133,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 //            Bitmap thumbnailBitmap = post.getVideoThumb(video.getUrl());
 //            Glide.with(context).load(thumbnailBitmap).placeholder(R.drawable.video_player_placeholder).into(ivThumbnailPlaceholder);
 
-            //TODO: Find a moree efficient way of completing the Like task.
-
-//            List<String> likedByUsers = post.getPostsLikedUsers();
-//            if(likedByUsers.contains(user.getObjectId())){
-//                btnLike.setLiked(true);
-//            }
 
             ibComments.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -148,6 +140,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                     Intent intent = new Intent(context, CommentsActivity.class);
                     intent.putExtra("post", post);
                     v.getContext().startActivity(intent);
+
                 }
             });
 
@@ -197,7 +190,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                                 savedPosts.remove(indexToRemove);
                             }
 
-                            //user.saveInBackground();
                             user.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
@@ -208,25 +200,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                         }
 
                     } );
-                    //user.put("likedPosts", likedPosts);
 
                     //TODO: Implement the same tracking for saving a post
                     btnLike.setOnLikeListener( new OnLikeListener(  ) {
                         @Override
                         public void liked( LikeButton likeButton ) {
+                            post.add("usersThatLiked", user.getObjectId());
+                            post.saveInBackground();
 
-                            likedByUsers.add(user.getObjectId());
-                            user.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if(e!=null) {
-                                        //post.setPostsLikedUsers(likedByUsers);
-                                        Log.e(TAG, "error while saving post: ",e );
-                                    }
-                                    post.put("likedByUsers", likedByUsers);
-                                    Log.e(TAG, "Liking was successful!!");
-                                }
-                            });
+                            Log.e(TAG, "Liking was successful!!");
 
                         }
 
@@ -238,25 +220,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                                 likedByUsers.remove(indexToRemove);
                             }
 
-                            //user.saveInBackground();
-                            user.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    post.put("likedByUsers", likedByUsers);
-                                    Log.e(TAG, "UNLIKED: unliked hahahahaha", e);
-                                }
-                            });
+                            post.put("usersThatLiked", likedByUsers);
+                            Log.e(TAG, "UNLIKED: unliked", e);
+                            post.saveInBackground();
 
                         }
                     } );
 
                 }
             });
-            //user.saveEventually();
-
-
-
-
 
 
         }

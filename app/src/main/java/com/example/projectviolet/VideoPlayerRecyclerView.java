@@ -36,6 +36,7 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -71,7 +72,7 @@ public class VideoPlayerRecyclerView extends RecyclerView {
     private View viewHolderParent;
     private FrameLayout frameLayout;
     private PlayerView pvVideoSurfaceView;
-    private SimpleExoPlayer epVideoPLayer;
+    SimpleExoPlayer epVideoPLayer;
 
     // utilized for variable logic
     private List<Post> postObjects = new ArrayList<>();
@@ -164,12 +165,17 @@ public class VideoPlayerRecyclerView extends RecyclerView {
             }
         });
 
+
         epVideoPLayer.addListener(new Player.EventListener() {
             @Override
-            public void onTimelineChanged(Timeline timeline, @Nullable @org.jetbrains.annotations.Nullable Object manifest, int reason) {
+            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+                epVideoPLayer.seekTo(0);
+                epVideoPLayer.setPlayWhenReady(true);
             }
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+                epVideoPLayer.seekTo(0);
+                epVideoPLayer.setPlayWhenReady(true);
             }
             @Override
             public void onLoadingChanged(boolean isLoading) {
@@ -218,6 +224,7 @@ public class VideoPlayerRecyclerView extends RecyclerView {
             }
             @Override
             public void onPositionDiscontinuity(int reason) {
+
             }
             @Override
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
@@ -226,6 +233,8 @@ public class VideoPlayerRecyclerView extends RecyclerView {
             public void onSeekProcessed() {
             }
         });
+
+
 
     }
 
@@ -449,8 +458,13 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         viewHolderParent = null;
     }
 
+    public void pauseVideo() {
+        epVideoPLayer.setPlayWhenReady(false);
+    }
 
-
+    public void continueVideo() {
+        epVideoPLayer.setPlayWhenReady(true);
+    }
 
 
 }

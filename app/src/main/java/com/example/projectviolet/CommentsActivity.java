@@ -127,7 +127,8 @@ public class CommentsActivity extends AppCompatActivity {
 
         ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
         query.include(Comment.KEY_USER);
-        query.setLimit(5);
+        // might want to create a query limit somehow
+        // maybe even add the endless scroll to the specific recyclerview
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Comment>() {
             @Override
@@ -137,17 +138,18 @@ public class CommentsActivity extends AppCompatActivity {
                     Log.e(TAG, "Issue with getting posts" + e, e);
                     return;
                 }
-                ///for(Comment comment : comments){
-                //    Log.i(TAG, "Post: " + comment.getCommentUser().getUsername() + ": " + comment.getCommentContent());
-                //}
-                List<Comment> correctCommments = new ArrayList<>();
+
+                List<Comment> correctComments = new ArrayList<>();
                 for(int i = 0; i < comments.size();i++){
                     if(post.getObjectId().equals(comments.get(i).getString("postID"))){
-                        correctCommments.add(comments.get(i));
+                        correctComments.add(comments.get(i));
                     }
                 }
+                for(Comment comment : correctComments){
+                    Log.e(TAG, "User: " + comment.getCommentUser().getUsername() + ": " + comment.getCommentContent());
+                }
 
-                allComments.addAll(correctCommments);
+                allComments.addAll(correctComments);
                 adapter.notifyDataSetChanged();
 
             }

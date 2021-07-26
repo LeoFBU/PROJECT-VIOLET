@@ -18,6 +18,7 @@ import com.example.projectviolet.PostsAdapter;
 import com.example.projectviolet.R;
 import com.example.projectviolet.VideoPlayerRecyclerView;
 import com.example.projectviolet.util.verticalSpacingItem;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -136,5 +137,17 @@ public class FeedFragment extends Fragment {
         if(feedRecyclerView !=null)
             feedRecyclerView.releasePlayer();
         super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        feedRecyclerView.pauseVideo();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        feedRecyclerView.continueVideo();
     }
 }

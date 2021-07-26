@@ -21,7 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PROJECTVIOLET">
         <activity android:name=".util.UserSettingsActivity" />
-        <activity android:name=".CommentsActivity"/>
+        <activity android:name=".CommentsActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
