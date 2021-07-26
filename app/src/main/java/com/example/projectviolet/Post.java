@@ -95,6 +95,19 @@ public class Post extends ParseObject {
         put(KEY_LIKED_LIST, postID);
     }
 
+    public String getNumberOfLikes(List<String> likes){
+        return String.valueOf(likes.size());
+    }
+    public int getNumberOfComments(List<Comment> comments, Post post){
+        int numComments = 0;
+        for(int i = 0; i < comments.size(); i++){
+            if(comments.get(i).get("postID").equals(post.getObjectId())){
+                numComments++;
+            }
+        }
+        return numComments;
+    }
+
     public List<String> getPostsLikedUsers(){
         return getList(KEY_LIKED_BY_USERS);
     }

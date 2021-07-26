@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -32,6 +34,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.projectviolet.Post;
 import com.example.projectviolet.R;
 import com.parse.Parse;
@@ -246,6 +251,21 @@ public class UploadFragment extends Fragment {
         newPost.setUser(ParseUser.getCurrentUser());
         newPost.setVideo(video);
         newPost.setCaption(etCaption.getText().toString());
+
+
+        Bitmap thumbnailBitmap = ThumbnailUtils.createVideoThumbnail(realPath,
+                MediaStore.Images.Thumbnails.MINI_KIND);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // Compress image to lower quality scale 1 - 100
+        thumbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] image = stream.toByteArray();
+
+        // Create the ParseFile
+        ParseFile file  = new ParseFile("picture_1.jpeg", image);
+        newPost.put("videoYoutube", file);
+
+
+
         if(etCaption.getText().toString().isEmpty()){
             Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
             return;
@@ -307,6 +327,29 @@ public class UploadFragment extends Fragment {
         etYoutubeLink.setText("");
         etYoutubeLink.setFocusable(true);
         Glide.with(requireContext()).load(R.drawable.video_player_placeholder).into(ivPreviewThumbnail);
+    }
+
+    public void setImage( Bitmap map){
+
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // Compress image to lower quality scale 1 - 100
+        map.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] image = stream.toByteArray();
+
+        // Create the ParseFile
+        ParseFile file  = new ParseFile("picture_1.jpeg", image);
+        // Upload the image into Parse Cloud
+        ParseUser user = ParseUser.getCurrentUser();
+        user.put("profilePic",file);
+
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+
+            }
+        });
+
     }
 
 }

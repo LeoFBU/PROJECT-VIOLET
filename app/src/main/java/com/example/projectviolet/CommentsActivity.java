@@ -88,22 +88,6 @@ public class CommentsActivity extends AppCompatActivity {
             }
         });
 
-//        List<String> commentIDS = post.getList("comments");
-//
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Comment");
-//        query.getInBackground("ZjS3tmoCgR", (object, e) -> {
-//            if (e == null) {
-//                //Object was successfully retrieved
-//                String commentContent = object.getString("commentContent");
-//                Log.e(TAG, "onCreate: "+ commentContent );
-//            } else {
-//                // something went wrong
-//                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-
-
 
         Log.e(TAG, "onCreate: " + post.getObjectId());
     }
@@ -119,6 +103,7 @@ public class CommentsActivity extends AppCompatActivity {
             @Override
             public void done(ParseException e) {
                 Log.e(TAG, "Post was successful!!" + e);
+                etSubmissionContent.setText("");
             }
         });
     }
@@ -154,15 +139,6 @@ public class CommentsActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
-
 
 
 

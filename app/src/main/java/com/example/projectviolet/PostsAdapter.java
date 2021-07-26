@@ -2,19 +2,15 @@ package com.example.projectviolet;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +19,6 @@ import com.bumptech.glide.Glide;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -70,6 +65,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
         View parent;
         TextView tvUsernameFeed;
         TextView tvCaptionFeed;
+        TextView tvNumLikes;
+        TextView tvNumComments;
         ImageView ivProfilePicFeed;
 
 
@@ -97,14 +94,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             parent = itemView;
 
 //            tvCaptionFeed = itemView.findViewById(R.id.tvCaptionFeed);
-//            tvNumLikesFeed = itemView.findViewById(R.id.tvNumLikesFeed);
 //            ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
 //            ivThumbnailPlaceholder = itemView.findViewById(R.id.ivThumbnail);
 //            ibPlay = itemView.findViewById(R.id.ibPlay);
 
-            media_container = itemView.findViewById(R.id.media_container);
+            tvNumLikes = itemView.findViewById(R.id.tvNumLikesPostFeed);
+            tvNumComments = itemView.findViewById(R.id.tvNumCommentsPostFeed);
             tvCaptionFeed = itemView.findViewById(R.id.title);
             tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
+            media_container = itemView.findViewById(R.id.media_container);
             progressBar = itemView.findViewById(R.id.progressBar);
             ivVolumeControl = itemView.findViewById(R.id.volume_control);
             ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
@@ -122,7 +120,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             parent.setTag(this);
             tvCaptionFeed.setText(post.getCaption());
             tvUsernameFeed.setText(post.getUser().getUsername());
-//            tvNumLikesFeed.setText(post.getLikes());
 
             ParseFile profileImage = post.getUserProfileImage();
             Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
@@ -151,6 +148,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
                     List<String> savedPosts = user.getList("savedPosts");
                     List<String> likedByUsers = post.getList("usersThatLiked");
+                    assert likedByUsers != null;
+                    tvNumLikes.setText(post.getNumberOfLikes(likedByUsers));
+                    //tvNumComments.setText(post.getNumberOfComments());
+
 
                     assert savedPosts != null;
                     if(savedPosts.contains(post.getObjectId())){
@@ -159,7 +160,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                     else
                         btnSave.setLiked(false);
 
-                    assert likedByUsers != null;
                     if(likedByUsers.contains(user.getObjectId())){
                         btnLike.setLiked(true);
                     }
@@ -207,9 +207,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                         public void liked( LikeButton likeButton ) {
                             post.add("usersThatLiked", user.getObjectId());
                             post.saveInBackground();
-
                             Log.e(TAG, "Liking was successful!!");
-
+                            int currentLikes = Integer.parseInt(tvNumLikes.getText().toString()) + 1;
+                            tvNumLikes.setText(String.valueOf(currentLikes));
                         }
 
                         @Override
@@ -223,6 +223,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                             post.put("usersThatLiked", likedByUsers);
                             Log.e(TAG, "UNLIKED: unliked", e);
                             post.saveInBackground();
+                            int currentLikes = Integer.parseInt(tvNumLikes.getText().toString()) - 1;
+                            tvNumLikes.setText(String.valueOf(currentLikes));
 
                         }
                     } );
