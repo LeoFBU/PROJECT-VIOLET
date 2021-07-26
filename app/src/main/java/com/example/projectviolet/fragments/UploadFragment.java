@@ -53,6 +53,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Objects;
 
 import at.huber.youtubeExtractor.VideoMeta;
@@ -253,16 +254,21 @@ public class UploadFragment extends Fragment {
         newPost.setCaption(etCaption.getText().toString());
 
 
-        Bitmap thumbnailBitmap = ThumbnailUtils.createVideoThumbnail(realPath,
-                MediaStore.Images.Thumbnails.MINI_KIND);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        // Compress image to lower quality scale 1 - 100
-        thumbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] image = stream.toByteArray();
 
-        // Create the ParseFile
-        ParseFile file  = new ParseFile("picture_1.jpeg", image);
-        newPost.put("videoYoutube", file);
+//        Bitmap thumbnailBitmap = ThumbnailUtils.createVideoThumbnail(realPath,
+//                MediaStore.Images.Thumbnails.MINI_KIND);
+//
+//        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(rea, MediaStore.Video.Thumbnails.MINI_KIND);
+//
+//
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        // Compress image to lower quality scale 1 - 100
+//        thumbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//        byte[] image = stream.toByteArray();
+//
+//        // Create the ParseFile
+//        ParseFile file  = new ParseFile("picture_1.jpeg", image);
+//        newPost.put("videoYoutube", file);
 
 
 
@@ -329,27 +335,7 @@ public class UploadFragment extends Fragment {
         Glide.with(requireContext()).load(R.drawable.video_player_placeholder).into(ivPreviewThumbnail);
     }
 
-    public void setImage( Bitmap map){
 
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        // Compress image to lower quality scale 1 - 100
-        map.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] image = stream.toByteArray();
-
-        // Create the ParseFile
-        ParseFile file  = new ParseFile("picture_1.jpeg", image);
-        // Upload the image into Parse Cloud
-        ParseUser user = ParseUser.getCurrentUser();
-        user.put("profilePic",file);
-
-        user.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-
-            }
-        });
-
-    }
 
 }

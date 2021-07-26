@@ -99,6 +99,12 @@ public class CommentsActivity extends AppCompatActivity {
         //newComment.put("post", post.getObjectId());
         newComment.put("postID", post.getObjectId());
 
+        int numComments = post.getInt("numberComments") + 1;
+        post.put("numberComments", numComments);
+        post.saveInBackground();
+        allComments.add(0, newComment);
+        adapter.notifyDataSetChanged();
+
         newComment.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

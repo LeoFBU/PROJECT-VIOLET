@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#AD64C1"
+
     android:layout_height="wrap_content">
 
     <ImageView
@@ -11,8 +13,8 @@
         android:layout_height="69dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -21,27 +23,32 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="30dp"
-        android:text="TextView" />
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="27dp"
+        android:text="TextView"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvUserCommentContent"
-        android:layout_width="wrap_content"
+        android:layout_width="297dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvUserCommentUsername"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="18dp"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/tvUserCommentTimestamp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
+        android:layout_below="@+id/tvUserCommentContent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="333dp"
-        android:layout_marginTop="58dp"
-        android:text="TextView" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="266dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="12dp"
+        android:gravity="right"
+        android:text="TextView"
+        android:textStyle="italic" />
 </RelativeLayout>

@@ -62,14 +62,17 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             ivCommentUserPFP = itemView.findViewById(R.id.ivUserCommentPFP);
 
 
+
         }
 
         public void bind(Comment comment) {
 
             tvCommentContent.setText(comment.getCommentContent());
             tvCommentUsername.setText(comment.getCommentUser().getUsername());
+            tvCommentTimestamp.setText(comment.getCommentTimestamp(comment.getCreatedAt()));
             ParseFile commentProfileImage = comment.getCommentUser().getParseFile("profileImage");
             Glide.with(context).load(commentProfileImage.getUrl()).circleCrop().into(ivCommentUserPFP);
+
 
         }
     }

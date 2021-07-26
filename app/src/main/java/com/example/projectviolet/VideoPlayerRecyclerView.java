@@ -309,7 +309,13 @@ public class VideoPlayerRecyclerView extends RecyclerView {
 
 
         pvVideoSurfaceView.setPlayer(epVideoPLayer);
-        viewHolderParent.setOnClickListener(videoViewClickListener);
+        viewHolderParent.setOnLongClickListener(videoViewClickListener);
+//        ivVolumeControl.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                toggleVolume();
+//            }
+//        });
 
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, "RecyclerView VideoPlayer"));
@@ -423,11 +429,13 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         }
     }
 
-    private OnClickListener videoViewClickListener = new OnClickListener() {
+    private OnLongClickListener videoViewClickListener = new OnLongClickListener() {
         @Override
-        public void onClick(View v) {
+        public boolean onLongClick(View v) {
             toggleVolume();
+            return false;
         }
+
     };
 
     private void toggleVolume() {

@@ -29,6 +29,7 @@ import com.parse.SaveCallback;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPosts> {
@@ -67,6 +68,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
         TextView tvCaptionFeed;
         TextView tvNumLikes;
         TextView tvNumComments;
+        TextView tvTimestamp;
         ImageView ivProfilePicFeed;
 
 
@@ -102,6 +104,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             tvNumComments = itemView.findViewById(R.id.tvNumCommentsPostFeed);
             tvCaptionFeed = itemView.findViewById(R.id.title);
             tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
+            tvTimestamp = itemView.findViewById(R.id.tvTimestampPostFeed);
             media_container = itemView.findViewById(R.id.media_container);
             progressBar = itemView.findViewById(R.id.progressBar);
             ivVolumeControl = itemView.findViewById(R.id.volume_control);
@@ -120,7 +123,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             parent.setTag(this);
             tvCaptionFeed.setText(post.getCaption());
             tvUsernameFeed.setText(post.getUser().getUsername());
+            tvTimestamp.setText(post.getPostTimestamp(post.getCreatedAt()));
 
+            int numComments = post.getNumberOfComments();
+            tvNumComments.setText(String.valueOf(numComments));
             ParseFile profileImage = post.getUserProfileImage();
             Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
 
