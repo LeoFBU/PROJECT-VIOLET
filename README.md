@@ -33,19 +33,18 @@ TikTok-esque app, users upload a 30-40 second gaming or animation clip. It can b
 * User can create an account
   - full login/logout system that maintains persistence
 * User can upload 30-40 second clip
-  - uploaded straight from user galler
-  - (consider other sources?)
+  - uploaded straight from user gallery
   - User can add a caption to their video
-* Must have infinite scrolling through the feed.
+  - Has thumbnail preview of video
+* Infinite scrolling through the feed.
 * User Gestures
-  - double tap to like
-  - drag fingers opposite for landscape
-* Keep track of Likes, Comments (and maybe views?)
+  - long press to mute video
+* Keep track of likes, comments, and posts user saves
 * Ask the user of their genre/games they prefer
   - feed will only reflect the games they specify
 * (At least basic) User Profiles
   - User settings for them to update their games
-* User can ad
+  - Profiles will show videos that they have "saved"
 
 **Optional Nice-to-have Stories**
 
