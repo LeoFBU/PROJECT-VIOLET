@@ -61,8 +61,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             tvCommentUsername = itemView.findViewById(R.id.tvUserCommentUsername);
             ivCommentUserPFP = itemView.findViewById(R.id.ivUserCommentPFP);
 
-
-
         }
 
         public void bind(Comment comment) {

@@ -307,15 +307,8 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         viewHolderParent = holder.itemView;
         frameLayout = holder.itemView.findViewById(R.id.media_container);
 
-
         pvVideoSurfaceView.setPlayer(epVideoPLayer);
         viewHolderParent.setOnLongClickListener(videoViewClickListener);
-//        ivVolumeControl.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                toggleVolume();
-//            }
-//        });
 
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, "RecyclerView VideoPlayer"));

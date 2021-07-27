@@ -37,23 +37,17 @@ public class MainActivity extends AppCompatActivity {
 
                 switch(item.getItemId()) {
                     case R.id.action_Home:
-                        // do something here
-                        //Toast.makeText(MainActivity.this, "Feed", Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "onNavigationItemSelected: clicked FEED");
                         fragment = new FeedFragment();
                         break;
                     case R.id.action_Compose:
-                        // do something here
-                        //Toast.makeText(MainActivity.this, "Upload", Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "onNavigationItemSelected: clicked UPLOAD");
                         fragment = new UploadFragment();
                         break;
                     case R.id.action_Profile:
-                        //Toast.makeText(MainActivity.this, "Profile", Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "onNavigationItemSelected: clicked PROFILE");
                         fragment = new ProfileFragment();
                         break;
-                    // do something here
                     default:
                         fragment = new FeedFragment();
                         break;

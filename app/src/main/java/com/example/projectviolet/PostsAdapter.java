@@ -81,32 +81,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
         LikeButton btnLike;
         LikeButton btnSave;
 
-
-        // TODO: Still deciding on which implementation of a videoplayer I want to use.
-        //      as of right now, Fenster is the SDK that is commented out, and I am using
-        //      https://github.com/yqritc/Android-ScalableVideoView.
-        //      Video functionality is not working as intended right now.
-        // THIS VERSION IS HARDLY FUNCTIONAL, A BUNCH OF CODE IS HERE FOR DIFFERENT VIDEO PLAYERS.
-        // THIS COMMIT IS PURELY BEFORE A LARGE IMPLEMENTATION OF EXOPLAYER CODE
-
-
         public ViewHolderPosts(@NonNull @NotNull View itemView) {
             super(itemView);
 
             parent = itemView;
 
 //            tvCaptionFeed = itemView.findViewById(R.id.tvCaptionFeed);
-//            ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
-//            ivThumbnailPlaceholder = itemView.findViewById(R.id.ivThumbnail);
-//            ibPlay = itemView.findViewById(R.id.ibPlay);
 
             tvNumLikes = itemView.findViewById(R.id.tvNumLikesPostFeed);
             tvNumComments = itemView.findViewById(R.id.tvNumCommentsPostFeed);
             tvCaptionFeed = itemView.findViewById(R.id.title);
             tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
             tvTimestamp = itemView.findViewById(R.id.tvTimestampPostFeed);
+
             media_container = itemView.findViewById(R.id.media_container);
             progressBar = itemView.findViewById(R.id.progressBar);
+
             ivVolumeControl = itemView.findViewById(R.id.volume_control);
             ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
             ivThumbnailPlaceholder = itemView.findViewById(R.id.thumbnail);
@@ -119,23 +109,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
         public void bind(Post post) {
 
-
             parent.setTag(this);
+
             tvCaptionFeed.setText(post.getCaption());
             tvUsernameFeed.setText(post.getUser().getUsername());
             tvTimestamp.setText(post.getPostTimestamp(post.getCreatedAt()));
-
             int numComments = post.getNumberOfComments();
             tvNumComments.setText(String.valueOf(numComments));
+
             ParseFile profileImage = post.getUserProfileImage();
-            Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
-
-            Glide.with(context).load(post.getParseFile("videoThumbnail").getUrl()).placeholder(R.drawable.video_player_placeholder).centerCrop().into(ivThumbnailPlaceholder);
-            // TODO: Figure out why the feed becomes so laggy after this code is implemented for thumbnails and how to fix.
-//            ParseFile video = post.getVideo();
-//            Bitmap thumbnailBitmap = post.getVideoThumb(video.getUrl());
-//            Glide.with(context).load(thumbnailBitmap).placeholder(R.drawable.video_player_placeholder).into(ivThumbnailPlaceholder);
-
+            Glide.with(context).load(profileImage.getUrl())
+                    .circleCrop()
+                    .into(ivProfilePicFeed);
+            ParseFile thumbnail = post.getThumbnail();
+            Glide.with(context).load(thumbnail.getUrl())
+                    .placeholder(R.drawable.video_player_placeholder)
+                    .centerCrop()
+                    .into(ivThumbnailPlaceholder);
 
             ibComments.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -156,8 +146,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                     List<String> likedByUsers = post.getList("usersThatLiked");
                     assert likedByUsers != null;
                     tvNumLikes.setText(post.getNumberOfLikes(likedByUsers));
-                    //tvNumComments.setText(post.getNumberOfComments());
-
 
                     assert savedPosts != null;
                     if(savedPosts.contains(post.getObjectId())){
@@ -207,7 +195,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
                     } );
 
-                    //TODO: Implement the same tracking for saving a post
                     btnLike.setOnLikeListener( new OnLikeListener(  ) {
                         @Override
                         public void liked( LikeButton likeButton ) {

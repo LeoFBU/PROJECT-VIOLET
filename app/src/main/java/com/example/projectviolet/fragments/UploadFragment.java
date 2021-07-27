@@ -254,7 +254,8 @@ public class UploadFragment extends Fragment {
         newPost.setCaption(etCaption.getText().toString());
 
         ParseFile videoThumbnail = getVideoThumb(realPath);
-        newPost.put("videoThumbnail", videoThumbnail);
+        newPost.setThumbnail(videoThumbnail);
+
 
         if(etCaption.getText().toString().isEmpty()){
             Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();

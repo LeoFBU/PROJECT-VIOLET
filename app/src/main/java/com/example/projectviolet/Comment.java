@@ -21,10 +21,6 @@ public class Comment extends ParseObject {
         return getString(COMMENT_CONTENT);
     }
 
-    public Date getDateCreated(){
-        return getDate(TIMESTAMP);
-    }
-
     public ParseUser getCommentUser() {
         return getParseUser(KEY_USER);
     }

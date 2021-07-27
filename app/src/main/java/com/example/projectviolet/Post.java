@@ -17,16 +17,14 @@ import java.util.List;
 public class Post extends ParseObject {
 
     public static final String KEY_CAPTION = "caption";
-    public static final String KEY_IMAGE = "image";
+    public static final String KEY_IMAGE = "videoThumbnail";
     public static final String KEY_USER = "user";
     public static final String KEY_PROFILE_IMAGE = "profileImage";
-    public static final String KEY_LIKES = "likes";
     public static final String KEY_VIDEO = "video";
     public static final String KEY_FOLLOWERS_AMOUNT = "numOfFollowing";
     public static final String KEY_FOLLOWING_AMOUNT = "numOfFollowers";
     public static final String KEY_POSTS_AMOUNT = "numOfPosts";
     public static final String KEY_YOUTUBE_URL = "videoYoutube";
-    public static final String KEY_LIKED_LIST = "likedPosts";
     public static final String KEY_LIKED_BY_USERS = "usersThatLiked";
     public static final String KEY_NUM_OF_COMMENTS = "numberComments";
 
@@ -37,15 +35,12 @@ public class Post extends ParseObject {
         put(KEY_CAPTION, description);
     }
 
-    public ParseFile getImage() {
+    public ParseFile getThumbnail() {
         return getParseFile(KEY_IMAGE);
     }
-    public void setImage(ParseFile parseFile) {
+    public void setThumbnail(ParseFile parseFile) {
         put(KEY_IMAGE, parseFile);
     }
-
-
-
 
     public ParseUser getUser() {
         return getParseUser(KEY_USER);
@@ -103,14 +98,6 @@ public class Post extends ParseObject {
     public List<String> getUserSavedPosts(){
         return getList("savedPosts");
     }
-
-
-    /**
-     * Get video file screenshot
-     *
-     * @ param path the path of the video file
-     * @ return bitmap returns the obtained bitmap
-     */
 
     public Bitmap getVideoThumb(String path) {
 
