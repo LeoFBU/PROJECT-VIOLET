@@ -28,6 +28,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
+
+
         etUsername = findViewById(R.id.etCreateUsername);
         etPassword = findViewById(R.id.etCreatePassword);
         btnCreateAccount = findViewById(R.id.btnSignInCreate);
@@ -64,7 +66,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private void goMainActivity() {
 
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, SelectGameTagsActivity.class);
         finish();
         startActivity(i);
     }

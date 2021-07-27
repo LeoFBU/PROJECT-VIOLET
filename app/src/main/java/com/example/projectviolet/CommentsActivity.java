@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.projectviolet.util.verticalSpacingItem;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -54,6 +55,9 @@ public class CommentsActivity extends AppCompatActivity {
         // set the layout manager on the recycler view
         LinearLayoutManager Manager = new LinearLayoutManager(this);
         rvComments.setLayoutManager(Manager);
+
+        verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(5);
+        rvComments.addItemDecoration(itemDecorator);
 
 
 
@@ -120,6 +124,7 @@ public class CommentsActivity extends AppCompatActivity {
         query.include(Comment.KEY_USER);
         // might want to create a query limit somehow
         // maybe even add the endless scroll to the specific recyclerview
+        query.whereContains("postID", post.getObjectId());
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Comment>() {
             @Override
@@ -129,18 +134,10 @@ public class CommentsActivity extends AppCompatActivity {
                     Log.e(TAG, "Issue with getting posts" + e, e);
                     return;
                 }
-
-                List<Comment> correctComments = new ArrayList<>();
-                for(int i = 0; i < comments.size();i++){
-                    if(post.getObjectId().equals(comments.get(i).getString("postID"))){
-                        correctComments.add(comments.get(i));
-                    }
-                }
-                for(Comment comment : correctComments){
-                    Log.e(TAG, "User: " + comment.getCommentUser().getUsername() + ": " + comment.getCommentContent());
-                }
-
-                allComments.addAll(correctComments);
+                // this is here to correect the number of comments in case inconsistencies happen
+                post.put("numberComments", comments.size());
+                post.saveInBackground();
+                allComments.addAll(comments);
                 adapter.notifyDataSetChanged();
 
             }

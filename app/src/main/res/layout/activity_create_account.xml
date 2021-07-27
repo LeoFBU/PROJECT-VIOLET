@@ -65,6 +65,7 @@
         android:background="@drawable/text_background"
         android:foregroundGravity="fill"
         android:hint="  password"
+        android:password="true"
         tools:layout_editor_absoluteX="223dp"
         tools:layout_editor_absoluteY="58dp" />
 </RelativeLayout>
