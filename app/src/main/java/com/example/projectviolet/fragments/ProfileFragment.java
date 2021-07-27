@@ -73,7 +73,7 @@ public class ProfileFragment extends Fragment {
 
         rvProfile = view.findViewById(R.id.rvProfileSavedPosts);
         int numberOfColumns = 3;
-        rvProfile.setLayoutManager(new GridLayoutManager(requireContext(), numberOfColumns));
+        rvProfile.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         gridAdapter = new ProfileFeedGridAdapter(getContext(), userFeedPosts);
         rvProfile.setAdapter(gridAdapter);
 
@@ -88,8 +88,6 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
-
-        // TODO: finish setting up profile page with correct information.
 
         tvUsername = view.findViewById(R.id.tvUsernameProfile);
         tvNumOfPosts = view.findViewById(R.id.tvPostsNumber);
@@ -118,10 +116,19 @@ public class ProfileFragment extends Fragment {
     private void queryPosts(int skipAmount) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
+        List<Post> savedPosts = new ArrayList<>();
+        ParseUser user = ParseUser.getCurrentUser();
+
+        List<String> fromArray = new ArrayList<>();
+        List<String> objectIDs = user.getList("savedPosts");
+        query.whereContainedIn("objectId", objectIDs);
+
+
 
         if(skipAmount != 0){
             query.setSkip(skipAmount);
         }
+
 
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {
@@ -131,9 +138,21 @@ public class ProfileFragment extends Fragment {
                     Log.e(TAG, "Issue with getting Feed: " + e, e);
                     return;
                 }
-                for(Post post : posts){
-                    Log.i(TAG, "Post: " + post.getUser().getUsername() + ": " + post.getCaption());
+                for (Post post : posts) {
+                    Log.e(TAG, "done: "+ post.getCaption());
                 }
+                for(int i = 0; i < objectIDs.size(); i++){
+                    Log.e(TAG, "done: " + objectIDs.get(i) );
+                }
+//                for(int i = 0; i < posts.size(); i++){
+//                    fromArray.add(posts.get(i).getObjectId());
+//                }
+//                for(int i = 0; i < objectIDs.size(); i++){
+//                    if(posts.contains(objectIDs.get(i))){
+//                        int index = posts.indexOf(objectIDs);
+//                        savedPosts.add(posts.get(objectIDs.get(i)));
+//                    }
+//                }
                 posts.size();
                 userFeedPosts.addAll(posts);
                 gridAdapter.notifyDataSetChanged();

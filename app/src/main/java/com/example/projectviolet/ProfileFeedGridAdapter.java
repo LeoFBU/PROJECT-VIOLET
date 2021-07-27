@@ -1,6 +1,7 @@
 package com.example.projectviolet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,17 +50,31 @@ public class ProfileFeedGridAdapter extends RecyclerView.Adapter<ProfileFeedGrid
 
     public class ViewHolderProfile extends RecyclerView.ViewHolder {
 
-        ImageView ivProfileThumbnail;
+        ImageView ivProfilePostThumbnail;
+        ImageView ivProfilePostUserPFP;
 
         public ViewHolderProfile(@NonNull @NotNull View itemView) {
             super(itemView);
 
-            ivProfileThumbnail = itemView.findViewById(R.id.ivProfileFeedPostThumbnail);
-
+            ivProfilePostThumbnail = itemView.findViewById(R.id.ivProfileFeedPostThumbnail);
+            ivProfilePostUserPFP = itemView.findViewById(R.id.ivProfileFeedPostUserPFP);
         }
 
         public void bind(Post post) {
-            Glide.with(context).load(post.getThumbnail().getUrl()).centerCrop().into(ivProfileThumbnail);
+            Glide.with(context).load(post.getThumbnail().getUrl()).centerCrop().into(ivProfilePostThumbnail);
+            Glide.with(context).load(post.getUserProfileImage().getUrl()).circleCrop().into(ivProfilePostUserPFP);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CommentsActivity.class);
+                    intent.putExtra("post", post);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
+
+
+
+
     }
 }

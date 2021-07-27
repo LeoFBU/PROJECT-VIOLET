@@ -100,8 +100,8 @@
 
     <com.like.LikeButton
         android:id="@+id/likeButton"
-        android:layout_width="52dp"
-        android:layout_height="48dp"
+        android:layout_width="39dp"
+        android:layout_height="37dp"
         android:layout_gravity="center"
         android:layout_marginStart="248dp"
         app:anim_scale_factor="2"
@@ -117,15 +117,15 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/media_container"
-        app:layout_constraintVertical_bias="0.068"
+        app:layout_constraintVertical_bias="0.064"
         app:like_drawable="@drawable/ic_like_filled"
         app:liked="false"
         app:unlike_drawable="@drawable/ic_like_unfilled" />
 
     <com.like.LikeButton
         android:id="@+id/saveButton"
-        android:layout_width="52dp"
-        android:layout_height="48dp"
+        android:layout_width="42dp"
+        android:layout_height="38dp"
         android:layout_gravity="center"
         android:layout_marginStart="248dp"
         app:anim_scale_factor="2"
@@ -141,15 +141,16 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/media_container"
-        app:layout_constraintVertical_bias="0.07"
+        app:layout_constraintVertical_bias="0.078"
         app:like_drawable="@drawable/ic_save_filled"
         app:liked="false"
         app:unlike_drawable="@drawable/ic_save_unfilled" />
 
     <TextView
         android:id="@+id/tvNumLikesPostFeed"
-        android:layout_width="52dp"
-        android:layout_height="19dp"
+        android:layout_width="44dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="0"
         android:textStyle="bold"
@@ -171,9 +172,9 @@
 
     <ImageButton
         android:id="@+id/ibComments"
-        android:layout_width="59dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="204dp"
+        android:layout_width="53dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="208dp"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:background="#9B52AF"
