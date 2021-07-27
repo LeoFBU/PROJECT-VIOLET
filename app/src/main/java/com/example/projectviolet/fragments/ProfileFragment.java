@@ -5,30 +5,45 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectviolet.LoginActivity;
 import com.example.projectviolet.Post;
+import com.example.projectviolet.ProfileFeedGridAdapter;
 import com.example.projectviolet.R;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  *
  */
 public class ProfileFragment extends Fragment {
+
+    RecyclerView rvProfile;
+    ArrayList<Post> userFeedPosts;
+    ProfileFeedGridAdapter gridAdapter;
 
     public static final String TAG = "ProfileFragment.java: ";
     private ImageButton ibLogout;
@@ -53,6 +68,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated( @NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        userFeedPosts = new ArrayList<>();
+
+        rvProfile = view.findViewById(R.id.rvProfileSavedPosts);
+        int numberOfColumns = 3;
+        rvProfile.setLayoutManager(new GridLayoutManager(requireContext(), numberOfColumns));
+        gridAdapter = new ProfileFeedGridAdapter(getContext(), userFeedPosts);
+        rvProfile.setAdapter(gridAdapter);
 
         ibLogout = view.findViewById(R.id.ibLogout);
         ibLogout.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +111,34 @@ public class ProfileFragment extends Fragment {
         ParseFile profileImage = user.getParseFile("profileImage");
         Glide.with(requireContext()).load(profileImage.getUrl()).circleCrop().into(ivProfilePic);
 
-
+        queryPosts(0);
     }
 
 
+    private void queryPosts(int skipAmount) {
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.include(Post.KEY_USER);
+
+        if(skipAmount != 0){
+            query.setSkip(skipAmount);
+        }
+
+        query.addDescendingOrder("createdAt");
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                if (e != null){
+                    Log.e(TAG, "Issue with getting Feed: " + e, e);
+                    return;
+                }
+                for(Post post : posts){
+                    Log.i(TAG, "Post: " + post.getUser().getUsername() + ": " + post.getCaption());
+                }
+                posts.size();
+                userFeedPosts.addAll(posts);
+                gridAdapter.notifyDataSetChanged();
+            }
+        });
+    }
 
 }

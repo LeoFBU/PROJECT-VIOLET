@@ -94,8 +94,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="331dp"
-        android:layout_marginTop="611dp"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="165dp"
         android:src="@android:drawable/ic_delete" />
 
     <TextView
@@ -132,9 +132,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="47dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="510dp"
         android:src="@android:drawable/ic_menu_manage" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProfileSavedPosts"
+        android:layout_width="match_parent"
+        android:layout_height="411dp"
+        android:layout_below="@+id/tvUsernameProfile"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="41dp"
+        android:layout_marginBottom="0dp" />
 
 
 </RelativeLayout>
