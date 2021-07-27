@@ -72,7 +72,7 @@ public class CommentsActivity extends AppCompatActivity {
         ParseFile profileImage = post.getUserProfileImage();
         Glide.with(this).load(profileImage.getUrl()).circleCrop().into(ivPostUserPfp);
         ParseFile thumbnail = (ParseFile) post.get("videoThumbnail");
-        Glide.with(this).load(thumbnail.getUrl()).into(ivPostThumbnail);
+        Glide.with(this).load(thumbnail.getUrl()).centerCrop().into(ivPostThumbnail);
         ParseFile currentUserImage = ParseUser.getCurrentUser().getParseFile("profileImage");
         Glide.with(this).load(currentUserImage.getUrl()).circleCrop().into(ivCurrentUserPFP);
 

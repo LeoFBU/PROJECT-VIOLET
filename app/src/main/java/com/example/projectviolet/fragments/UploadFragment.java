@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -253,7 +255,7 @@ public class UploadFragment extends Fragment {
         newPost.setVideo(video);
         newPost.setCaption(etCaption.getText().toString());
 
-
+        Bitmap thumbnail = getVideoThumb(realPath);
 
 //        Bitmap thumbnailBitmap = ThumbnailUtils.createVideoThumbnail(realPath,
 //                MediaStore.Images.Thumbnails.MINI_KIND);
@@ -261,14 +263,22 @@ public class UploadFragment extends Fragment {
 //        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(rea, MediaStore.Video.Thumbnails.MINI_KIND);
 //
 //
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        ByteArrayOutputStream streams = new ByteArrayOutputStream();
 //        // Compress image to lower quality scale 1 - 100
-//        thumbnailBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//        byte[] image = stream.toByteArray();
-//
-//        // Create the ParseFile
-//        ParseFile file  = new ParseFile("picture_1.jpeg", image);
-//        newPost.put("videoYoutube", file);
+//        thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, streams);
+//        byte[] image = streams.toByteArray();
+
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        thumbnail.recycle();
+
+
+        // Create the ParseFile
+        ParseFile file  = new ParseFile("picture_1.jpeg", byteArray);
+        newPost.put("videoThumbnail", file);
+
 
 
 
@@ -336,6 +346,14 @@ public class UploadFragment extends Fragment {
     }
 
 
+    public Bitmap getVideoThumb(String path) {
+
+        MediaMetadataRetriever media = new MediaMetadataRetriever();
+
+        media.setDataSource(path);
+        return media.getFrameAtTime();
+
+    }
 
 
 }

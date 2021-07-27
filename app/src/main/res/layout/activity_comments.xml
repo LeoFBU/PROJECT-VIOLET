@@ -24,19 +24,21 @@
 
     <TextView
         android:id="@+id/tvCommentsPostUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="188dp"
+        android:layout_width="69dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="184dp"
+        android:gravity="center"
         android:text="TextView"
         android:textColor="#E3CEEF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivCommentsPostUserPfp"
-        android:layout_width="96dp"
-        android:layout_height="94dp"
+        android:layout_width="86dp"
+        android:layout_height="85dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
@@ -47,8 +49,8 @@
 
     <ImageView
         android:id="@+id/ivCommentsThumbnail"
-        android:layout_width="256dp"
-        android:layout_height="182dp"
+        android:layout_width="253dp"
+        android:layout_height="157dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.896"
@@ -71,10 +73,11 @@
     <EditText
         android:id="@+id/etCommentSubmit"
 
-        android:layout_width="235dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="238dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvComments" />
 

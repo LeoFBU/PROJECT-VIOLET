@@ -130,7 +130,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             ParseFile profileImage = post.getUserProfileImage();
             Glide.with(context).load(profileImage.getUrl()).circleCrop().into(ivProfilePicFeed);
 
-            Glide.with(context).load(R.drawable.video_player_placeholder).centerCrop().into(ivThumbnailPlaceholder);
+            Glide.with(context).load(post.getParseFile("videoThumbnail").getUrl()).placeholder(R.drawable.video_player_placeholder).centerCrop().into(ivThumbnailPlaceholder);
             // TODO: Figure out why the feed becomes so laggy after this code is implemented for thumbnails and how to fix.
 //            ParseFile video = post.getVideo();
 //            Bitmap thumbnailBitmap = post.getVideoThumb(video.getUrl());
