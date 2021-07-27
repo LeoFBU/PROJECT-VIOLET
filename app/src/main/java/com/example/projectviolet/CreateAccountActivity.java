@@ -33,9 +33,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         btnCreateAccount = findViewById(R.id.btnSignInCreate);
 
         ParseUser user = new ParseUser();
-        // Set custom properties
-        //user.put("phone", "650-253-0000");
-        // Invoke signUpInBackground
+
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,20 +47,20 @@ public class CreateAccountActivity extends AppCompatActivity {
                 user.setPassword(etPassword.getText().toString());
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(ParseException e) {
-                        if (e == null) { // On success for Parse, e is null
+                        // On success for Parse, e is null
+                        if (e == null) {
                             goMainActivity();
                         } else {
                             // Sign up didn't succeed. Look at the ParseException
                             // to figure out what went wrong
+                            Log.e(TAG, "done: ", e);
                         }
                     }
                 });
             }
         });
 
-
     }
-
 
     private void goMainActivity() {
 
@@ -72,12 +70,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     private boolean lengthVerified() {
-//        if(etUsername.getText().toString().length() < 2 || etPassword.getText().toString().length() < 2){
-//            return false;
-//        }
-//        if(etUsername.getText().toString().length() < 2 && etPassword.getText().toString().length() < 2){
-//            return false;
-//        }
+
         if(etUsername.getText().toString().length() < 3){
             return false;
         }

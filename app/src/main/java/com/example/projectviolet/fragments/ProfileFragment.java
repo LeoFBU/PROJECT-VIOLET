@@ -84,24 +84,9 @@ public class ProfileFragment extends Fragment {
         tvNumOfPosts.setText(numberOfPosts);
         tvUsername.setText(username);
 
-//
-//        user.fetchInBackground(new GetCallback<ParseUser>() {
-//            @Override
-//            public void done(ParseUser user, ParseException e) {
-//                //tvNumOfFollowers.setText(String.valueOf(post.getNumFollowers()));
-//                //tvNumOfFollowing.setText(String.valueOf(post.getNumFollowing()));
-//                String numberOfFollowing = String.valueOf(user.getNumber("numOfPosts"));
-//                tvNumOfPosts.setText(String.valueOf(numberOfFollowing));
-//                //tvUsername.setText(user.getUsername());
-//            }
-//        });
-
-
-
-
 
         ParseFile profileImage = user.getParseFile("profileImage");
-        Glide.with(getContext()).load(profileImage.getUrl()).circleCrop().into(ivProfilePic);
+        Glide.with(requireContext()).load(profileImage.getUrl()).circleCrop().into(ivProfilePic);
 
 
     }

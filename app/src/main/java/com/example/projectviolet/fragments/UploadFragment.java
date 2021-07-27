@@ -125,11 +125,9 @@ public class UploadFragment extends Fragment {
                 if(youtubeUrl.isEmpty()){
 
                 }
-
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 //savePost(youtubeUrl, caption, currentUser);
                 extractYoutubeUrl(youtubeUrl, caption, currentUser);
-
 
             }
         });
@@ -255,32 +253,8 @@ public class UploadFragment extends Fragment {
         newPost.setVideo(video);
         newPost.setCaption(etCaption.getText().toString());
 
-        Bitmap thumbnail = getVideoThumb(realPath);
-
-//        Bitmap thumbnailBitmap = ThumbnailUtils.createVideoThumbnail(realPath,
-//                MediaStore.Images.Thumbnails.MINI_KIND);
-//
-//        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(rea, MediaStore.Video.Thumbnails.MINI_KIND);
-//
-//
-//        ByteArrayOutputStream streams = new ByteArrayOutputStream();
-//        // Compress image to lower quality scale 1 - 100
-//        thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, streams);
-//        byte[] image = streams.toByteArray();
-
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        thumbnail.recycle();
-
-
-        // Create the ParseFile
-        ParseFile file  = new ParseFile("picture_1.jpeg", byteArray);
-        newPost.put("videoThumbnail", file);
-
-
-
+        ParseFile videoThumbnail = getVideoThumb(realPath);
+        newPost.put("videoThumbnail", videoThumbnail);
 
         if(etCaption.getText().toString().isEmpty()){
             Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
@@ -346,14 +320,19 @@ public class UploadFragment extends Fragment {
     }
 
 
-    public Bitmap getVideoThumb(String path) {
+    public ParseFile getVideoThumb(String path) {
 
         MediaMetadataRetriever media = new MediaMetadataRetriever();
-
         media.setDataSource(path);
-        return media.getFrameAtTime();
-
+        Bitmap thumbnail = media.getFrameAtTime();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        thumbnail.recycle();
+        // Create the ParseFile
+        return new ParseFile("picture_1.png", byteArray);
     }
+
 
 
 }
