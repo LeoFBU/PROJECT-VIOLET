@@ -2,30 +2,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="105dp">
 
-    <TextView
-        android:id="@+id/tvGameTagName"
-        android:layout_width="239dp"
-        android:layout_height="41dp"
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="380dp"
+        android:layout_height="90dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="36dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="94dp"
-        tools:layout_editor_absoluteY="104dp" />
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        app:cardBackgroundColor="#EFD4EE"
+        app:cardCornerRadius="11dp"
+        app:cardElevation="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/ivGameTagIcon"
-        android:layout_width="80dp"
-        android:layout_height="70dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="23dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvGameTagName"
+                android:layout_width="156dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="123dp"
+                android:layout_marginTop="27dp"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="#4A1183"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivGameTagIcon"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <CheckBox
+                android:id="@+id/cbSubscribe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="4dp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
 </RelativeLayout>

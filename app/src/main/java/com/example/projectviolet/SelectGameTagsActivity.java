@@ -68,7 +68,9 @@ public class SelectGameTagsActivity extends AppCompatActivity {
         ParseQuery<GameTag> query = ParseQuery.getQuery(GameTag.class);
         // might want to create a query limit somehow
         // maybe even add the endless scroll to the specific recyclerview
-        query.addDescendingOrder("createdAt");
+
+
+        query.addAscendingOrder("gameName");
         query.findInBackground(new FindCallback<GameTag>() {
             @Override
             public void done(List<GameTag> tags, ParseException e) {
