@@ -11,6 +11,7 @@ public class GameTag extends ParseObject {
     public static final String NAME_KEY = "gameName";
     public static final String SUBSCRIBED_USERS_KEY = "subscribedUsers";
 
+    boolean isSelected;
 
     ParseFile getGameIcon(){
         return getParseFile(ICON_KEY);
@@ -18,5 +19,13 @@ public class GameTag extends ParseObject {
 
     String getGameName(){
         return getString(NAME_KEY);
+    }
+
+    Boolean isChecked(){
+        return isSelected;
+    }
+
+    public void setChecked(boolean selected){
+        isSelected = selected;
     }
 }

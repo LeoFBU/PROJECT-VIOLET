@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +15,7 @@ import com.example.projectviolet.util.verticalSpacingItem;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +26,12 @@ public class SelectGameTagsActivity extends AppCompatActivity {
 
     RecyclerView rvGameTags;
     private ArrayList<GameTag> GameTagsList;
+    private ArrayList<String> gameNames;
     protected GameTagsAdapter adapter;
     private Button btnSubmitTags;
     Context context;
+
+    private ArrayList<String> prefferedTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,9 @@ public class SelectGameTagsActivity extends AppCompatActivity {
         btnSubmitTags = findViewById(R.id.btnSubmitTags);
 
         GameTagsList = new ArrayList<>();
-        adapter = new GameTagsAdapter(context, GameTagsList);
+        prefferedTags = new ArrayList<>();
+        gameNames = new ArrayList<>();
+        adapter = new GameTagsAdapter(context, GameTagsList, prefferedTags);
         rvGameTags.setAdapter(adapter);
 
         LinearLayoutManager Manager = new LinearLayoutManager(context);
@@ -55,6 +60,28 @@ public class SelectGameTagsActivity extends AppCompatActivity {
         btnSubmitTags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // iterate through gametags list if GameTags object .checked == true, add to new array
+                prefferedTags = adapter.getArrayList();
+                for (int i = 0; i < prefferedTags.size(); i++){
+                    Log.d(TAG, "testlol:" + prefferedTags.get(i));
+
+                }
+
+//                for (int i = 0; i < GameTagsList.size(); i++) {
+//                    GameTag currentGame = GameTagsList.get(i);
+//                    Log.d(TAG, "onClick: " + currentGame.getGameName());
+//                    if (currentGame.isChecked())
+//                        gameNames.add(currentGame.getGameName());
+//                }
+
+                ParseUser user = ParseUser.getCurrentUser();
+                user.put("prefferedTags", prefferedTags);
+                user.saveInBackground();
+                Log.d(TAG, "onClick: " + gameNames.toString());
+                // .put array into prefferedGames list <Strings>
+                // .saveinBackground as a new array into prefferdGames
+
+
                 Intent i = new Intent(context, MainActivity.class);
                 finish();
                 startActivity(i);
