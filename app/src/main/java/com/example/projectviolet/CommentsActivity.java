@@ -11,14 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.projectviolet.adapters.CommentsAdapter;
+import com.example.projectviolet.models.Comment;
+import com.example.projectviolet.models.Post;
 import com.example.projectviolet.util.verticalSpacingItem;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;

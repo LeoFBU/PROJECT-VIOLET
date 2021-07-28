@@ -13,15 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.projectviolet.Post;
-import com.example.projectviolet.ProfileFeedGridAdapter;
+import com.example.projectviolet.models.Post;
+import com.example.projectviolet.adapters.ProfileFeedGridAdapter;
 import com.example.projectviolet.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;

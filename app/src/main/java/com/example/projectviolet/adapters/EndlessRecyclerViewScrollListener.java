@@ -1,4 +1,4 @@
-package com.example.projectviolet;
+package com.example.projectviolet.adapters;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;

@@ -1,4 +1,4 @@
-package com.example.projectviolet;
+package com.example.projectviolet.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.projectviolet.CommentsActivity;
+import com.example.projectviolet.models.Post;
+import com.example.projectviolet.R;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.parse.GetCallback;
@@ -29,7 +32,6 @@ import com.parse.SaveCallback;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPosts> {

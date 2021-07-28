@@ -1,4 +1,4 @@
-package com.example.projectviolet;
+package com.example.projectviolet.models;
 
 import android.util.Log;
 

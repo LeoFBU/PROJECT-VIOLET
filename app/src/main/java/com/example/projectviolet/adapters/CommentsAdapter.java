@@ -1,4 +1,4 @@
-package com.example.projectviolet;
+package com.example.projectviolet.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.projectviolet.models.Comment;
+import com.example.projectviolet.R;
 import com.parse.ParseFile;
 
 import org.jetbrains.annotations.NotNull;

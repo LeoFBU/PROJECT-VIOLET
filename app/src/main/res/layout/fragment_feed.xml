@@ -14,11 +14,11 @@
         android:layout_height="match_parent"
         tools:context=".fragments.FeedFragment">
 
-        <com.example.projectviolet.VideoPlayerRecyclerView
+        <com.example.projectviolet.adapters.VideoPlayerRecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"></com.example.projectviolet.VideoPlayerRecyclerView>
+            android:orientation="vertical"></com.example.projectviolet.adapters.VideoPlayerRecyclerView>
 
     </FrameLayout>
 

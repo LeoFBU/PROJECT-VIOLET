@@ -1,7 +1,10 @@
-package com.example.projectviolet;
+package com.example.projectviolet.models;
 
 import android.app.Application;
 
+import com.example.projectviolet.GameTag;
+import com.example.projectviolet.models.Comment;
+import com.example.projectviolet.models.Post;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
