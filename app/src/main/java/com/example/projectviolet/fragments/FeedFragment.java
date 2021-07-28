@@ -20,8 +20,10 @@ import com.example.projectviolet.VideoPlayerRecyclerView;
 import com.example.projectviolet.util.verticalSpacingItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -100,6 +102,10 @@ public class FeedFragment extends Fragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.setLimit(5);
+
+        ParseUser user = ParseUser.getCurrentUser();
+        List<String> preferredTags = user.getList("prefferedTags");
+        query.whereContainedIn("gameTag", preferredTags);
 
         if(skipAmount != 0){
             query.setSkip(skipAmount);

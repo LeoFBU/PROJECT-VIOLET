@@ -24,14 +24,15 @@ public class SelectGameTagsActivity extends AppCompatActivity {
 
     public static final String TAG = "SelectGameTagsActivity";
 
-    RecyclerView rvGameTags;
     private ArrayList<GameTag> GameTagsList;
-    private ArrayList<String> gameNames;
+    private ArrayList<String> prefferedTags;
+
     protected GameTagsAdapter adapter;
-    private Button btnSubmitTags;
+    RecyclerView rvGameTags;
     Context context;
 
-    private ArrayList<String> prefferedTags;
+    private Button btnSubmitTags;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,6 @@ public class SelectGameTagsActivity extends AppCompatActivity {
 
         GameTagsList = new ArrayList<>();
         prefferedTags = new ArrayList<>();
-        gameNames = new ArrayList<>();
         adapter = new GameTagsAdapter(context, GameTagsList, prefferedTags);
         rvGameTags.setAdapter(adapter);
 
@@ -67,20 +67,9 @@ public class SelectGameTagsActivity extends AppCompatActivity {
 
                 }
 
-//                for (int i = 0; i < GameTagsList.size(); i++) {
-//                    GameTag currentGame = GameTagsList.get(i);
-//                    Log.d(TAG, "onClick: " + currentGame.getGameName());
-//                    if (currentGame.isChecked())
-//                        gameNames.add(currentGame.getGameName());
-//                }
-
                 ParseUser user = ParseUser.getCurrentUser();
                 user.put("prefferedTags", prefferedTags);
                 user.saveInBackground();
-                Log.d(TAG, "onClick: " + gameNames.toString());
-                // .put array into prefferedGames list <Strings>
-                // .saveinBackground as a new array into prefferdGames
-
 
                 Intent i = new Intent(context, MainActivity.class);
                 finish();
