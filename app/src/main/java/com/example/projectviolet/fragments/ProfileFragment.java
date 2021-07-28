@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.example.projectviolet.LoginActivity;
 import com.example.projectviolet.Post;
 import com.example.projectviolet.ProfileFeedGridAdapter;
 import com.example.projectviolet.R;
+import com.google.android.material.tabs.TabLayout;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -34,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,17 +44,19 @@ import java.util.List;
  */
 public class ProfileFragment extends Fragment {
 
-    RecyclerView rvProfile;
-    ArrayList<Post> userFeedPosts;
-    ProfileFeedGridAdapter gridAdapter;
+
 
     public static final String TAG = "ProfileFragment.java: ";
+    public static final String ARG_PAGE = "ARG_PAGE";
+
     private ImageButton ibLogout;
     private ImageView ivProfilePic;
     private TextView tvNumOfPosts;
     private TextView tvNumOfFollowing;
     private TextView tvNumOfFollowers;
     private TextView tvUsername;
+
+    private int mPage;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -61,7 +66,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -69,13 +73,11 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated( @NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userFeedPosts = new ArrayList<>();
+        ViewPager viewPager = view.findViewById(R.id.viewpager);
+        viewPager.setAdapter(new ProfileFragmentPagerAdapter(getChildFragmentManager(), getContext()));
 
-        rvProfile = view.findViewById(R.id.rvProfileSavedPosts);
-        int numberOfColumns = 3;
-        rvProfile.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-        gridAdapter = new ProfileFeedGridAdapter(getContext(), userFeedPosts);
-        rvProfile.setAdapter(gridAdapter);
+        TabLayout tabLayout =  view.findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         ibLogout = view.findViewById(R.id.ibLogout);
         ibLogout.setOnClickListener(new View.OnClickListener() {
@@ -104,60 +106,10 @@ public class ProfileFragment extends Fragment {
         tvNumOfFollowing.setText(numberOfFollowing);
         tvNumOfPosts.setText(numberOfPosts);
         tvUsername.setText(username);
-
-
         ParseFile profileImage = user.getParseFile("profileImage");
         Glide.with(requireContext()).load(profileImage.getUrl()).circleCrop().into(ivProfilePic);
 
-        queryPosts(0);
     }
 
-
-    private void queryPosts(int skipAmount) {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        List<Post> savedPosts = new ArrayList<>();
-        ParseUser user = ParseUser.getCurrentUser();
-
-        List<String> fromArray = new ArrayList<>();
-        List<String> objectIDs = user.getList("savedPosts");
-        query.whereContainedIn("objectId", objectIDs);
-
-
-
-        if(skipAmount != 0){
-            query.setSkip(skipAmount);
-        }
-
-
-        query.addDescendingOrder("createdAt");
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null){
-                    Log.e(TAG, "Issue with getting Feed: " + e, e);
-                    return;
-                }
-                for (Post post : posts) {
-                    Log.e(TAG, "done: "+ post.getCaption());
-                }
-                for(int i = 0; i < objectIDs.size(); i++){
-                    Log.e(TAG, "done: " + objectIDs.get(i) );
-                }
-//                for(int i = 0; i < posts.size(); i++){
-//                    fromArray.add(posts.get(i).getObjectId());
-//                }
-//                for(int i = 0; i < objectIDs.size(); i++){
-//                    if(posts.contains(objectIDs.get(i))){
-//                        int index = posts.indexOf(objectIDs);
-//                        savedPosts.add(posts.get(objectIDs.get(i)));
-//                    }
-//                }
-                posts.size();
-                userFeedPosts.addAll(posts);
-                gridAdapter.notifyDataSetChanged();
-            }
-        });
-    }
 
 }

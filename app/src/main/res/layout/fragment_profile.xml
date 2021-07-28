@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="46dp"
         android:gravity="center"
         android:text="Following"
@@ -70,7 +70,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="156dp"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="161dp"
         android:gravity="center"
         android:text="Posts"
@@ -85,7 +85,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="147dp"
-        android:layout_marginTop="91dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="147dp"
         android:src="@drawable/ic_baseline_person_24" />
 
@@ -107,7 +107,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="102dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="98dp"
         android:gravity="center"
         android:text="TextView"
@@ -121,7 +121,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="47dp"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="Followers"
         android:textSize="18sp"
@@ -139,35 +139,36 @@
         android:layout_marginBottom="541dp"
         android:src="@android:drawable/ic_menu_manage" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvProfileSavedPosts"
-        android:layout_width="match_parent"
-        android:layout_height="394dp"
-        android:layout_below="@+id/tvUsernameProfile"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="96dp"
-        android:layout_marginBottom="-2dp" />
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="260dp"
-        android:layout_marginEnd="0dp">
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="236dp"
+        android:layout_marginEnd="1dp"
+        android:background="#7D44CD"
+        app:tabTextColor="#EDB9F8">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tuesday" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wednesday" />
     </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="423dp"
+        android:layout_below="@+id/sliding_tabs"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white" />
 
 
 </RelativeLayout>
