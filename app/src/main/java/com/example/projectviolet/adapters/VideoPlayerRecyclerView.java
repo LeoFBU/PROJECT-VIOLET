@@ -304,15 +304,6 @@ public class VideoPlayerRecyclerView extends RecyclerView {
 
         pvVideoSurfaceView.setPlayer(epVideoPLayer);
         frameLayout.setOnLongClickListener(videoViewClickListener);
-//        viewHolderParent.setOnTouchListener(new OnSwipeTouchListener(context){
-//
-//                @Override
-//                public void onSwipeRight() {
-//                    super.onSwipeRight();
-//                    Intent intent = new Intent(context, OtherUserProfileActivity.class);
-//                    context.startActivity(intent);
-//                }
-//            });
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, "RecyclerView VideoPlayer"));
 

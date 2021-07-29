@@ -78,9 +78,6 @@ public class SavedPostsFragment extends Fragment {
 
         queryPosts(0);
 
-        //queryPosts(0);
-
-
     }
 
 
@@ -108,9 +105,6 @@ public class SavedPostsFragment extends Fragment {
                 for (Post post : posts) {
                     Log.e(TAG, "done: "+ post.getCaption());
                 }
-//                for(int i = 0; i < objectIDs.size(); i++){
-//                    Log.e(TAG, "done: " + objectIDs.get(i) );
-//                }
 
                 userFeedPosts.addAll(posts);
                 gridAdapter.notifyDataSetChanged();

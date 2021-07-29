@@ -35,14 +35,12 @@ public class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return SavedPostsFragment.newInstance(position);
             default:
-                //assume you only have 3
                 throw new IllegalArgumentException();
         }
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        // Generate title based on item position
         return tabTitles[position];
     }
 

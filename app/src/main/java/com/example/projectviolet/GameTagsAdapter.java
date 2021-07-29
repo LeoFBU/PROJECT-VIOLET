@@ -92,8 +92,6 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
                 @Override
                 public void done(ParseObject object, ParseException e) {
 
-
-
                     cbSubscribe.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
