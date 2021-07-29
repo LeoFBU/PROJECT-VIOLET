@@ -1,7 +1,6 @@
 package com.example.projectviolet;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,9 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,14 +29,14 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
     public static final String TAG = "GameTagsAdapter";
     private ArrayList<GameTag> gameTagsList;
     private Context context;
-    private ArrayList<String> myRealList;
+    private List<String> preferredGames;
 
 
 
-    public GameTagsAdapter(Context context, ArrayList<GameTag> gameTagsList, ArrayList<String> testlol){
+    public GameTagsAdapter(Context context, ArrayList<GameTag> gameTagsList, List<String> preferredGames){
         this.context = context;
         this.gameTagsList = gameTagsList;
-        this.myRealList = testlol;
+        this.preferredGames = preferredGames;
     }
 
     @NotNull
@@ -60,8 +57,8 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
         return gameTagsList.size();
     }
 
-    public ArrayList<String> getArrayList(){
-        return myRealList;
+    public List<String> getArrayList(){
+        return preferredGames;
     }
 
     public class ViewHolderTags extends RecyclerView.ViewHolder {
@@ -80,7 +77,7 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
 
         public void bind(GameTag gameTag) {
 
-            if(!gameTag.isChecked()){
+            if(!gameTag.isChecked() && !(preferredGames.contains(gameTag.getGameName()))){
                 cbSubscribe.setChecked(false);
             }
             else
@@ -104,22 +101,12 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
                             if(cbSubscribe.isChecked()){
                                 cbSubscribe.setChecked(true);
                                 gameTag.setChecked(true);
-                                myRealList.add(gameTag.getGameName());
-                                //Log.e(TAG, "onCheck: " + gameTag.getGameName());
+                                preferredGames.add(gameTag.getGameName());
 
-//                                user.add("prefferedTags", gameTag.getGameName());
-//                                user.saveInBackground(new SaveCallback() {
-//                                    @Override
-//                                    public void done(ParseException e) {
-//                                        if(e!=null){
-//                                            Log.e(TAG, "ERROR SAVING " + gameTag.getGameName(), e);
-//                                        }
-//
-//                                        Log.e(TAG, "done saving: "+ gameTag.getGameName(),e);
-//                                    }
-//
-//                                });
-
+                            }
+                            else
+                            {
+                                preferredGames.remove(gameTag.getGameName());
                             }
 
 

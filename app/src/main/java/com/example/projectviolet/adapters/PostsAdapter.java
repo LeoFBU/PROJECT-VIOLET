@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectviolet.CommentsActivity;
+import com.example.projectviolet.OtherUserProfileActivity;
 import com.example.projectviolet.models.Post;
 import com.example.projectviolet.R;
+import com.example.projectviolet.util.OnSwipeTouchListener;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.parse.GetCallback;
@@ -112,6 +114,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
         public void bind(Post post) {
 
             parent.setTag(this);
+
+            itemView.setOnTouchListener(new OnSwipeTouchListener(context){
+
+                @Override
+                public void onSwipeLeft() {
+                    super.onSwipeRight();
+                    Intent intent = new Intent(context, OtherUserProfileActivity.class);
+                    context.startActivity(intent);
+                }
+            });
 
             tvCaptionFeed.setText(post.getCaption());
             tvUsernameFeed.setText(post.getUser().getUsername());

@@ -25,7 +25,7 @@ public class SelectGameTagsActivity extends AppCompatActivity {
     public static final String TAG = "SelectGameTagsActivity";
 
     private ArrayList<GameTag> GameTagsList;
-    private ArrayList<String> prefferedTags;
+    private List<String> preferredTags;
 
     protected GameTagsAdapter adapter;
     RecyclerView rvGameTags;
@@ -40,13 +40,16 @@ public class SelectGameTagsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_game_tags);
 
         context = this;
+        ParseUser user = ParseUser.getCurrentUser();
 
         rvGameTags = findViewById(R.id.rvGameTags);
         btnSubmitTags = findViewById(R.id.btnSubmitTags);
 
         GameTagsList = new ArrayList<>();
-        prefferedTags = new ArrayList<>();
-        adapter = new GameTagsAdapter(context, GameTagsList, prefferedTags);
+        preferredTags = user.getList("prefferedTags");
+        //preferredTags = new ArrayList<>();
+
+        adapter = new GameTagsAdapter(context, GameTagsList, preferredTags);
         rvGameTags.setAdapter(adapter);
 
         LinearLayoutManager Manager = new LinearLayoutManager(context);
@@ -61,14 +64,14 @@ public class SelectGameTagsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // iterate through gametags list if GameTags object .checked == true, add to new array
-                prefferedTags = adapter.getArrayList();
-                for (int i = 0; i < prefferedTags.size(); i++){
-                    Log.d(TAG, "testlol:" + prefferedTags.get(i));
+                preferredTags = adapter.getArrayList();
+                for (int i = 0; i < preferredTags.size(); i++){
+                    Log.d(TAG, "testlol:" + preferredTags.get(i));
 
                 }
 
                 ParseUser user = ParseUser.getCurrentUser();
-                user.put("prefferedTags", prefferedTags);
+                user.put("prefferedTags", preferredTags);
                 user.saveInBackground();
 
                 Intent i = new Intent(context, MainActivity.class);

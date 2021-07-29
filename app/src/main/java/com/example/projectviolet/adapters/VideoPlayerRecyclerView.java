@@ -1,6 +1,7 @@
 package com.example.projectviolet.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.util.AttributeSet;
@@ -22,8 +23,10 @@ import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.example.projectviolet.OtherUserProfileActivity;
 import com.example.projectviolet.models.Post;
 import com.example.projectviolet.R;
+import com.example.projectviolet.util.OnSwipeTouchListener;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -300,8 +303,16 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         frameLayout = holder.itemView.findViewById(R.id.media_container);
 
         pvVideoSurfaceView.setPlayer(epVideoPLayer);
-        viewHolderParent.setOnLongClickListener(videoViewClickListener);
-
+        frameLayout.setOnLongClickListener(videoViewClickListener);
+//        viewHolderParent.setOnTouchListener(new OnSwipeTouchListener(context){
+//
+//                @Override
+//                public void onSwipeRight() {
+//                    super.onSwipeRight();
+//                    Intent intent = new Intent(context, OtherUserProfileActivity.class);
+//                    context.startActivity(intent);
+//                }
+//            });
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, "RecyclerView VideoPlayer"));
 

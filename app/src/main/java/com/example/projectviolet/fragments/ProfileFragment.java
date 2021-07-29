@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.projectviolet.LoginActivity;
 import com.example.projectviolet.R;
+import com.example.projectviolet.SelectGameTagsActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -35,6 +36,7 @@ public class ProfileFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private ImageButton ibLogout;
+    private ImageButton ibSettingsButton;
     private ImageView ivProfilePic;
     private TextView tvNumOfPosts;
     private TextView tvNumOfFollowing;
@@ -69,10 +71,17 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
                 Intent i = new Intent(getContext(), LoginActivity.class);
                 startActivity(i);
                 getActivity().finish();
+            }
+        });
+        ibSettingsButton = view.findViewById(R.id.ibSettingsButton);
+        ibSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SelectGameTagsActivity.class);
+                startActivity(intent);
             }
         });
 
