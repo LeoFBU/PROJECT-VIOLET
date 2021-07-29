@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.projectviolet.adapters.EndlessRecyclerViewScrollListener;
 import com.example.projectviolet.models.Post;
@@ -39,6 +40,7 @@ public class FeedFragment extends Fragment {
     public static final String TAG = "FeedFragment: ";
     protected PostsAdapter adapter;
     protected ArrayList<Post> feedPosts;
+    private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefresher;
     private EndlessRecyclerViewScrollListener scrollListener;
     private VideoPlayerRecyclerView feedRecyclerView;
@@ -59,6 +61,7 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         feedRecyclerView = view.findViewById(R.id.recycler_view);
+        progressBar = view.findViewById(R.id.pbProgressBarFeed);
         feedPosts = new ArrayList<>();
 
         adapter = new PostsAdapter(getContext(), feedPosts);
@@ -97,6 +100,7 @@ public class FeedFragment extends Fragment {
     }
 
     private void queryPosts(int skipAmount) {
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.setLimit(5);
@@ -115,11 +119,13 @@ public class FeedFragment extends Fragment {
             public void done(List<Post> posts, ParseException e) {
                 if (e != null){
                     Log.e(TAG, "Issue with getting Feed: " + e, e);
+                    progressBar.setVisibility(ProgressBar.GONE);
                     return;
                 }
                 for(Post post : posts){
                     Log.i(TAG, "Post: " + post.getUser().getUsername() + ": " + post.getCaption());
                 }
+                progressBar.setVisibility(ProgressBar.GONE);
                 posts.size();
                 feedPosts.addAll(posts);
                 adapter.notifyDataSetChanged();

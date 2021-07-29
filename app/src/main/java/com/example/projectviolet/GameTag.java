@@ -13,15 +13,15 @@ public class GameTag extends ParseObject {
 
     boolean isSelected;
 
-    ParseFile getGameIcon(){
+    public ParseFile getGameIcon(){
         return getParseFile(ICON_KEY);
     }
 
-    String getGameName(){
+    public String getGameName(){
         return getString(NAME_KEY);
     }
 
-    Boolean isChecked(){
+    public Boolean isChecked(){
         return isSelected;
     }
 

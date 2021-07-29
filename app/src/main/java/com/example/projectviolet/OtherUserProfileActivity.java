@@ -3,11 +3,13 @@ package com.example.projectviolet;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectviolet.models.Post;
+import com.example.projectviolet.util.OnSwipeTouchListener;
 import com.parse.ParseFile;
 
 public class OtherUserProfileActivity extends AppCompatActivity {
@@ -23,6 +25,16 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_user_profile);
+
+        View view =  getWindow().getDecorView().getRootView();
+        view.setOnTouchListener(new OnSwipeTouchListener(this){
+
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+                    finish();
+            }
+        });
 
         Post post = getIntent().getParcelableExtra("post");
 

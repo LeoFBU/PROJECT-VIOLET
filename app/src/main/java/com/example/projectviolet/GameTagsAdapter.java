@@ -27,6 +27,7 @@ import java.util.List;
 public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHolderTags> {
 
     public static final String TAG = "GameTagsAdapter";
+    private String gameChosen;
     private ArrayList<GameTag> gameTagsList;
     private Context context;
     private List<String> preferredGames;

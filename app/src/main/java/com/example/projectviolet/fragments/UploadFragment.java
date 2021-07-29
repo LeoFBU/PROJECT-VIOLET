@@ -25,9 +25,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.projectviolet.AttachGameTagActivity;
 import com.example.projectviolet.models.Post;
 import com.example.projectviolet.R;
 import com.parse.ParseException;
@@ -55,6 +57,8 @@ public class UploadFragment extends Fragment {
     public static final String TAG = "UploadFragment.java: ";
 
     private Button btnUploadGallery;
+    private Button btnChooseGame;
+    private ProgressBar progressBar;
     private ImageButton ibUpload;
     private EditText etYoutubeLink;
     private EditText etCaption;
@@ -79,15 +83,24 @@ public class UploadFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        progressBar = view.findViewById(R.id.pbUploadPost);
         ibUpload = view.findViewById(R.id.ibUploadClip);
         etYoutubeLink = view.findViewById(R.id.etYoutubeLink);
         etCaption = view.findViewById(R.id.etCaption);
         btnUploadGallery = view.findViewById(R.id.btnUploadFromGallery);
+        btnChooseGame = view.findViewById(R.id.btnApplyTag);
         ivPreviewThumbnail = view.findViewById(R.id.ivThumbnailPreview);
 
         checkLocationRequest();
 
+        btnChooseGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gameTagIntent = new Intent(getContext(), AttachGameTagActivity.class);
+                final int ACTIVITY_SELECT_GAMETAG = 3;
+                startActivityForResult(gameTagIntent, ACTIVITY_SELECT_GAMETAG);
+            }
+        });
 
         ibUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,11 +196,17 @@ public class UploadFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        boolean gotPicture = false;
+        boolean gotGameTag = false;
+
+
+
 
         checkLocationRequest();
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
 
+            gotPicture = true;
             Uri uri = data.getData();
             String realPath = getRealPathFromUri(getContext(), uri);
             realPaths = getRealPathFromUri(getContext(), uri);
@@ -220,16 +239,31 @@ public class UploadFragment extends Fragment {
                         uploadMediaVideo(file, realPath);
                     }
                 });
+                if(gotPicture && gotGameTag){
+
+                }
 
             } catch (Exception IOException) {
                 Log.e(TAG, "onActivityResult: ERROR UPLOADING VIDEO", IOException);
             }
         }
+        else if (requestCode == 3 && resultCode == Activity.RESULT_OK){
+            gotGameTag = true;
+            String selectedGame = data.getStringExtra("chosenGame");
+            Log.e(TAG, "onActivityResult: " + selectedGame );
+            selectedGame.length();
+        }
         else
             Toast.makeText(getContext(), "Image not selected", Toast.LENGTH_SHORT).show();
+
+
+
+
     }
 
     public void uploadMediaVideo(ParseFile video, String realPath){
+
+        progressBar.setVisibility(ProgressBar.VISIBLE);
 
         Post newPost = new Post();
         newPost.setUser(ParseUser.getCurrentUser());
@@ -252,7 +286,7 @@ public class UploadFragment extends Fragment {
                     Log.e(TAG, "error while saving post");
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
                 }
-
+                progressBar.setVisibility(ProgressBar.GONE);
                 Log.e(TAG, "Post was successful!!");
                 resetFragment();
 
