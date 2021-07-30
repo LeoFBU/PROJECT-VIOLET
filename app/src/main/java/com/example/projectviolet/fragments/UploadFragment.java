@@ -19,6 +19,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -62,10 +64,10 @@ public class UploadFragment extends Fragment {
     private ParseFile videoFile = null;
     private String selectedGame;
 
-    private Button btnUploadGallery;
+    private Button btnUploadFromGallery;
     private Button btnChooseGame;
     private ProgressBar progressBar;
-    private ImageButton ibUpload;
+    private ImageButton ibUploadPost;
     private EditText etYoutubeLink;
     private EditText etCaption;
     private ImageView ivPreviewThumbnail;
@@ -82,16 +84,19 @@ public class UploadFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //getActivity().getActionBar().hide();
+
+
         progressBar = view.findViewById(R.id.pbUploadPost);
-        ibUpload = view.findViewById(R.id.ibUploadClip);
+        ivPreviewThumbnail = view.findViewById(R.id.ivThumbnailPreview);
         etYoutubeLink = view.findViewById(R.id.etYoutubeLink);
         etCaption = view.findViewById(R.id.etCaption);
-        btnUploadGallery = view.findViewById(R.id.btnUploadFromGallery);
+        btnUploadFromGallery = view.findViewById(R.id.btnUploadFromGallery);
         btnChooseGame = view.findViewById(R.id.btnApplyTag);
-        ivPreviewThumbnail = view.findViewById(R.id.ivThumbnailPreview);
+        ibUploadPost = view.findViewById(R.id.ibUploadClip);
 
         // Check user permissions
         checkLocationRequest();
@@ -132,7 +137,7 @@ public class UploadFragment extends Fragment {
 //        });
 
 
-        btnUploadGallery.setOnClickListener(new View.OnClickListener() {
+        btnUploadFromGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -143,7 +148,7 @@ public class UploadFragment extends Fragment {
             }
         });
 
-        ibUpload.setOnClickListener(new View.OnClickListener() {
+        ibUploadPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(gotPicture && gotGameTag) {
@@ -153,7 +158,6 @@ public class UploadFragment extends Fragment {
                     Toast.makeText(getContext(), "You must upload a video and choose a tag", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
     }

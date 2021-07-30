@@ -66,9 +66,9 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private void goMainActivity() {
 
-        Intent i = new Intent(this, SelectGameTagsActivity.class);
+        Intent intent = new Intent(this, SelectGameTagsActivity.class);
         finish();
-        startActivity(i);
+        startActivity(intent);
     }
 
     private boolean lengthVerified() {

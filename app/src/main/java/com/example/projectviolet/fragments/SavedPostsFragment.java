@@ -43,6 +43,7 @@ public class SavedPostsFragment extends Fragment {
     ProfileFeedGridAdapter gridAdapter;
 
     public static SavedPostsFragment newInstance(int page) {
+
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         SavedPostsFragment fragment = new SavedPostsFragment();
@@ -81,6 +82,7 @@ public class SavedPostsFragment extends Fragment {
 
 
     private void queryPosts(int skipAmount) {
+
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
 

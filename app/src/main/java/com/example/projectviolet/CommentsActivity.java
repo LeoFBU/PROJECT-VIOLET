@@ -53,14 +53,11 @@ public class CommentsActivity extends AppCompatActivity {
         allComments = new ArrayList<>();
         adapter = new CommentsAdapter(this, allComments);
         rvComments.setAdapter(adapter);
-        // set the layout manager on the recycler view
         LinearLayoutManager Manager = new LinearLayoutManager(this);
         rvComments.setLayoutManager(Manager);
 
         verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(5);
         rvComments.addItemDecoration(itemDecorator);
-
-
 
         Post post = getIntent().getParcelableExtra("post");
 
@@ -72,7 +69,7 @@ public class CommentsActivity extends AppCompatActivity {
         etSubmissionContent = findViewById(R.id.etCommentSubmit);
         btnSubmitComment = findViewById(R.id.btnSubmitComment);
 
-        tvPostUsername.setText(post.getUser().getUsername());
+        tvPostUsername.setText(post.getPostCreatorUsername());
         tvPostCaption.setText(post.getCaption());
         ParseFile profileImage = post.getUserProfileImage();
         Glide.with(this).load(profileImage.getUrl()).circleCrop().into(ivPostUserPfp);
@@ -82,9 +79,9 @@ public class CommentsActivity extends AppCompatActivity {
         Glide.with(this).load(currentUserImage.getUrl()).circleCrop().into(ivCurrentUserPFP);
 
 
-        List<String> validComments = post.getList("comments");
+        List<String> validCommentsList = post.getList("comments");
 
-        queryComments(5, validComments, post);
+        queryComments(5, validCommentsList, post);
 
         btnSubmitComment.setOnClickListener(new View.OnClickListener() {
             @Override

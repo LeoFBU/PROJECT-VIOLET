@@ -1,13 +1,22 @@
 package com.example.projectviolet.fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -15,9 +24,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.projectviolet.AccountSettingsActivity;
 import com.example.projectviolet.LoginActivity;
 import com.example.projectviolet.R;
 import com.example.projectviolet.SelectGameTagsActivity;
+import com.example.projectviolet.adapters.ProfileFragmentPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -27,9 +38,9 @@ import org.jetbrains.annotations.NotNull;
 public class ProfileFragment extends Fragment {
 
 
-
     public static final String TAG = "ProfileFragment.java: ";
     public static final String ARG_PAGE = "ARG_PAGE";
+    private final int[] imageRes = {R.drawable.ic_upload_filled, R.drawable.ic_save_filled};
 
     private ImageButton ibLogout;
     private ImageButton ibSettingsButton;
@@ -49,17 +60,39 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated( @NotNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
 
         ViewPager viewPager = view.findViewById(R.id.viewpager);
         viewPager.setAdapter(new ProfileFragmentPagerAdapter(getChildFragmentManager(), getContext()));
 
-        TabLayout tabLayout =  view.findViewById(R.id.sliding_tabs);
+        TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
         ibSettingsButton = view.findViewById(R.id.ibSettingsButton);
         ibLogout = view.findViewById(R.id.ibLogout);
 
         tabLayout.setupWithViewPager(viewPager);
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).setIcon(imageRes[i]);
+        }
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                String tabIconColor = "9B52AF";
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         ibLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,4 +134,28 @@ public class ProfileFragment extends Fragment {
     }
 
 
+    @Override
+    public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.profilefrag_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionSettings:
+                startOptionsMenu();
+                Log.e(TAG, "onOptionsItemSelected: SELECTED SETTINGS");
+                return true;
+
+            default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void startOptionsMenu(){
+        Intent intent = new Intent(getContext(), AccountSettingsActivity.class);
+        startActivity(intent);
+    }
 }

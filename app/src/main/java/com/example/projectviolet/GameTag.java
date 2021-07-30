@@ -10,7 +10,6 @@ public class GameTag extends ParseObject {
     public static final String ICON_KEY = "gameIcon";
     public static final String NAME_KEY = "gameName";
     public static final String SUBSCRIBED_USERS_KEY = "subscribedUsers";
-
     boolean isSelected;
 
     public ParseFile getGameIcon(){

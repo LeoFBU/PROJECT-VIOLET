@@ -141,6 +141,9 @@
         android:layout_marginTop="236dp"
         android:layout_marginEnd="1dp"
         android:background="#7D44CD"
+        app:tabIconTint="#E6ACE3"
+        app:tabRippleColor="#570A53"
+        app:tabIndicatorColor="#F475ED"
         app:tabTextColor="#EDB9F8">
 
     </com.google.android.material.tabs.TabLayout>
@@ -162,13 +165,15 @@
 
     <ImageButton
         android:id="@+id/ibSettingsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="51dp"
+        android:background="#00000000"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="154dp"
-        android:src="@android:drawable/ic_notification_overlay" />
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="127dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_settings_filled" />
 
 
 </RelativeLayout>

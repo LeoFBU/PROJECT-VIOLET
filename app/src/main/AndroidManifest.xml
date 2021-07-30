@@ -20,10 +20,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PROJECTVIOLET">
-        <activity android:name=".AttachGameTagActivity"></activity>
+        <activity android:name=".AccountSettingsActivity"></activity>
+        <activity android:name=".AttachGameTagActivity" />
         <activity android:name=".OtherUserProfileActivity" />
         <activity android:name=".SelectGameTagsActivity" />
-        <activity android:name=".util.UserSettingsActivity" />
         <activity
             android:name=".CommentsActivity"
             android:windowSoftInputMode="adjustPan" />

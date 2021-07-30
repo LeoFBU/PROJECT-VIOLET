@@ -1,4 +1,4 @@
-package com.example.projectviolet.fragments;
+package com.example.projectviolet.adapters;
 
 import android.content.Context;
 
@@ -6,6 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.projectviolet.R;
+import com.example.projectviolet.fragments.SavedPostsFragment;
+import com.example.projectviolet.fragments.UserPostsFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +29,8 @@ public class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
         return PAGE_COUNT;
     }
 
+
+
     @NotNull
     @Override
     public Fragment getItem(int position) {
@@ -39,9 +45,11 @@ public class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabTitles[position];
+        return null;
+        // return tabTitles[position];
     }
 
 
