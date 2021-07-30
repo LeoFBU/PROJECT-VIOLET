@@ -56,6 +56,12 @@ public class UploadFragment extends Fragment {
 
     public static final String TAG = "UploadFragment.java: ";
 
+    boolean gotPicture = false;
+    boolean gotGameTag = false;
+    private String realPath;
+    private ParseFile videoFile;
+    private String selectedGame;
+
     private Button btnUploadGallery;
     private Button btnChooseGame;
     private ProgressBar progressBar;
@@ -102,31 +108,31 @@ public class UploadFragment extends Fragment {
             }
         });
 
-        ibUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String caption = etCaption.getText().toString();
-                String youtubeUrl = etYoutubeLink.getText().toString();
-
-                if(caption.isEmpty()){
-                    Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                boolean validYoutubeUrl = isYoutubeUrl(youtubeUrl);
-                if(!validYoutubeUrl){
-                    Toast.makeText(getContext(), "Not a valid YouTube link!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if(youtubeUrl.isEmpty()){
-
-                }
-                ParseUser currentUser = ParseUser.getCurrentUser();
-                //savePost(youtubeUrl, caption, currentUser);
-                extractYoutubeUrl(youtubeUrl, caption, currentUser);
-
-            }
-        });
+//        ibUpload.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String caption = etCaption.getText().toString();
+//                String youtubeUrl = etYoutubeLink.getText().toString();
+//
+//                if(caption.isEmpty()){
+//                    Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                boolean validYoutubeUrl = isYoutubeUrl(youtubeUrl);
+//                if(!validYoutubeUrl){
+//                    Toast.makeText(getContext(), "Not a valid YouTube link!", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//                if(youtubeUrl.isEmpty()){
+//
+//                }
+//                ParseUser currentUser = ParseUser.getCurrentUser();
+//                //savePost(youtubeUrl, caption, currentUser);
+//                extractYoutubeUrl(youtubeUrl, caption, currentUser);
+//
+//            }
+//        });
 
 
         btnUploadGallery.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +145,21 @@ public class UploadFragment extends Fragment {
                 startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
             }
         });
+
+
+
+
+            ibUpload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(gotPicture && gotGameTag) {
+                        uploadMediaVideo(videoFile, realPath, selectedGame);
+                    }
+                }
+            });
+
+
+
     }
 
     public static boolean isYoutubeUrl(String youTubeURl)
@@ -191,24 +212,18 @@ public class UploadFragment extends Fragment {
     mExtractor.extract(youtubeLink, true, true);
 }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        boolean gotPicture = false;
-        boolean gotGameTag = false;
-
-
 
 
         checkLocationRequest();
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
 
-            gotPicture = true;
+
             Uri uri = data.getData();
-            String realPath = getRealPathFromUri(getContext(), uri);
+            realPath = getRealPathFromUri(getContext(), uri);
             realPaths = getRealPathFromUri(getContext(), uri);
 
             File inputFile = new File(realPath);
@@ -223,7 +238,7 @@ public class UploadFragment extends Fragment {
                 }
                 byte[] bytes = bos.toByteArray();
                 // file name does not matter, caption is used to detail video
-                ParseFile file = new ParseFile("video.mp4", bytes);
+                videoFile = new ParseFile("video.mp4", bytes);
 
                 Glide.with(getContext())
                         .asBitmap()
@@ -233,25 +248,17 @@ public class UploadFragment extends Fragment {
                 etYoutubeLink.setKeyListener(null);
                 etYoutubeLink.setFocusable(false);
 
-                ibUpload.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        uploadMediaVideo(file, realPath);
-                    }
-                });
-                if(gotPicture && gotGameTag){
+                gotPicture = true;
 
-                }
 
             } catch (Exception IOException) {
                 Log.e(TAG, "onActivityResult: ERROR UPLOADING VIDEO", IOException);
             }
         }
         else if (requestCode == 3 && resultCode == Activity.RESULT_OK){
-            gotGameTag = true;
-            String selectedGame = data.getStringExtra("chosenGame");
+            selectedGame = data.getStringExtra("chosenGame");
             Log.e(TAG, "onActivityResult: " + selectedGame );
-            selectedGame.length();
+            gotGameTag = true;
         }
         else
             Toast.makeText(getContext(), "Image not selected", Toast.LENGTH_SHORT).show();
@@ -261,11 +268,12 @@ public class UploadFragment extends Fragment {
 
     }
 
-    public void uploadMediaVideo(ParseFile video, String realPath){
+    public void uploadMediaVideo(ParseFile video, String realPath, String gameTag){
 
         progressBar.setVisibility(ProgressBar.VISIBLE);
 
         Post newPost = new Post();
+        newPost.put("gameTag", gameTag);
         newPost.setUser(ParseUser.getCurrentUser());
         newPost.setVideo(video);
         newPost.setCaption(etCaption.getText().toString());
