@@ -22,14 +22,13 @@ import java.util.ArrayList;
 public class ProfileFeedGridAdapter extends RecyclerView.Adapter<ProfileFeedGridAdapter.ViewHolderProfile> {
 
     public static final String TAG = "ProfileFeedGridAdapter";
-    ArrayList<Post> savedPosts;
+    ArrayList<Post> savedPostsList;
     Context context;
 
-    public ProfileFeedGridAdapter(Context context, ArrayList<Post> savedPosts){
+    public ProfileFeedGridAdapter(Context context, ArrayList<Post> savedPostsList){
         this.context = context;
-        this.savedPosts = savedPosts;
+        this.savedPostsList = savedPostsList;
     }
-
 
     @NotNull
     @Override
@@ -40,30 +39,38 @@ public class ProfileFeedGridAdapter extends RecyclerView.Adapter<ProfileFeedGrid
 
     @Override
     public void onBindViewHolder(@NonNull ProfileFeedGridAdapter.ViewHolderProfile holder, int position) {
-        Post post = savedPosts.get(position);
+        Post post = savedPostsList.get(position);
         holder.bind(post);
     }
 
     @Override
     public int getItemCount() {
-        return savedPosts.size();
+        return savedPostsList.size();
     }
 
     public class ViewHolderProfile extends RecyclerView.ViewHolder {
 
-        ImageView ivProfilePostThumbnail;
-        ImageView ivProfilePostUserPFP;
+        ImageView ivProfFeedPostThumbnail;
+        ImageView ivProfPostUserProfilePic;
 
         public ViewHolderProfile(@NonNull @NotNull View itemView) {
             super(itemView);
 
-            ivProfilePostThumbnail = itemView.findViewById(R.id.ivProfileFeedPostThumbnail);
-            ivProfilePostUserPFP = itemView.findViewById(R.id.ivProfileFeedPostUserPFP);
+            ivProfFeedPostThumbnail = itemView.findViewById(R.id.ivProfileFeedPostThumbnail);
+            ivProfPostUserProfilePic = itemView.findViewById(R.id.ivProfileFeedPostUserPFP);
         }
 
         public void bind(Post post) {
-            Glide.with(context).load(post.getThumbnail().getUrl()).centerCrop().into(ivProfilePostThumbnail);
-            Glide.with(context).load(post.getUserProfileImage().getUrl()).circleCrop().into(ivProfilePostUserPFP);
+
+            Glide.with(context).load(post.getThumbnail()
+                    .getUrl())
+                    .centerCrop()
+                    .into(ivProfFeedPostThumbnail);
+            Glide.with(context).load(post.getUserProfileImage()
+                    .getUrl())
+                    .circleCrop()
+                    .into(ivProfPostUserProfilePic);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

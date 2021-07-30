@@ -32,7 +32,6 @@ import java.util.List;
 public class SavedPostsFragment extends Fragment {
 
     public SavedPostsFragment() {
-        // Required empty public constructor
     }
 
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -54,6 +53,7 @@ public class SavedPostsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        assert getArguments() != null;
         mPage = getArguments().getInt(ARG_PAGE);
     }
 
@@ -74,7 +74,6 @@ public class SavedPostsFragment extends Fragment {
         gridAdapter = new ProfileFeedGridAdapter(getContext(), userFeedPosts);
         rvProfileUserPosts.setAdapter(gridAdapter);
         gridAdapter.notifyDataSetChanged();
-        int numberOfColumns = 3;
 
         queryPosts(0);
 
@@ -92,7 +91,6 @@ public class SavedPostsFragment extends Fragment {
         if(skipAmount != 0){
             query.setSkip(skipAmount);
         }
-
 
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {
@@ -115,8 +113,6 @@ public class SavedPostsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-
     }
 
 

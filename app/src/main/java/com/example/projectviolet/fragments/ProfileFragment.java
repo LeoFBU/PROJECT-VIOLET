@@ -24,10 +24,6 @@ import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * A simple {@link Fragment} subclass.
- *
- */
 public class ProfileFragment extends Fragment {
 
 
@@ -43,16 +39,12 @@ public class ProfileFragment extends Fragment {
     private TextView tvNumOfFollowers;
     private TextView tvUsername;
 
-    private int mPage;
-
     public ProfileFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -64,19 +56,21 @@ public class ProfileFragment extends Fragment {
         viewPager.setAdapter(new ProfileFragmentPagerAdapter(getChildFragmentManager(), getContext()));
 
         TabLayout tabLayout =  view.findViewById(R.id.sliding_tabs);
+        ibSettingsButton = view.findViewById(R.id.ibSettingsButton);
+        ibLogout = view.findViewById(R.id.ibLogout);
+
         tabLayout.setupWithViewPager(viewPager);
 
-        ibLogout = view.findViewById(R.id.ibLogout);
         ibLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ParseUser.logOut();
-                Intent i = new Intent(getContext(), LoginActivity.class);
-                startActivity(i);
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
                 getActivity().finish();
             }
         });
-        ibSettingsButton = view.findViewById(R.id.ibSettingsButton);
+
         ibSettingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +90,7 @@ public class ProfileFragment extends Fragment {
         String numberOfFollowing = String.valueOf(user.getNumber("numOfFollowers"));
         String numberOfPosts = String.valueOf(user.getNumber("numOfPosts"));
         String username = user.getUsername();
+
         tvNumOfFollowers.setText(numberOfFollowers);
         tvNumOfFollowing.setText(numberOfFollowing);
         tvNumOfPosts.setText(numberOfPosts);

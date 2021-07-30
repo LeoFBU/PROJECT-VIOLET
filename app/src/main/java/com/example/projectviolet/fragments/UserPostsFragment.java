@@ -24,10 +24,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
- */
+
 public class UserPostsFragment extends Fragment {
 
     public UserPostsFragment() {
@@ -53,6 +50,7 @@ public class UserPostsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        assert getArguments() != null;
         mPage = getArguments().getInt(ARG_PAGE);
     }
 
@@ -72,10 +70,7 @@ public class UserPostsFragment extends Fragment {
         gridAdapter = new ProfileFeedGridAdapter(getContext(), usersOwnPosts);
         rvProfile.setAdapter(gridAdapter);
         gridAdapter.notifyDataSetChanged();
-        int numberOfColumns = 3;
         queryPosts(0);
-
-
 
     }
 

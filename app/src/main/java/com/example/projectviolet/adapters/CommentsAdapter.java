@@ -22,12 +22,12 @@ import java.util.ArrayList;
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolderComments> {
     
     public static final String TAG = "CommentsAdapter";
-    private ArrayList<Comment> comments;
+    private ArrayList<Comment> commentList;
     private Context context;
 
-    public CommentsAdapter(Context context, ArrayList<Comment> comments){
+    public CommentsAdapter(Context context, ArrayList<Comment> commentList){
         this.context = context;
-        this.comments = comments;
+        this.commentList = commentList;
     } 
     
     @NotNull
@@ -39,13 +39,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolderComments holder, int position) {
-        Comment comment = comments.get(position);
+        Comment comment = commentList.get(position);
         holder.bind(comment);
     }
 
     @Override
     public int getItemCount() {
-        return comments.size();
+        return commentList.size();
     }
 
     public class ViewHolderComments extends RecyclerView.ViewHolder {
@@ -68,9 +68,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         public void bind(Comment comment) {
 
             tvCommentContent.setText(comment.getCommentContent());
-            tvCommentUsername.setText(comment.getCommentUser().getUsername());
-            tvCommentTimestamp.setText(comment.getCommentTimestamp(comment.getCreatedAt()));
-            ParseFile commentProfileImage = comment.getCommentUser().getParseFile("profileImage");
+            tvCommentUsername.setText(comment.getCommentCreatorUsername());
+            tvCommentTimestamp.setText(comment.getCommentTimestamp());
+            ParseFile commentProfileImage = comment.getCommentProfilePic();
             Glide.with(context).load(commentProfileImage.getUrl()).circleCrop().into(ivCommentUserPFP);
 
 

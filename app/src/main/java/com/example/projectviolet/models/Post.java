@@ -27,6 +27,11 @@ public class Post extends ParseObject {
     public static final String KEY_YOUTUBE_URL = "videoYoutube";
     public static final String KEY_LIKED_BY_USERS = "usersThatLiked";
     public static final String KEY_NUM_OF_COMMENTS = "numberComments";
+    public static final String KEY_GAME_TAG = "gameTag";
+
+    public void setGameTag(String gameTag){
+        put(KEY_GAME_TAG, gameTag);
+    }
 
     public String getCaption() {
         return getString(KEY_CAPTION);
@@ -51,6 +56,16 @@ public class Post extends ParseObject {
 
     public ParseFile getUserProfileImage() {
         return getUser().getParseFile(KEY_PROFILE_IMAGE);
+    }
+
+    public String getPostCreatorUsername(){
+        return getUser().getUsername();
+    }
+
+
+    public String getPostTimeStamp(){
+        Date date = getCreatedAt();
+        return formatPostTimestamp(date);
     }
 
     public int getNumFollowers() {
@@ -109,7 +124,7 @@ public class Post extends ParseObject {
     }
 
 
-    public String getPostTimestamp(Date createdAt) {
+    public String formatPostTimestamp(Date createdAt) {
 
         int SECOND_MILLIS = 1000;
         int MINUTE_MILLIS = 60 * SECOND_MILLIS;

@@ -12,20 +12,30 @@ import java.util.Date;
 @ParseClassName("Comment")
 public class Comment extends ParseObject {
 
-    public static final String COMMENT_CONTENT = "commentContent";
+    public static final String KEY_COMMENT_CONTENT = "commentContent";
     public static final String TIMESTAMP = "createdAt";
+    public static final String KEY_PROFILE_PIC = "profileImage";
     public static final String KEY_USER = "user";
 
 
     public String getCommentContent(){
-        return getString(COMMENT_CONTENT);
+        return getString(KEY_COMMENT_CONTENT);
     }
 
     public ParseUser getCommentUser() {
         return getParseUser(KEY_USER);
     }
 
-    public String getCommentTimestamp(Date createdAt) {
+    public String getCommentCreatorUsername(){
+        return getCommentUser().getUsername();
+    }
+
+    public String getCommentTimestamp(){
+        Date date = getCreatedAt();
+        return formatCommentTimestamp(date);
+    }
+
+    public String formatCommentTimestamp(Date createdAt) {
 
         int SECOND_MILLIS = 1000;
         int MINUTE_MILLIS = 60 * SECOND_MILLIS;
@@ -59,6 +69,10 @@ public class Comment extends ParseObject {
         }
 
         return "";
+    }
+
+    public ParseFile getCommentProfilePic(){
+        return getCommentUser().getParseFile(KEY_PROFILE_PIC);
     }
 
 }

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.projectviolet.GameTag;
-import com.example.projectviolet.GameTagsAdapter;
 import com.example.projectviolet.R;
 import com.parse.ParseFile;
 
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 public class SelectGameTagsAdapter extends RecyclerView.Adapter<SelectGameTagsAdapter.ViewHolderSelectTag>{
 
     public static final String TAG = "SelectGameTagsAdapter";
-    private boolean hasSelected = false;
+    private boolean userHasSelected = false;
     private String selectedGame;
     private ArrayList<GameTag> gamesList;
     private Context context;
@@ -89,17 +88,17 @@ public class SelectGameTagsAdapter extends RecyclerView.Adapter<SelectGameTagsAd
                 @Override
                 public void onClick(View v) {
 
-                    if(cbSubscribe.isChecked() && hasSelected == false){
+                    if(cbSubscribe.isChecked() && userHasSelected == false){
                         selectedGame = game.getGameName();
                         cbSubscribe.setChecked(true);
                         game.setChecked(true);
-                        hasSelected = true;
+                        userHasSelected = true;
                     }
-                    else if (!cbSubscribe.isChecked() && hasSelected){
+                    else if (!cbSubscribe.isChecked() && userHasSelected){
                         selectedGame = "";
                         cbSubscribe.setChecked(false);
                         game.setChecked(false);
-                        hasSelected = false;
+                        userHasSelected = false;
                     }
                     else{
                         cbSubscribe.setChecked(false);

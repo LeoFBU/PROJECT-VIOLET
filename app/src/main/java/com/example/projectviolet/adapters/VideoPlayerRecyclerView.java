@@ -1,7 +1,6 @@
 package com.example.projectviolet.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.util.AttributeSet;
@@ -23,10 +22,8 @@ import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.example.projectviolet.OtherUserProfileActivity;
 import com.example.projectviolet.models.Post;
 import com.example.projectviolet.R;
-import com.example.projectviolet.util.OnSwipeTouchListener;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -70,13 +67,12 @@ public class VideoPlayerRecyclerView extends RecyclerView {
     SimpleExoPlayer epVideoPLayer;
 
     // utilized for variable logic
-    private List<Post> postObjects = new ArrayList<>();
+    private List<Post> postList = new ArrayList<>();
     private int videoSurfaceDefaultHeight = 0;
     private int screenDefaultHeight = 0;
     private Context context;
     private int playPosition = -1;
     private boolean isVideoViewAdded;
-    private RequestManager requestManager;
 
     // utilized for controlling playbackstate
     private VolumeState volumeState;
@@ -110,11 +106,7 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         TrackSelector trackSelector =
                 new DefaultTrackSelector(videoTrackSelectionFactory);
 
-        // Creating the player
         epVideoPLayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
-
-        //
-
         pvVideoSurfaceView.setUseController(false);
         pvVideoSurfaceView.setPlayer(epVideoPLayer);
         setVolumeControl(VolumeState.ON);
@@ -263,7 +255,7 @@ public class VideoPlayerRecyclerView extends RecyclerView {
             }
         }
         else{
-            targetPosition = postObjects.size()-1;
+            targetPosition = postList.size()-1;
         }
 
         Log.d(TAG, "playVideo: target position" + targetPosition);
@@ -310,12 +302,12 @@ public class VideoPlayerRecyclerView extends RecyclerView {
 
         String mediaUrl = null;
         try{
-            ParseFile videoFile = postObjects.get(targetPosition).getVideo();
+            ParseFile videoFile = postList.get(targetPosition).getVideo();
             mediaUrl = videoFile.getUrl();
         }
         catch(Exception e){
             if(mediaUrl == null){
-                mediaUrl = postObjects.get(targetPosition).getYoutubeLink();
+                mediaUrl = postList.get(targetPosition).getYoutubeLink();
 
             }
         }
@@ -439,8 +431,8 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         }
     }
 
-    public void setPostObjects(ArrayList<Post> postObjects){
-        this.postObjects = postObjects;
+    public void setPostList(ArrayList<Post> postList){
+        this.postList = postList;
     }
 
     public void releasePlayer() {

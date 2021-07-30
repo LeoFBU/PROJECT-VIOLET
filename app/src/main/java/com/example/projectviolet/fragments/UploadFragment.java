@@ -59,7 +59,7 @@ public class UploadFragment extends Fragment {
     boolean gotPicture = false;
     boolean gotGameTag = false;
     private String realPath;
-    private ParseFile videoFile;
+    private ParseFile videoFile = null;
     private String selectedGame;
 
     private Button btnUploadGallery;
@@ -68,20 +68,16 @@ public class UploadFragment extends Fragment {
     private ImageButton ibUpload;
     private EditText etYoutubeLink;
     private EditText etCaption;
-    private Uri video;
-    private String realPaths;
     private ImageView ivPreviewThumbnail;
     private static final int LOCATION_REQUEST = 222;
 
 
     public UploadFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_upload, container, false);
     }
 
@@ -97,6 +93,7 @@ public class UploadFragment extends Fragment {
         btnChooseGame = view.findViewById(R.id.btnApplyTag);
         ivPreviewThumbnail = view.findViewById(R.id.ivThumbnailPreview);
 
+        // Check user permissions
         checkLocationRequest();
 
         btnChooseGame.setOnClickListener(new View.OnClickListener() {
@@ -146,17 +143,16 @@ public class UploadFragment extends Fragment {
             }
         });
 
-
-
-
-            ibUpload.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(gotPicture && gotGameTag) {
-                        uploadMediaVideo(videoFile, realPath, selectedGame);
-                    }
+        ibUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(gotPicture && gotGameTag) {
+                    uploadMediaVideo(videoFile, realPath, selectedGame);
                 }
-            });
+                else
+                    Toast.makeText(getContext(), "You must upload a video and choose a tag", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
@@ -216,15 +212,12 @@ public class UploadFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         checkLocationRequest();
 
         if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
 
-
             Uri uri = data.getData();
             realPath = getRealPathFromUri(getContext(), uri);
-            realPaths = getRealPathFromUri(getContext(), uri);
 
             File inputFile = new File(realPath);
 
@@ -250,7 +243,6 @@ public class UploadFragment extends Fragment {
 
                 gotPicture = true;
 
-
             } catch (Exception IOException) {
                 Log.e(TAG, "onActivityResult: ERROR UPLOADING VIDEO", IOException);
             }
@@ -262,10 +254,6 @@ public class UploadFragment extends Fragment {
         }
         else
             Toast.makeText(getContext(), "Image not selected", Toast.LENGTH_SHORT).show();
-
-
-
-
     }
 
     public void uploadMediaVideo(ParseFile video, String realPath, String gameTag){
@@ -273,7 +261,7 @@ public class UploadFragment extends Fragment {
         progressBar.setVisibility(ProgressBar.VISIBLE);
 
         Post newPost = new Post();
-        newPost.put("gameTag", gameTag);
+        newPost.setGameTag(gameTag);
         newPost.setUser(ParseUser.getCurrentUser());
         newPost.setVideo(video);
         newPost.setCaption(etCaption.getText().toString());
@@ -339,12 +327,15 @@ public class UploadFragment extends Fragment {
 
     private void resetFragment(){
         // reset the fragments edit text and thumbnail
+        gotPicture = false;
+        gotGameTag = false;
+        videoFile = null;
         etCaption.setText("");
         etYoutubeLink.setText("");
         etYoutubeLink.setFocusable(true);
+        selectedGame = "";
         Glide.with(requireContext()).load(R.drawable.video_player_placeholder).into(ivPreviewThumbnail);
     }
-
 
     public ParseFile getVideoThumb(String path) {
 
@@ -355,7 +346,7 @@ public class UploadFragment extends Fragment {
         thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         thumbnail.recycle();
-        // Create the ParseFile
+
         return new ParseFile("picture_1.png", byteArray);
     }
 

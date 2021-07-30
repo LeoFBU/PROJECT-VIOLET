@@ -38,13 +38,13 @@ import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPosts> {
 
-    public static final String TAG =  "PostsAdapter: ";
-    private ArrayList<Post> posts;
+    public static final String TAG =  "PostsAdapter";
+    private ArrayList<Post> postList;
     private Context context;
 
-    public PostsAdapter(Context context, ArrayList<Post> posts){
+    public PostsAdapter(Context context, ArrayList<Post> postList){
         this.context = context;
-        this.posts = posts;
+        this.postList = postList;
     }
 
     @NotNull
@@ -56,25 +56,24 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderPosts holder, int position) {
-        Post post = posts.get(position);
+        Post post = postList.get(position);
         holder.bind(post);
     }
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return postList.size();
     }
 
     public class ViewHolderPosts extends RecyclerView.ViewHolder {
 
         View parent;
-        TextView tvUsernameFeed;
-        TextView tvCaptionFeed;
-        TextView tvNumLikes;
-        TextView tvNumComments;
-        TextView tvTimestamp;
-        ImageView ivProfilePicFeed;
-
+        TextView tvPostUsername;
+        TextView tvPostCaption;
+        TextView tvPostNumLikes;
+        TextView tvPostNumComments;
+        TextView tvPostTimestamp;
+        ImageView ivPostProfilePic;
 
         ImageView ivThumbnailPlaceholder;
         ImageView ivVolumeControl;
@@ -90,19 +89,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
             parent = itemView;
 
-//            tvCaptionFeed = itemView.findViewById(R.id.tvCaptionFeed);
-
-            tvNumLikes = itemView.findViewById(R.id.tvNumLikesPostFeed);
-            tvNumComments = itemView.findViewById(R.id.tvNumCommentsPostFeed);
-            tvCaptionFeed = itemView.findViewById(R.id.title);
-            tvUsernameFeed = itemView.findViewById(R.id.tvUsernameFeed);
-            tvTimestamp = itemView.findViewById(R.id.tvTimestampPostFeed);
+            tvPostNumLikes = itemView.findViewById(R.id.tvNumLikesPostFeed);
+            tvPostNumComments = itemView.findViewById(R.id.tvNumCommentsPostFeed);
+            tvPostCaption = itemView.findViewById(R.id.title);
+            tvPostUsername = itemView.findViewById(R.id.tvUsernameFeed);
+            tvPostTimestamp = itemView.findViewById(R.id.tvTimestampPostFeed);
 
             media_container = itemView.findViewById(R.id.media_container);
             progressBar = itemView.findViewById(R.id.progressBar);
 
             ivVolumeControl = itemView.findViewById(R.id.volume_control);
-            ivProfilePicFeed = itemView.findViewById(R.id.ivProfilePicFeed);
+            ivPostProfilePic = itemView.findViewById(R.id.ivProfilePicFeed);
             ivThumbnailPlaceholder = itemView.findViewById(R.id.thumbnail);
 
             ibComments = itemView.findViewById(R.id.ibComments);
@@ -126,16 +123,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                 }
             });
 
-            tvCaptionFeed.setText(post.getCaption());
-            tvUsernameFeed.setText(post.getUser().getUsername());
-            tvTimestamp.setText(post.getPostTimestamp(post.getCreatedAt()));
+            tvPostCaption.setText(post.getCaption());
+            tvPostUsername.setText(post.getPostCreatorUsername());
+            tvPostTimestamp.setText(post.getPostTimeStamp());
             int numComments = post.getNumberOfComments();
-            tvNumComments.setText(String.valueOf(numComments));
+            tvPostNumComments.setText(String.valueOf(numComments));
 
             ParseFile profileImage = post.getUserProfileImage();
             Glide.with(context).load(profileImage.getUrl())
                     .circleCrop()
-                    .into(ivProfilePicFeed);
+                    .into(ivPostProfilePic);
             ParseFile thumbnail = post.getThumbnail();
             Glide.with(context).load(thumbnail.getUrl())
                     .placeholder(R.drawable.video_player_placeholder)
@@ -160,7 +157,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                     List<String> savedPosts = user.getList("savedPosts");
                     List<String> likedByUsers = post.getList("usersThatLiked");
                     assert likedByUsers != null;
-                    tvNumLikes.setText(post.getNumberOfLikes(likedByUsers));
+                    tvPostNumLikes.setText(post.getNumberOfLikes(likedByUsers));
 
                     assert savedPosts != null;
                     if(savedPosts.contains(post.getObjectId())){
@@ -216,8 +213,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                             post.add("usersThatLiked", user.getObjectId());
                             post.saveInBackground();
                             Log.e(TAG, "Liking was successful!!");
-                            int currentLikes = Integer.parseInt(tvNumLikes.getText().toString()) + 1;
-                            tvNumLikes.setText(String.valueOf(currentLikes));
+                            int currentLikes = Integer.parseInt(tvPostNumLikes.getText().toString()) + 1;
+                            tvPostNumLikes.setText(String.valueOf(currentLikes));
                         }
 
                         @Override
@@ -231,8 +228,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                             post.put("usersThatLiked", likedByUsers);
                             Log.e(TAG, "UNLIKED: unliked", e);
                             post.saveInBackground();
-                            int currentLikes = Integer.parseInt(tvNumLikes.getText().toString()) - 1;
-                            tvNumLikes.setText(String.valueOf(currentLikes));
+                            int currentLikes = Integer.parseInt(tvPostNumLikes.getText().toString()) - 1;
+                            tvPostNumLikes.setText(String.valueOf(currentLikes));
 
                         }
                     } );

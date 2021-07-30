@@ -39,7 +39,7 @@ public class FeedFragment extends Fragment {
 
     public static final String TAG = "FeedFragment: ";
     protected PostsAdapter adapter;
-    protected ArrayList<Post> feedPosts;
+    protected ArrayList<Post> feedPostList;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefresher;
     private EndlessRecyclerViewScrollListener scrollListener;
@@ -62,9 +62,9 @@ public class FeedFragment extends Fragment {
 
         feedRecyclerView = view.findViewById(R.id.recycler_view);
         progressBar = view.findViewById(R.id.pbProgressBarFeed);
-        feedPosts = new ArrayList<>();
+        feedPostList = new ArrayList<>();
 
-        adapter = new PostsAdapter(getContext(), feedPosts);
+        adapter = new PostsAdapter(getContext(), feedPostList);
         feedRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -89,7 +89,7 @@ public class FeedFragment extends Fragment {
             @Override
             public void onRefresh() {
                 Log.d(TAG, "onRefresh: Refresh Listener Triggered");
-                feedPosts.clear();
+                feedPostList.clear();
                 adapter.notifyDataSetChanged();
                 queryPosts(0);
                 swipeRefresher.setRefreshing(false);
@@ -100,6 +100,7 @@ public class FeedFragment extends Fragment {
     }
 
     private void queryPosts(int skipAmount) {
+
         progressBar.setVisibility(ProgressBar.VISIBLE);
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
@@ -127,9 +128,9 @@ public class FeedFragment extends Fragment {
                 }
                 progressBar.setVisibility(ProgressBar.GONE);
                 posts.size();
-                feedPosts.addAll(posts);
+                feedPostList.addAll(posts);
                 adapter.notifyDataSetChanged();
-                feedRecyclerView.setPostObjects(feedPosts);
+                feedRecyclerView.setPostList(feedPostList);
             }
         });
     }

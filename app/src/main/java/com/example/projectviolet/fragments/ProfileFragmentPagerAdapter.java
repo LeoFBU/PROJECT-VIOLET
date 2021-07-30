@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 2;
-    private String tabTitles[] = new String[] {"posts", "saved"};
+    private final String[] tabTitles = new String[] {"posts", "saved"};
     private Context context;
 
     public ProfileFragmentPagerAdapter(@NotNull FragmentManager fm, Context context) {
