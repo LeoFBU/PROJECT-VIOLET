@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,7 +28,6 @@ import java.util.List;
 public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHolderTags> {
 
     public static final String TAG = "GameTagsAdapter";
-    private String gameChosen;
     private ArrayList<GameTag> gameTagsList;
     private Context context;
     private List<String> preferredGames;
@@ -67,6 +67,7 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
         private TextView tvGameName;
         private ImageView ivGameIcon;
         private CheckBox cbSubscribe;
+        private CardView cvCardGame;
 
         public ViewHolderTags(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +75,7 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
             tvGameName = itemView.findViewById(R.id.tvGameTagName);
             ivGameIcon = itemView.findViewById(R.id.ivGameTagIcon);
             cbSubscribe = itemView.findViewById(R.id.cbSubscribe);
+            cvCardGame = itemView.findViewById(R.id.cvGameTag);
         }
 
         public void bind(GameTag gameTag) {
@@ -92,11 +94,12 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
             user.fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {
-
-                    cbSubscribe.setOnClickListener(new View.OnClickListener() {
+                    // working perfectly now!
+                    cvCardGame.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            cbSubscribe.setSoundEffectsEnabled(false);
+                            cbSubscribe.performClick();
                             if(cbSubscribe.isChecked()){
                                 cbSubscribe.setChecked(true);
                                 gameTag.setChecked(true);
@@ -105,6 +108,7 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
                             }
                             else
                             {
+                                gameTag.setChecked(false);
                                 preferredGames.remove(gameTag.getGameName());
                             }
 

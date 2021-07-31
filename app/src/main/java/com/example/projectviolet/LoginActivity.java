@@ -74,7 +74,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+        // Nothing here in order to disable back button upon logout
+    }
 
     private void goMainActivity() {
 

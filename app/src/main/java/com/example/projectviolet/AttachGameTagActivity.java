@@ -54,6 +54,9 @@ public class AttachGameTagActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String selectedGame = adapter.getGameTag();
+                if(selectedGame.isEmpty()){
+                    selectedGame = null;
+                }
                 returnTagIntent.putExtra("chosenGame", selectedGame);
                 setResult(RESULT_OK, returnTagIntent);
                 finish();

@@ -11,7 +11,6 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -19,8 +18,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -110,31 +107,6 @@ public class UploadFragment extends Fragment {
             }
         });
 
-//        ibUpload.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String caption = etCaption.getText().toString();
-//                String youtubeUrl = etYoutubeLink.getText().toString();
-//
-//                if(caption.isEmpty()){
-//                    Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                boolean validYoutubeUrl = isYoutubeUrl(youtubeUrl);
-//                if(!validYoutubeUrl){
-//                    Toast.makeText(getContext(), "Not a valid YouTube link!", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                if(youtubeUrl.isEmpty()){
-//
-//                }
-//                ParseUser currentUser = ParseUser.getCurrentUser();
-//                //savePost(youtubeUrl, caption, currentUser);
-//                extractYoutubeUrl(youtubeUrl, caption, currentUser);
-//
-//            }
-//        });
 
 
         btnUploadFromGallery.setOnClickListener(new View.OnClickListener() {
@@ -151,8 +123,28 @@ public class UploadFragment extends Fragment {
         ibUploadPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                boolean YouTubeLinkEmpty = etYoutubeLink.getText().toString().isEmpty();
+
                 if(gotPicture && gotGameTag) {
                     uploadMediaVideo(videoFile, realPath, selectedGame);
+                }
+                else if (!YouTubeLinkEmpty && gotGameTag){
+                    String caption = etCaption.getText().toString();
+                    String youtubeUrl = etYoutubeLink.getText().toString();
+
+                    if(caption.isEmpty()){
+                        Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    boolean validYoutubeUrl = isYoutubeUrl(youtubeUrl);
+                    if(!validYoutubeUrl){
+                        Toast.makeText(getContext(), "Not a valid YouTube link!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    //savePost(youtubeUrl, caption, currentUser);
+                    extractYoutubeUrl(youtubeUrl, caption, selectedGame);
                 }
                 else
                     Toast.makeText(getContext(), "You must upload a video and choose a tag", Toast.LENGTH_SHORT).show();
@@ -178,12 +170,24 @@ public class UploadFragment extends Fragment {
         return success;
     }
 
-    private void savePost(String YoutubeUrl, String caption, ParseUser currentUser){
+    private void uploadYoutubeVideo(String YoutubeUrl, String caption, String gameTag){
+
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+
 
         Post newPost = new Post();
+        newPost.setGameTag(gameTag);
         newPost.setCaption(caption);
         newPost.setYoutubeLink(YoutubeUrl);
-        newPost.setUser(currentUser);
+        ParseUser user = ParseUser.getCurrentUser();
+        newPost.setUser(user);
+
+
+
+        if(etCaption.getText().toString().isEmpty()){
+            Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         newPost.saveInBackground(new SaveCallback() {
             @Override
@@ -192,6 +196,7 @@ public class UploadFragment extends Fragment {
                     Log.e(TAG, "error while saving post");
                     Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
                 }
+                progressBar.setVisibility(ProgressBar.GONE);
                 Log.e(TAG, "Post was successful!!");
                 resetFragment();
             }
@@ -199,13 +204,13 @@ public class UploadFragment extends Fragment {
 
     }
 
-    private void extractYoutubeUrl(String youtubeLink, String caption, ParseUser user) {
+    private void extractYoutubeUrl(String youtubeLink, String caption, String gameTag) {
         @SuppressLint("StaticFieldLeak") YouTubeExtractor mExtractor = new YouTubeExtractor(getContext()) {
             @Override
             protected void onExtractionComplete(SparseArray<YtFile> sparseArray, VideoMeta videoMeta) {
                 
                 if (sparseArray != null) {
-                    savePost(sparseArray.get(22).getUrl(), caption, user);
+                    uploadYoutubeVideo(sparseArray.get(22).getUrl(), caption, gameTag);
                 }
             }
     };
@@ -242,8 +247,8 @@ public class UploadFragment extends Fragment {
                         .load(Uri.fromFile(new File(realPath)))
                         .into(ivPreviewThumbnail);
 
-                etYoutubeLink.setKeyListener(null);
                 etYoutubeLink.setFocusable(false);
+                etYoutubeLink.setText("");
 
                 gotPicture = true;
 

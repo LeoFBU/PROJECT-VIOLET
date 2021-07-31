@@ -76,23 +76,7 @@ public class ProfileFragment extends Fragment {
             tabLayout.getTabAt(i).setIcon(imageRes[i]);
         }
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
 
-                String tabIconColor = "9B52AF";
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
         ibLogout.setOnClickListener(new View.OnClickListener() {
             @Override

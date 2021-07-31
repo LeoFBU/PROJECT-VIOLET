@@ -177,15 +177,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                         @Override
                         public void liked( LikeButton likeButton ) {
 
-                            savedPosts.add(post.getObjectId());
-                            //user.saveEventually();
-                            user.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    user.put("savedPosts", savedPosts);
-                                    Log.e(TAG, "SAVED: saved hahahahaha", e);
-                                }
-                            });
+                            user.add("savedPosts", post.getObjectId());
+
                         }
 
                         @Override
@@ -213,6 +206,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                             post.add("usersThatLiked", user.getObjectId());
                             post.saveInBackground();
                             Log.e(TAG, "Liking was successful!!");
+
+                            // updates the number of likes locally
                             int currentLikes = Integer.parseInt(tvPostNumLikes.getText().toString()) + 1;
                             tvPostNumLikes.setText(String.valueOf(currentLikes));
                         }

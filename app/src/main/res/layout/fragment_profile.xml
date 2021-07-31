@@ -90,6 +90,7 @@
         android:src="@drawable/ic_baseline_person_24" />
 
     <ImageButton
+        android:visibility="gone"
         android:id="@+id/ibLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -164,6 +165,7 @@
         android:background="@android:color/white" />
 
     <ImageButton
+        android:visibility="gone"
         android:id="@+id/ibSettingsButton"
         android:layout_width="55dp"
         android:layout_height="51dp"
