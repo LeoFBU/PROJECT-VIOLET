@@ -48,9 +48,7 @@ import at.huber.youtubeExtractor.YtFile;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class UploadFragment extends Fragment {
 
     public static final String TAG = "UploadFragment.java: ";
@@ -84,9 +82,6 @@ public class UploadFragment extends Fragment {
     public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //getActivity().getActionBar().hide();
-
-
         progressBar = view.findViewById(R.id.pbUploadPost);
         ivPreviewThumbnail = view.findViewById(R.id.ivThumbnailPreview);
         etYoutubeLink = view.findViewById(R.id.etYoutubeLink);
@@ -106,8 +101,6 @@ public class UploadFragment extends Fragment {
                 startActivityForResult(gameTagIntent, ACTIVITY_SELECT_GAMETAG);
             }
         });
-
-
 
         btnUploadFromGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,27 +123,22 @@ public class UploadFragment extends Fragment {
                     uploadMediaVideo(videoFile, realPath, selectedGame);
                 }
                 else if (!YouTubeLinkEmpty && gotGameTag){
+
                     String caption = etCaption.getText().toString();
                     String youtubeUrl = etYoutubeLink.getText().toString();
-
-                    if(caption.isEmpty()){
-                        Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
                     boolean validYoutubeUrl = isYoutubeUrl(youtubeUrl);
                     if(!validYoutubeUrl){
                         Toast.makeText(getContext(), "Not a valid YouTube link!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    //savePost(youtubeUrl, caption, currentUser);
-                    extractYoutubeUrl(youtubeUrl, caption, selectedGame);
+                    String youtubeThumbnailUrl = getYoutubeThumbnail(youtubeUrl);
+                    extractYoutubeUrl(youtubeUrl, caption, selectedGame, youtubeThumbnailUrl);
                 }
                 else
                     Toast.makeText(getContext(), "You must upload a video and choose a tag", Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }
 
@@ -170,24 +158,22 @@ public class UploadFragment extends Fragment {
         return success;
     }
 
-    private void uploadYoutubeVideo(String YoutubeUrl, String caption, String gameTag){
-
-        progressBar.setVisibility(ProgressBar.VISIBLE);
-
-
-        Post newPost = new Post();
-        newPost.setGameTag(gameTag);
-        newPost.setCaption(caption);
-        newPost.setYoutubeLink(YoutubeUrl);
-        ParseUser user = ParseUser.getCurrentUser();
-        newPost.setUser(user);
-
-
+    private void uploadYoutubeVideo(String YoutubeUrl, String caption, String gameTag, String youtubeThumbnailUrl){
 
         if(etCaption.getText().toString().isEmpty()){
             Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+
+        Post newPost = new Post();
+        newPost.setGameTag(gameTag);
+        newPost.setCaption(caption);
+        newPost.setYoutubeLink(YoutubeUrl);
+        newPost.put("videoThumbnailYoutube", youtubeThumbnailUrl);
+        ParseUser user = ParseUser.getCurrentUser();
+        newPost.setUser(user);
 
         newPost.saveInBackground(new SaveCallback() {
             @Override
@@ -204,18 +190,27 @@ public class UploadFragment extends Fragment {
 
     }
 
-    private void extractYoutubeUrl(String youtubeLink, String caption, String gameTag) {
+    private void extractYoutubeUrl(String youtubeLink, String caption, String gameTag, String youtubeThumbnailUrl) {
         @SuppressLint("StaticFieldLeak") YouTubeExtractor mExtractor = new YouTubeExtractor(getContext()) {
             @Override
             protected void onExtractionComplete(SparseArray<YtFile> sparseArray, VideoMeta videoMeta) {
                 
                 if (sparseArray != null) {
-                    uploadYoutubeVideo(sparseArray.get(22).getUrl(), caption, gameTag);
+                    uploadYoutubeVideo(sparseArray.get(22).getUrl(), caption, gameTag, youtubeThumbnailUrl);
                 }
             }
     };
     mExtractor.extract(youtubeLink, true, true);
 }
+
+    private String getYoutubeThumbnail(String youtubeLink){
+
+        final String skeleton = "https://img.youtube.com/vi/%d/0.jpg";
+        int startIndex = youtubeLink.lastIndexOf("=") + 1;
+        String properID = youtubeLink.substring(startIndex);
+        String finalString = skeleton.replace("%d", properID);
+        return finalString;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -315,24 +310,7 @@ public class UploadFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions,grantResults);
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
 
-    @AfterPermissionGranted(LOCATION_REQUEST)
-    private void checkLocationRequest() {
-        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_MEDIA_LOCATION};
-        if (EasyPermissions.hasPermissions(requireContext(), perms)) {
-
-        } else {
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions((Activity) getContext(),"Please grant permission to access your gallery.",
-                    LOCATION_REQUEST, perms);
-        }
-    }
 
     private void resetFragment(){
         // reset the fragments edit text and thumbnail
@@ -359,6 +337,24 @@ public class UploadFragment extends Fragment {
         return new ParseFile("picture_1.png", byteArray);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions,grantResults);
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(LOCATION_REQUEST)
+    private void checkLocationRequest() {
+        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_MEDIA_LOCATION};
+        if (EasyPermissions.hasPermissions(requireContext(), perms)) {
+
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions((Activity) getContext(),"Please grant permission to access your gallery.",
+                    LOCATION_REQUEST, perms);
+        }
+    }
 
 
 }

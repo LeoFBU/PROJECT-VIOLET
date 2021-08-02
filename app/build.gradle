@@ -86,6 +86,9 @@ dependencies {
     //adding the like button library
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
 
+    // new recycelrview
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    //implementation "androidx.recyclerview:recyclerview:1.2.0-alpha02"
 
 
 }

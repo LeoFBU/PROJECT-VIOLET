@@ -133,11 +133,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             Glide.with(context).load(profileImage.getUrl())
                     .circleCrop()
                     .into(ivPostProfilePic);
-            ParseFile thumbnail = post.getThumbnail();
-            Glide.with(context).load(thumbnail.getUrl())
-                    .placeholder(R.drawable.video_player_placeholder)
-                    .centerCrop()
-                    .into(ivThumbnailPlaceholder);
+
+            if(!post.getYoutubeThumbnail().equals("null")){
+                String youtubeThumbnailUrl = post.getYoutubeThumbnail();
+                Glide.with(context).load(youtubeThumbnailUrl)
+ //                       .placeholder(R.drawable.video_player_placeholder)
+                        .centerCrop().into(ivThumbnailPlaceholder);
+            }
+            else {
+                ParseFile thumbnail = post.getThumbnail();
+                Glide.with(context).load(thumbnail.getUrl())
+                        .placeholder(R.drawable.video_player_placeholder)
+                        .centerCrop()
+                        .into(ivThumbnailPlaceholder);
+            }
 
             ibComments.setOnClickListener(new View.OnClickListener() {
                 @Override

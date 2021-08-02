@@ -28,6 +28,7 @@ public class Post extends ParseObject {
     public static final String KEY_LIKED_BY_USERS = "usersThatLiked";
     public static final String KEY_NUM_OF_COMMENTS = "numberComments";
     public static final String KEY_GAME_TAG = "gameTag";
+    public static final String KEY_YOUTUBE_THUMBNAIL = "videoThumbnailYoutube";
 
     public void setGameTag(String gameTag){
         put(KEY_GAME_TAG, gameTag);
@@ -63,6 +64,7 @@ public class Post extends ParseObject {
     }
 
 
+
     public String getPostTimeStamp(){
         Date date = getCreatedAt();
         return formatPostTimestamp(date);
@@ -93,6 +95,10 @@ public class Post extends ParseObject {
     }
     public void setYoutubeLink(String youtubeUrl){
         put(KEY_YOUTUBE_URL, youtubeUrl);
+    }
+
+    public String getYoutubeThumbnail(){
+        return getString(KEY_YOUTUBE_THUMBNAIL);
     }
 
 

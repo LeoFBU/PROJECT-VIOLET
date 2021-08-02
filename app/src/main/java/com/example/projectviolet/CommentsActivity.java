@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.projectviolet.adapters.CommentsAdapter;
@@ -30,6 +31,7 @@ import java.util.List;
 public class CommentsActivity extends AppCompatActivity {
 
     public static final String TAG = "CommentsActivity";
+    static final int MAX_COMMENT_LENGTH = 50;
 
     private TextView tvPostUsername;
     private TextView tvPostCaption;
@@ -86,6 +88,11 @@ public class CommentsActivity extends AppCompatActivity {
         btnSubmitComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(etSubmissionContent.getText().toString().length() > MAX_COMMENT_LENGTH) {
+                    Toast.makeText(CommentsActivity.this, "Sorry, your commment is too long!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 submitComment(etSubmissionContent.getText().toString(), post);
             }
         });

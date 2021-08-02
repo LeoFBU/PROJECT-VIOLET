@@ -66,10 +66,20 @@ public class ProfileFeedGridAdapter extends RecyclerView.Adapter<ProfileFeedGrid
                     .getUrl())
                     .centerCrop()
                     .into(ivProfFeedPostThumbnail);
-            Glide.with(context).load(post.getUserProfileImage()
-                    .getUrl())
-                    .circleCrop()
-                    .into(ivProfPostUserProfilePic);
+
+            if(!post.getYoutubeThumbnail().equals("null")){
+                String youtubeThumbnailUrl = post.getYoutubeThumbnail();
+                Glide.with(context).load(youtubeThumbnailUrl)
+                        //                       .placeholder(R.drawable.video_player_placeholder)
+                        .centerCrop().into(ivProfFeedPostThumbnail);
+            }
+            else {
+
+                Glide.with(context).load(post.getUserProfileImage()
+                        .getUrl())
+                        .circleCrop()
+                        .into(ivProfPostUserProfilePic);
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
