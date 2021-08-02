@@ -32,9 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class FeedFragment extends Fragment {
 
     public static final String TAG = "FeedFragment: ";
@@ -45,9 +42,7 @@ public class FeedFragment extends Fragment {
     private EndlessRecyclerViewScrollListener scrollListener;
     private VideoPlayerRecyclerView feedRecyclerView;
 
-
     public FeedFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -84,7 +79,6 @@ public class FeedFragment extends Fragment {
             }
         };
         feedRecyclerView.addOnScrollListener(scrollListener);
-
 
         swipeRefresher = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainerFragment);
         swipeRefresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

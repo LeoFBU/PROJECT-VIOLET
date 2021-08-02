@@ -33,7 +33,6 @@ public class SelectGameTagsActivity extends AppCompatActivity {
 
     private Button btnSubmitTags;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

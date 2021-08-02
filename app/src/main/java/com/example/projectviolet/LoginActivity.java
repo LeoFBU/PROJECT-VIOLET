@@ -22,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     EditText etUsername;
     EditText etPassword;
+
     private TextView tvCreateAccount;
 
 
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         tvCreateAccount = findViewById(R.id.tvCreateAccount);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
+
 
         if( ParseUser.getCurrentUser() != null){
             goMainActivity();

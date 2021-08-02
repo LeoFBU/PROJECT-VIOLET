@@ -105,7 +105,6 @@ public class CommentsActivity extends AppCompatActivity {
         Comment newComment = new Comment();
         newComment.put("user", ParseUser.getCurrentUser());
         newComment.put("commentContent", toString);
-        //newComment.put("post", post.getObjectId());
         newComment.put("postID", post.getObjectId());
 
         int numComments = post.getInt("numberComments") + 1;

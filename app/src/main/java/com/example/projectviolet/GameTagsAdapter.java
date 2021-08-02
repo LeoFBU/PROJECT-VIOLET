@@ -94,7 +94,6 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
             user.fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {
-                    // working perfectly now!
                     cvCardGame.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -104,7 +103,6 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
                                 cbSubscribe.setChecked(true);
                                 gameTag.setChecked(true);
                                 preferredGames.add(gameTag.getGameName());
-
                             }
                             else
                             {
@@ -112,15 +110,11 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
                                 preferredGames.remove(gameTag.getGameName());
                             }
 
-
                         }
                     });
 
                 }
             });
-
-
-
 
         }
 

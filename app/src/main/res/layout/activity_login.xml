@@ -49,6 +49,7 @@
         android:layout_marginEnd="90dp"
         android:text="Sign In" />
 
+
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="wrap_content"
@@ -74,6 +75,5 @@
         android:layout_marginTop="27dp"
         android:text="New User? "
         android:textColor="#FFFFFF" />
-
 
 </RelativeLayout>
