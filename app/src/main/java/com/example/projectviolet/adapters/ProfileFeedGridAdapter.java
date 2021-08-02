@@ -70,7 +70,7 @@ public class ProfileFeedGridAdapter extends RecyclerView.Adapter<ProfileFeedGrid
             if(!post.getYoutubeThumbnail().equals("null")){
                 String youtubeThumbnailUrl = post.getYoutubeThumbnail();
                 Glide.with(context).load(youtubeThumbnailUrl)
-                        //                       .placeholder(R.drawable.video_player_placeholder)
+                        .placeholder(R.drawable.video_player_placeholder)
                         .centerCrop().into(ivProfFeedPostThumbnail);
             }
             else {
@@ -90,9 +90,6 @@ public class ProfileFeedGridAdapter extends RecyclerView.Adapter<ProfileFeedGrid
                 }
             });
         }
-
-
-
 
     }
 }

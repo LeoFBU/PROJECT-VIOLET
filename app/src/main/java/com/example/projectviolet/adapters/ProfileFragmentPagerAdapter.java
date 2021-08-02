@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 public class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 2;
-    private final String[] tabTitles = new String[] {"posts", "saved"};
     private Context context;
 
     public ProfileFragmentPagerAdapter(@NotNull FragmentManager fm, Context context) {
@@ -29,15 +28,12 @@ public class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
         return PAGE_COUNT;
     }
 
-
-
     @NotNull
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
                 return UserPostsFragment.newInstance(position);
-
             case 1:
                 return SavedPostsFragment.newInstance(position);
             default:
@@ -45,11 +41,9 @@ public class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-
     @Override
     public CharSequence getPageTitle(int position) {
         return null;
-        // return tabTitles[position];
     }
 
 

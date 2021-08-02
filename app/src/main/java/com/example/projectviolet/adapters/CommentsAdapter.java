@@ -73,7 +73,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             ParseFile commentProfileImage = comment.getCommentProfilePic();
             Glide.with(context).load(commentProfileImage.getUrl()).circleCrop().into(ivCommentUserPFP);
 
-
         }
     }
 }

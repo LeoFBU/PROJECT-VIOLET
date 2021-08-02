@@ -104,7 +104,6 @@ public class SelectGameTagsAdapter extends RecyclerView.Adapter<SelectGameTagsAd
                         cbSubscribe.setChecked(false);
                     }
 
-
                 }
             });
 

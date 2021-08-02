@@ -137,7 +137,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             if(!post.getYoutubeThumbnail().equals("null")){
                 String youtubeThumbnailUrl = post.getYoutubeThumbnail();
                 Glide.with(context).load(youtubeThumbnailUrl)
- //                       .placeholder(R.drawable.video_player_placeholder)
+                        .placeholder(R.drawable.video_player_placeholder)
                         .centerCrop().into(ivThumbnailPlaceholder);
             }
             else {
@@ -185,7 +185,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                     btnSave.setOnLikeListener( new OnLikeListener(  ) {
                         @Override
                         public void liked( LikeButton likeButton ) {
-
                             user.add("savedPosts", post.getObjectId());
 
                         }
@@ -240,7 +239,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
                 }
             });
-
 
         }
 
