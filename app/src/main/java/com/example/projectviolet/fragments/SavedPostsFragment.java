@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.projectviolet.adapters.EndlessRecyclerViewScrollListener;
 import com.example.projectviolet.models.Post;
 import com.example.projectviolet.adapters.ProfileFeedGridAdapter;
 import com.example.projectviolet.R;
@@ -25,10 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
- */
+
 public class SavedPostsFragment extends Fragment {
 
     public SavedPostsFragment() {
@@ -38,12 +36,12 @@ public class SavedPostsFragment extends Fragment {
     public static final String TAG = "SavedPostsFragment";
     private int mPage;
 
+    private EndlessRecyclerViewScrollListener scrollListener;
     RecyclerView rvProfileUserPosts;
     ArrayList<Post> userFeedPosts;
     ProfileFeedGridAdapter gridAdapter;
 
     public static SavedPostsFragment newInstance(int page) {
-
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         SavedPostsFragment fragment = new SavedPostsFragment();
@@ -78,6 +76,14 @@ public class SavedPostsFragment extends Fragment {
 
         queryPosts(0);
 
+        scrollListener = new EndlessRecyclerViewScrollListener((GridLayoutManager) rvProfileUserPosts.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryPosts(totalItemsCount);
+            }
+        };
+        rvProfileUserPosts.addOnScrollListener(scrollListener);
+
     }
 
 
@@ -89,6 +95,8 @@ public class SavedPostsFragment extends Fragment {
         ParseUser user = ParseUser.getCurrentUser();
         List<String> objectIDs = user.getList("savedPosts");
         query.whereContainedIn("objectId", objectIDs);
+
+        query.setLimit(6);
 
         if(skipAmount != 0){
             query.setSkip(skipAmount);
@@ -111,11 +119,5 @@ public class SavedPostsFragment extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
 
 }

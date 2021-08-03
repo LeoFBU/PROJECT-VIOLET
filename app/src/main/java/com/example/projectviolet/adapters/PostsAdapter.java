@@ -34,6 +34,7 @@ import com.parse.SaveCallback;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPosts> {
@@ -186,24 +187,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                         @Override
                         public void liked( LikeButton likeButton ) {
                             user.add("savedPosts", post.getObjectId());
-
+                            user.saveInBackground();
                         }
 
                         @Override
                         public void unLiked( LikeButton likeButton ) {
-
-                            if(savedPosts.contains(post.getObjectId())){
-                                int indexToRemove = savedPosts.indexOf(post.getObjectId());
-                                savedPosts.remove(indexToRemove);
-                            }
-
-                            user.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    user.put("savedPosts", savedPosts);
-                                    Log.e(TAG, "UNSAVED: saved hahahahaha", e);
-                                }
-                            });
+                            user.removeAll("savedPosts", Collections.singleton(post.getObjectId()));
+                            user.saveInBackground();
                         }
 
                     } );
@@ -211,10 +201,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                     btnLike.setOnLikeListener( new OnLikeListener(  ) {
                         @Override
                         public void liked( LikeButton likeButton ) {
+
+                            Log.e(TAG, "Liking was successful!!");
                             post.add("usersThatLiked", user.getObjectId());
                             post.saveInBackground();
-                            Log.e(TAG, "Liking was successful!!");
-
                             // updates the number of likes locally
                             int currentLikes = Integer.parseInt(tvPostNumLikes.getText().toString()) + 1;
                             tvPostNumLikes.setText(String.valueOf(currentLikes));
@@ -223,17 +213,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                         @Override
                         public void unLiked( LikeButton likeButton ) {
 
-                            if(likedByUsers.contains(user.getObjectId())){
-                                int indexToRemove = likedByUsers.indexOf(user.getObjectId());
-                                likedByUsers.remove(indexToRemove);
-                            }
-
-                            post.put("usersThatLiked", likedByUsers);
-                            Log.e(TAG, "UNLIKED: unliked", e);
+                            post.removeAll("usersThatLiked", Collections.singleton(user.getObjectId()));
                             post.saveInBackground();
+
+                            // updates the number of likes locally
                             int currentLikes = Integer.parseInt(tvPostNumLikes.getText().toString()) - 1;
                             tvPostNumLikes.setText(String.valueOf(currentLikes));
-
                         }
                     } );
 

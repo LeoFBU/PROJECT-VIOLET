@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PROJECTVIOLET">
-        <activity android:name=".AccountSettingsActivity"></activity>
+        <activity android:name=".FollowsActivity"></activity>
+        <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".AttachGameTagActivity" />
         <activity android:name=".OtherUserProfileActivity" />
         <activity android:name=".SelectGameTagsActivity" />
