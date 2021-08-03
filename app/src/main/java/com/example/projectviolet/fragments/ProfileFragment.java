@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvNumOfFollowing;
     private TextView tvNumOfFollowers;
     private TextView tvUsername;
+    ParseUser user;
 
     public ProfileFragment() {
     }
@@ -72,7 +73,7 @@ public class ProfileFragment extends Fragment {
             tabLayout.getTabAt(i).setIcon(imageRes[i]);
         }
 
-        ParseUser user = ParseUser.getCurrentUser();
+        user = ParseUser.getCurrentUser();
         String numberOfFollowers = String.valueOf(user.getNumber("numOfFollowing"));
         String numberOfFollowing = String.valueOf(user.getNumber("numOfFollowers"));
         String numberOfPosts = String.valueOf(user.getNumber("numOfPosts"));
@@ -85,15 +86,26 @@ public class ProfileFragment extends Fragment {
         ParseFile profileImage = user.getParseFile("profileImage");
         Glide.with(requireContext()).load(profileImage.getUrl()).circleCrop().into(ivProfilePic);
 
+
         tvNumOfFollowers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startFollow = new Intent(getContext(), FollowsActivity.class);
-                startFollow.putExtra("user", user);
-                startActivity(startFollow);
+                StartFollowsActivity();
+            }
+        });
+        tvNumOfFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartFollowsActivity();
             }
         });
 
+    }
+
+    public void StartFollowsActivity(){
+        Intent startFollow = new Intent(getContext(), FollowsActivity.class);
+        startFollow.putExtra("user", user);
+        startActivity(startFollow);
     }
 
     @Override

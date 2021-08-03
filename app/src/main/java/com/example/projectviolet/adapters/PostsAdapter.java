@@ -119,7 +119,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                 public void onSwipeLeft() {
                     super.onSwipeRight();
                     Intent intent = new Intent(context, OtherUserProfileActivity.class);
-                    intent.putExtra("post", post);
+                    ParseUser user = post.getUser();
+                    intent.putExtra("user", user);
                     context.startActivity(intent);
                 }
             });
