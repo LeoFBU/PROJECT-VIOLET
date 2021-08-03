@@ -59,7 +59,6 @@ public class FeedFragment extends Fragment {
         progressBar = view.findViewById(R.id.pbProgressBarFeed);
         feedPostList = new ArrayList<>();
 
-
         adapter = new PostsAdapter(getContext(), feedPostList);
         feedRecyclerView.setAdapter(adapter);
 
@@ -69,7 +68,6 @@ public class FeedFragment extends Fragment {
         feedRecyclerView.addItemDecoration(itemDecorator);
 
         queryPosts(0);
-
 
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -119,9 +117,11 @@ public class FeedFragment extends Fragment {
                     progressBar.setVisibility(ProgressBar.GONE);
                     return;
                 }
+
                 for(Post post : posts){
                     Log.i(TAG, "Post: " + post.getUser().getUsername() + ": " + post.getCaption());
                 }
+
                 progressBar.setVisibility(ProgressBar.GONE);
                 posts.size();
                 feedPostList.addAll(posts);

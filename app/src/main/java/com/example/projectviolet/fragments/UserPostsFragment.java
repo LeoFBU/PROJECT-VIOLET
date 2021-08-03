@@ -33,7 +33,6 @@ public class UserPostsFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String TAG = "UserPostsFragment";
-    private int mPage;
 
     private RecyclerView rvProfile;
     private ArrayList<Post> usersOwnPosts;
@@ -51,7 +50,6 @@ public class UserPostsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         assert getArguments() != null;
-        mPage = getArguments().getInt(ARG_PAGE);
     }
 
     @Override
@@ -70,6 +68,7 @@ public class UserPostsFragment extends Fragment {
         gridAdapter = new ProfileFeedGridAdapter(getContext(), usersOwnPosts);
         rvProfile.setAdapter(gridAdapter);
         gridAdapter.notifyDataSetChanged();
+
         queryPosts(0);
 
     }
@@ -84,7 +83,6 @@ public class UserPostsFragment extends Fragment {
         if(skipAmount != 0){
             query.setSkip(skipAmount);
         }
-
 
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<Post>() {

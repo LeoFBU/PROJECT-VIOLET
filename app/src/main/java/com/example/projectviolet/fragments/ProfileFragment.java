@@ -39,8 +39,7 @@ public class ProfileFragment extends Fragment {
 
 
     public static final String TAG = "ProfileFragment.java: ";
-    public static final String ARG_PAGE = "ARG_PAGE";
-    private final int[] imageRes = {R.drawable.ic_upload_filled, R.drawable.ic_save_filled};
+    private final int[] imageRes = {R.drawable.ic_upload_filled, R.drawable.ic_like_filled};
 
     private ImageButton ibLogout;
     private ImageButton ibSettingsButton;
@@ -132,7 +131,6 @@ public class ProfileFragment extends Fragment {
                 startOptionsMenu();
                 Log.e(TAG, "onOptionsItemSelected: SELECTED SETTINGS");
                 return true;
-
             default:
             return super.onOptionsItemSelected(item);
         }

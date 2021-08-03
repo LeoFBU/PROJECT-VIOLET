@@ -53,6 +53,7 @@ public class UploadFragment extends Fragment {
 
     public static final String TAG = "UploadFragment.java: ";
 
+    private static final int LOCATION_REQUEST = 222;
     boolean gotPicture = false;
     boolean gotGameTag = false;
     private String realPath;
@@ -66,7 +67,6 @@ public class UploadFragment extends Fragment {
     private EditText etYoutubeLink;
     private EditText etCaption;
     private ImageView ivPreviewThumbnail;
-    private static final int LOCATION_REQUEST = 222;
 
 
     public UploadFragment() {
@@ -272,7 +272,6 @@ public class UploadFragment extends Fragment {
 
         ParseFile videoThumbnail = getVideoThumb(realPath);
         newPost.setThumbnail(videoThumbnail);
-
 
         if(etCaption.getText().toString().isEmpty()){
             Toast.makeText(getContext(), "Your post must have a caption", Toast.LENGTH_SHORT).show();
