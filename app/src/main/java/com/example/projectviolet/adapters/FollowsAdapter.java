@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,16 +22,20 @@ import com.parse.ParseUser;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHolderFollows> {
 
     public static final String TAG = "FollowsAdapter";
     private ArrayList<ParseUser> userList;
     private Context context;
+    private ParseUser mainUser;
 
-    public FollowsAdapter(Context context, ArrayList<ParseUser> userList){
+    public FollowsAdapter(Context context, ArrayList<ParseUser> userList, ParseUser mainUser){
         this.context = context;
         this.userList = userList;
+        this.mainUser = mainUser;
     }
 
     @NotNull
@@ -56,6 +61,9 @@ public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHold
         private TextView followUsername;
         private ImageView followProfilePicture;
         private CardView cvFollows;
+        private Button btnFollowState;
+        List<ParseUser> list = mainUser.getList("following");
+        boolean isFollowing;
 
         public ViewHolderFollows(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -63,23 +71,62 @@ public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHold
             followProfilePicture = itemView.findViewById(R.id.ivFollowProfilePic);
             followUsername = itemView.findViewById(R.id.tvFollowUsername);
             cvFollows = itemView.findViewById(R.id.cvFolllowCard);
+            btnFollowState = itemView.findViewById(R.id.btnFollow);
         }
 
         public void bind(ParseUser user) {
+
+            List<ParseUser> followingList = mainUser.getList("followers");
+
 
             followUsername.setText(user.getUsername());
 
             ParseFile profilePic = (ParseFile) user.get("profileImage");
             Glide.with(context).load(profilePic.getUrl()).circleCrop().into(followProfilePicture);
 
+            if(list.contains(user.getObjectId())){
+                btnFollowState.setText("unfollow");
+                isFollowing = true;
+            }
+            else {
+                btnFollowState.setText("follow");
+                isFollowing = false;
+            }
+
             cvFollows.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, OtherUserProfileActivity.class);
-                    intent.putExtra("user", user);
-                    context.startActivity(intent);
+                    if(isFollowing) {
+                        Intent intent = new Intent(context, OtherUserProfileActivity.class);
+                        intent.putExtra("user", user);
+                        context.startActivity(intent);
+                    }
+
                 }
             });
+
+            btnFollowState.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(!isFollowing) {
+                        btnFollowState.setText("unfollow");
+                        isFollowing = true;
+                        mainUser.add("following", user.getObjectId());
+                        mainUser.saveInBackground();
+                    }
+                    else {
+                        btnFollowState.setText("follow");
+                        isFollowing = false;
+                        mainUser.removeAll("following", Collections.singleton(user.getObjectId()));
+                        mainUser.saveInBackground();
+
+                    }
+
+                }
+            });
+
+
         }
 
     }

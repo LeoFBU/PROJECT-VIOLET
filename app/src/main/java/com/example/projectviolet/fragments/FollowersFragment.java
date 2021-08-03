@@ -83,13 +83,13 @@ public class FollowersFragment extends Fragment {
 
         rvFollows = view.findViewById(R.id.rvFollows);
         userList = new ArrayList<>();
-        adapter = new FollowsAdapter(getContext(), userList);
+        interfaceListener = (MyStringListener) getContext();
+        user = interfaceListener.returnUser();
+        adapter = new FollowsAdapter(getContext(), userList, user);
         rvFollows.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvFollows.setLayoutManager(layoutManager);
 
-        interfaceListener = (MyStringListener) getContext();
-        user = interfaceListener.returnUser();
         interfaceListener.queryUserInfo(0, user, userList, adapter, QUERY);
 
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {

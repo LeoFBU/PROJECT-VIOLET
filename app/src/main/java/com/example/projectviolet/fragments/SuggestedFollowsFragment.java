@@ -36,7 +36,6 @@ public class SuggestedFollowsFragment extends Fragment {
     FollowersFragment.MyStringListener interfaceListener;
 
     public SuggestedFollowsFragment() {
-        // Required empty public constructor
     }
 
     public static SuggestedFollowsFragment newInstance(int page) {
@@ -68,13 +67,13 @@ public class SuggestedFollowsFragment extends Fragment {
 
         rvSuggestedFollow = view.findViewById(R.id.rvSuggestedFollows);
         userList = new ArrayList<>();
-        adapter = new FollowsAdapter(getContext(), userList);
+        interfaceListener = (FollowersFragment.MyStringListener) getContext();
+        user = interfaceListener.returnUser();
+        adapter = new FollowsAdapter(getContext(), userList, user);
         rvSuggestedFollow.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvSuggestedFollow.setLayoutManager(layoutManager);
 
-        interfaceListener = (FollowersFragment.MyStringListener) getContext();
-        user = interfaceListener.returnUser();
         interfaceListener.queryUserInfo(0, user, userList, adapter, QUERY);
 
     }
