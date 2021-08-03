@@ -96,11 +96,9 @@ public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHold
             cvFollows.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(isFollowing) {
                         Intent intent = new Intent(context, OtherUserProfileActivity.class);
                         intent.putExtra("user", user);
                         context.startActivity(intent);
-                    }
 
                 }
             });
