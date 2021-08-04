@@ -1,4 +1,4 @@
-package com.example.projectviolet;
+package com.example.projectviolet.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;

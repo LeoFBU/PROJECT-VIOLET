@@ -1,4 +1,4 @@
-package com.example.projectviolet;
+package com.example.projectviolet.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.projectviolet.R;
+import com.example.projectviolet.models.GameTag;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;

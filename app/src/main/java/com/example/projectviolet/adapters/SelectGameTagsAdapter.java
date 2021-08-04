@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.projectviolet.GameTag;
+import com.example.projectviolet.models.GameTag;
 import com.example.projectviolet.R;
 import com.parse.ParseFile;
 
