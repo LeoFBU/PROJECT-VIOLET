@@ -1,8 +1,5 @@
 package com.example.projectviolet.models;
 
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.util.Log;
 
 import com.parse.ParseClassName;
@@ -21,11 +18,7 @@ public class Post extends ParseObject {
     public static final String KEY_USER = "user";
     public static final String KEY_PROFILE_IMAGE = "profileImage";
     public static final String KEY_VIDEO = "video";
-    public static final String KEY_FOLLOWERS_AMOUNT = "numOfFollowing";
-    public static final String KEY_FOLLOWING_AMOUNT = "numOfFollowers";
-    public static final String KEY_POSTS_AMOUNT = "numOfPosts";
     public static final String KEY_YOUTUBE_URL = "videoYoutube";
-    public static final String KEY_LIKED_BY_USERS = "usersThatLiked";
     public static final String KEY_NUM_OF_COMMENTS = "numberComments";
     public static final String KEY_GAME_TAG = "gameTag";
     public static final String KEY_YOUTUBE_THUMBNAIL = "videoThumbnailYoutube";
@@ -63,25 +56,10 @@ public class Post extends ParseObject {
         return getUser().getUsername();
     }
 
-
-
     public String getPostTimeStamp(){
         Date date = getCreatedAt();
         return formatPostTimestamp(date);
     }
-
-    public int getNumFollowers() {
-        return getUser().getInt(KEY_FOLLOWERS_AMOUNT);
-    }
-
-    public int getNumFollowing() {
-        return getUser().getInt(KEY_FOLLOWING_AMOUNT);
-    }
-
-    public int getNumPosts() {
-        return getUser().getInt(KEY_POSTS_AMOUNT);
-    }
-
 
     public ParseFile getVideo() {
         return getParseFile(KEY_VIDEO);
@@ -101,34 +79,12 @@ public class Post extends ParseObject {
         return getString(KEY_YOUTUBE_THUMBNAIL);
     }
 
-
     public String getNumberOfLikes(List<String> likes){
         return String.valueOf(likes.size());
     }
     public int getNumberOfComments(){
         return getInt(KEY_NUM_OF_COMMENTS);
     }
-
-    public List<String> getPostsLikedUsers(){
-        return getList(KEY_LIKED_BY_USERS);
-    }
-    public void setPostsLikedUsers(List<String> list){
-        put(KEY_LIKED_BY_USERS, list);
-    }
-
-    public List<String> getUserSavedPosts(){
-        return getList("savedPosts");
-    }
-
-    public Bitmap getVideoThumb(String path) {
-
-        MediaMetadataRetriever media = new MediaMetadataRetriever();
-
-        media.setDataSource(path);
-        return media.getFrameAtTime();
-
-    }
-
 
     public String formatPostTimestamp(Date createdAt) {
 
