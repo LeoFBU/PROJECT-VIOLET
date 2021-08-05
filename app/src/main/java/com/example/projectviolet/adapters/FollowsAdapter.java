@@ -76,11 +76,7 @@ public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHold
 
         public void bind(ParseUser user) {
 
-            List<ParseUser> followingList = mainUser.getList("followers");
-
-
             followUsername.setText(user.getUsername());
-
             ParseFile profilePic = (ParseFile) user.get("profileImage");
             Glide.with(context).load(profilePic.getUrl()).circleCrop().into(followProfilePicture);
 
@@ -99,7 +95,6 @@ public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHold
                         Intent intent = new Intent(context, OtherUserProfileActivity.class);
                         intent.putExtra("user", user);
                         context.startActivity(intent);
-
                 }
             });
 
@@ -118,14 +113,10 @@ public class FollowsAdapter extends RecyclerView.Adapter<FollowsAdapter.ViewHold
                         isFollowing = false;
                         mainUser.removeAll("following", Collections.singleton(user.getObjectId()));
                         mainUser.saveInBackground();
-
                     }
-
                 }
             });
 
-
         }
-
     }
 }

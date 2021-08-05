@@ -69,7 +69,6 @@ public class SelectGameTagsAdapter extends RecyclerView.Adapter<SelectGameTagsAd
             tvGameName = itemView.findViewById(R.id.tvGameTagName);
             ivGameIcon = itemView.findViewById(R.id.ivGameTagIcon);
             cbSubscribe = itemView.findViewById(R.id.cbSubscribe);
-
         }
 
         public void bind(GameTag game) {
@@ -77,8 +76,9 @@ public class SelectGameTagsAdapter extends RecyclerView.Adapter<SelectGameTagsAd
             if(!game.isChecked()){
                 cbSubscribe.setChecked(false);
             }
-            else
+            else {
                 cbSubscribe.setChecked(true);
+            }
 
             tvGameName.setText(game.getGameName());
             ParseFile gameIcon = game.getGameIcon();
@@ -103,7 +103,6 @@ public class SelectGameTagsAdapter extends RecyclerView.Adapter<SelectGameTagsAd
                     else{
                         cbSubscribe.setChecked(false);
                     }
-
                 }
             });
 

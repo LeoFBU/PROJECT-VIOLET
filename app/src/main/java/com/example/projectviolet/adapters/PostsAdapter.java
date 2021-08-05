@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.projectviolet.CommentsActivity;
 import com.example.projectviolet.OtherUserProfileActivity;
-import com.example.projectviolet.models.Post;
 import com.example.projectviolet.R;
+import com.example.projectviolet.models.Post;
 import com.example.projectviolet.util.OnSwipeTouchListener;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
@@ -28,8 +28,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
 
 import org.jetbrains.annotations.NotNull;
 
@@ -75,12 +73,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
         TextView tvPostNumComments;
         TextView tvPostTimestamp;
         ImageView ivPostProfilePic;
-
         ImageView ivThumbnailPlaceholder;
         ImageView ivVolumeControl;
         ProgressBar progressBar;
         FrameLayout media_container;
-
         ImageButton ibComments;
         LikeButton btnLike;
         LikeButton btnSave;
@@ -106,24 +102,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
             ibComments = itemView.findViewById(R.id.ibComments);
             btnLike = itemView.findViewById(R.id.likeButton);
             btnSave = itemView.findViewById(R.id.saveButton);
-
         }
 
         public void bind(Post post) {
 
             parent.setTag(this);
-
-            itemView.setOnTouchListener(new OnSwipeTouchListener(context){
-
-                @Override
-                public void onSwipeLeft() {
-                    super.onSwipeRight();
-                    Intent intent = new Intent(context, OtherUserProfileActivity.class);
-                    ParseUser user = post.getUser();
-                    intent.putExtra("user", user);
-                    context.startActivity(intent);
-                }
-            });
 
             tvPostCaption.setText(post.getCaption());
             tvPostUsername.setText(post.getPostCreatorUsername());
@@ -160,6 +143,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                 }
             });
 
+            itemView.setOnTouchListener(new OnSwipeTouchListener(context){
+                @Override
+                public void onSwipeLeft() {
+                    super.onSwipeRight();
+                    Intent intent = new Intent(context, OtherUserProfileActivity.class);
+                    ParseUser user = post.getUser();
+                    intent.putExtra("user", user);
+                    context.startActivity(intent);
+                }
+            });
+
             ParseUser user = ParseUser.getCurrentUser();
             user.fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
@@ -174,14 +168,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
                     if(savedPosts.contains(post.getObjectId())){
                         btnSave.setLiked(true);
                     }
-                    else
+                    else {
                         btnSave.setLiked(false);
+                    }
 
                     if(likedByUsers.contains(user.getObjectId())){
                         btnLike.setLiked(true);
                     }
-                    else
+                    else {
                         btnLike.setLiked(false);
+                    }
 
 
                     btnSave.setOnLikeListener( new OnLikeListener(  ) {
@@ -216,18 +212,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolderPo
 
                             post.removeAll("usersThatLiked", Collections.singleton(user.getObjectId()));
                             post.saveInBackground();
-
                             // updates the number of likes locally
                             int currentLikes = Integer.parseInt(tvPostNumLikes.getText().toString()) - 1;
                             tvPostNumLikes.setText(String.valueOf(currentLikes));
                         }
                     } );
-
                 }
             });
 
         }
-
     }
-
 }

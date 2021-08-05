@@ -148,7 +148,6 @@ public class VideoPlayerRecyclerView extends RecyclerView {
             }
         });
 
-
         epVideoPLayer.addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
@@ -217,8 +216,6 @@ public class VideoPlayerRecyclerView extends RecyclerView {
             }
         });
 
-
-
     }
 
     private void playVideo(boolean isEndOfList){
@@ -266,7 +263,6 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         if(pvVideoSurfaceView == null){
             return;
         }
-
 
         pvVideoSurfaceView.setVisibility(INVISIBLE);
         removeVideoView(pvVideoSurfaceView);
@@ -360,7 +356,6 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         }
     }
 
-
     private void animateVolumeControl(){
         if(ivVolumeControl != null){
             ivVolumeControl.bringToFront();
@@ -447,6 +442,5 @@ public class VideoPlayerRecyclerView extends RecyclerView {
     public void continueVideo() {
         epVideoPLayer.setPlayWhenReady(true);
     }
-
 
 }

@@ -34,8 +34,6 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
     private Context context;
     private List<String> preferredGames;
 
-
-
     public GameTagsAdapter(Context context, ArrayList<GameTag> gameTagsList, List<String> preferredGames){
         this.context = context;
         this.gameTagsList = gameTagsList;
@@ -85,8 +83,9 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
             if(!gameTag.isChecked() && !(preferredGames.contains(gameTag.getGameName()))){
                 cbSubscribe.setChecked(false);
             }
-            else
+            else {
                 cbSubscribe.setChecked(true);
+            }
 
             tvGameName.setText(gameTag.getGameName());
             ParseFile gameIcon = gameTag.getGameIcon();
@@ -111,15 +110,11 @@ public class GameTagsAdapter extends RecyclerView.Adapter<GameTagsAdapter.ViewHo
                                 gameTag.setChecked(false);
                                 preferredGames.remove(gameTag.getGameName());
                             }
-
                         }
                     });
-
                 }
             });
 
         }
-
-
     }
 }

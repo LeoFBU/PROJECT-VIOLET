@@ -74,7 +74,6 @@ public class ProfileFeedGridAdapter extends RecyclerView.Adapter<ProfileFeedGrid
                         .centerCrop().into(ivProfFeedPostThumbnail);
             }
             else {
-
                 Glide.with(context).load(post.getUserProfileImage()
                         .getUrl())
                         .circleCrop()
@@ -89,7 +88,7 @@ public class ProfileFeedGridAdapter extends RecyclerView.Adapter<ProfileFeedGrid
                     v.getContext().startActivity(intent);
                 }
             });
-        }
 
+        }
     }
 }

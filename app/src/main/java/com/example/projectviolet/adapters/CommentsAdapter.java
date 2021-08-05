@@ -62,7 +62,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             tvCommentTimestamp = itemView.findViewById(R.id.tvUserCommentTimestamp);
             tvCommentUsername = itemView.findViewById(R.id.tvUserCommentUsername);
             ivCommentUserPFP = itemView.findViewById(R.id.ivUserCommentPFP);
-
         }
 
         public void bind(Comment comment) {
@@ -72,7 +71,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             tvCommentTimestamp.setText(comment.getCommentTimestamp());
             ParseFile commentProfileImage = comment.getCommentProfilePic();
             Glide.with(context).load(commentProfileImage.getUrl()).circleCrop().into(ivCommentUserPFP);
-
         }
+
     }
 }
