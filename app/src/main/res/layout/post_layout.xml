@@ -23,7 +23,7 @@
         android:layout_marginBottom="0dp"
         android:background="#A080A8"
         android:padding="2dp"
-        app:cardBackgroundColor="#9F5A9D"
+        app:cardBackgroundColor="#A670A5"
         app:cardCornerRadius="19dp"
         app:cardElevation="9dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,6 +53,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Custom like button -->
 
             <FrameLayout
                 android:id="@+id/media_container"
@@ -96,8 +98,6 @@
 
 
             </FrameLayout>
-
-            <!-- Custom like button -->
 
             <ImageView
                 android:id="@+id/ivProfilePicFeed"

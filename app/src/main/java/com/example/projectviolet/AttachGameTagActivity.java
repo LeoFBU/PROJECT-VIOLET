@@ -48,15 +48,15 @@ public class AttachGameTagActivity extends AppCompatActivity {
         verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(5);
         rvAttachGameTag.addItemDecoration(itemDecorator);
 
-        queryTags(0);
+        queryTags();
 
         Intent returnTagIntent = new Intent();
         btnSubmitTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String selectedGame = adapter.getGameTag();
-                if(selectedGame.isEmpty()){
-                    selectedGame = null;
+                if(selectedGame == null){
+                    return;
                 }
                 returnTagIntent.putExtra("chosenGame", selectedGame);
                 setResult(RESULT_OK, returnTagIntent);
@@ -67,12 +67,11 @@ public class AttachGameTagActivity extends AppCompatActivity {
 
     }
 
-    private void queryTags(int i) {
+    private void queryTags() {
 
         ParseQuery<GameTag> query = ParseQuery.getQuery(GameTag.class);
         // might want to create a query limit somehow
         // maybe even add the endless scroll to the specific recyclerview
-
         query.addAscendingOrder("gameName");
         query.findInBackground(new FindCallback<GameTag>() {
             @Override

@@ -4,26 +4,23 @@ import android.content.Context;
 import android.graphics.Point;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.ViewGroup;
-
-import android.widget.ProgressBar;
-
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
-import com.example.projectviolet.models.Post;
 import com.example.projectviolet.R;
+import com.example.projectviolet.models.Post;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -46,7 +43,6 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.parse.ParseFile;
-
 
 import org.jetbrains.annotations.NotNull;
 
@@ -298,7 +294,6 @@ public class VideoPlayerRecyclerView extends RecyclerView {
         frameLayout.setOnLongClickListener(videoViewClickListener);
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, "RecyclerView VideoPlayer"));
-
 
         String mediaUrl = null;
         try{

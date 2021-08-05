@@ -1,6 +1,9 @@
 package com.example.projectviolet.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,12 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.projectviolet.R;
+import com.example.projectviolet.adapters.EndlessRecyclerViewScrollListener;
 import com.example.projectviolet.adapters.FollowsAdapter;
 import com.parse.ParseUser;
 
@@ -34,6 +33,8 @@ public class SuggestedFollowsFragment extends Fragment {
     private ArrayList<ParseUser> userList;
     ParseUser user;
     FollowersFragment.MyStringListener interfaceListener;
+    private EndlessRecyclerViewScrollListener scrollListener;
+
 
     public SuggestedFollowsFragment() {
     }
@@ -75,6 +76,14 @@ public class SuggestedFollowsFragment extends Fragment {
         rvSuggestedFollow.setLayoutManager(layoutManager);
 
         interfaceListener.queryUserInfo(0, user, userList, adapter, QUERY);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                interfaceListener.queryUserInfo(totalItemsCount, user, userList, adapter, QUERY);
+            }
+        };
+        rvSuggestedFollow.addOnScrollListener(scrollListener);
 
     }
 }

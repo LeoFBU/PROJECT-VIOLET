@@ -1,9 +1,7 @@
 package com.example.projectviolet;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,11 +11,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.projectviolet.adapters.CommentsAdapter;
 import com.example.projectviolet.models.Comment;
 import com.example.projectviolet.models.Post;
 import com.example.projectviolet.util.verticalSpacingItem;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -35,22 +53,27 @@ public class CommentsActivity extends AppCompatActivity {
 
     private TextView tvPostUsername;
     private TextView tvPostCaption;
+    private ImageView ivVolume;
     private ImageView ivPostUserPfp;
     private ImageView ivPostThumbnail;
     private ImageView ivCurrentUserPFP;
     private RecyclerView rvComments;
     private EditText etSubmissionContent;
+    private SimpleExoPlayerView exoPlayerView;
+    private SimpleExoPlayer exoPlayer;
     private Button btnSubmitComment;
+    private Post post;
+    private CardView cvVideoHolder;
+    private Context context;
     protected CommentsAdapter adapter;
     protected ArrayList<Comment> allComments;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
+        context = this;
         rvComments = findViewById(R.id.rvComments);
         allComments = new ArrayList<>();
         adapter = new CommentsAdapter(this, allComments);
@@ -61,8 +84,10 @@ public class CommentsActivity extends AppCompatActivity {
         verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(5);
         rvComments.addItemDecoration(itemDecorator);
 
-        Post post = getIntent().getParcelableExtra("post");
+        post = getIntent().getParcelableExtra("post");
 
+        ivVolume = findViewById(R.id.ivVolume);
+        cvVideoHolder = findViewById(R.id.cvVideoHolder);
         tvPostUsername = findViewById(R.id.tvCommentsPostUsername);
         tvPostCaption = findViewById(R.id.tvCommentsPostCaption);
         ivPostUserPfp = findViewById(R.id.ivCommentsPostUserPfp);
@@ -70,6 +95,7 @@ public class CommentsActivity extends AppCompatActivity {
         ivCurrentUserPFP = findViewById(R.id.ivCommentCurrentUserPFP);
         etSubmissionContent = findViewById(R.id.etCommentSubmit);
         btnSubmitComment = findViewById(R.id.btnSubmitComment);
+        exoPlayerView = findViewById(R.id.idExoPlayerVIew);
 
         tvPostUsername.setText(post.getPostCreatorUsername());
         tvPostCaption.setText(post.getCaption());
@@ -80,10 +106,9 @@ public class CommentsActivity extends AppCompatActivity {
         ParseFile currentUserImage = ParseUser.getCurrentUser().getParseFile("profileImage");
         Glide.with(this).load(currentUserImage.getUrl()).circleCrop().into(ivCurrentUserPFP);
 
+        queryComments(post);
 
-        List<String> validCommentsList = post.getList("comments");
-
-        queryComments(5, validCommentsList, post);
+        initExoPlayer();
 
         btnSubmitComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,8 +122,59 @@ public class CommentsActivity extends AppCompatActivity {
             }
         });
 
+        cvVideoHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "onClick: " + "CLICKED EXOPLAYERVIEW" );
+                if(exoPlayer.getVolume() == 0f) {
+                    Glide.with(context).load(R.drawable.ic_volume_up_grey_24dp).into(ivVolume);
+                    exoPlayer.setVolume(1f);
+                }
+                else {
+                    Glide.with(context).load(R.drawable.ic_volume_off_grey_24dp).into(ivVolume);
+                    exoPlayer.setVolume(0f);
+                }
+            }
+        });
 
-        Log.e(TAG, "onCreate: " + post.getObjectId());
+    }
+
+    private void initExoPlayer(){
+
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+
+        String mediaUrl = null;
+        try{
+            ParseFile videoFile = post.getVideo();
+            mediaUrl = videoFile.getUrl();
+        }
+        catch(Exception e){
+            if(mediaUrl == null){
+                mediaUrl = post.getYoutubeLink();
+
+            }
+        }
+        Uri videouri = Uri.parse(mediaUrl);
+
+        DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        MediaSource mediaSource = new ExtractorMediaSource(videouri, dataSourceFactory, extractorsFactory, null, null);
+
+        exoPlayerView.setUseController(false);
+        exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+        exoPlayerView.setPlayer(exoPlayer);
+
+        exoPlayer.prepare(mediaSource);
+        ivPostThumbnail.setVisibility(View.VISIBLE);
+        exoPlayer.setPlayWhenReady(true);
+        exoPlayer.setRepeatMode(Player.REPEAT_MODE_ALL);
+        if(exoPlayer.getPlayWhenReady()){
+            ivPostThumbnail.setVisibility(View.GONE);
+            exoPlayerView.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void submitComment(String toString, Post post) {
@@ -122,7 +198,7 @@ public class CommentsActivity extends AppCompatActivity {
         });
     }
 
-    private void queryComments(int i, List<String> Dacomments, Post post) {
+    private void queryComments(Post post) {
 
         ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
         query.include(Comment.KEY_USER);
@@ -138,7 +214,7 @@ public class CommentsActivity extends AppCompatActivity {
                     Log.e(TAG, "Issue with getting posts" + e, e);
                     return;
                 }
-                // this is here to correect the number of comments in case inconsistencies happen
+                // this is here to correct the number of comments in case inconsistencies happen
                 post.put("numberComments", comments.size());
                 post.saveInBackground();
                 allComments.addAll(comments);
@@ -146,10 +222,11 @@ public class CommentsActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        exoPlayer.stop();
+    }
 }
