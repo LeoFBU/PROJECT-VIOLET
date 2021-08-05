@@ -100,11 +100,17 @@ public class CommentsActivity extends AppCompatActivity {
         tvPostUsername.setText(post.getPostCreatorUsername());
         tvPostCaption.setText(post.getCaption());
         ParseFile profileImage = post.getUserProfileImage();
-        Glide.with(this).load(profileImage.getUrl()).circleCrop().into(ivPostUserPfp);
+        Glide.with(this).load(profileImage.getUrl())
+                .circleCrop()
+                .into(ivPostUserPfp);
         ParseFile thumbnail = (ParseFile) post.get("videoThumbnail");
-        Glide.with(this).load(thumbnail.getUrl()).centerCrop().into(ivPostThumbnail);
+        Glide.with(this).load(thumbnail.getUrl())
+                .centerCrop()
+                .into(ivPostThumbnail);
         ParseFile currentUserImage = ParseUser.getCurrentUser().getParseFile("profileImage");
-        Glide.with(this).load(currentUserImage.getUrl()).circleCrop().into(ivCurrentUserPFP);
+        Glide.with(this).load(currentUserImage.getUrl())
+                .circleCrop()
+                .into(ivCurrentUserPFP);
 
         queryComments(post);
 
@@ -158,7 +164,7 @@ public class CommentsActivity extends AppCompatActivity {
         }
         Uri videouri = Uri.parse(mediaUrl);
 
-        DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
+        DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("comments_video");
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         MediaSource mediaSource = new ExtractorMediaSource(videouri, dataSourceFactory, extractorsFactory, null, null);
 
@@ -177,11 +183,13 @@ public class CommentsActivity extends AppCompatActivity {
 
     }
 
-    private void submitComment(String toString, Post post) {
+    private void submitComment(String commentContent, Post post) {
+
         Comment newComment = new Comment();
-        newComment.put("user", ParseUser.getCurrentUser());
-        newComment.put("commentContent", toString);
-        newComment.put("postID", post.getObjectId());
+        newComment.setUser(ParseUser.getCurrentUser());
+        newComment.setContent(commentContent);
+        newComment.setObjectID(post.getObjectId());
+
 
         int numComments = post.getInt("numberComments") + 1;
         post.put("numberComments", numComments);

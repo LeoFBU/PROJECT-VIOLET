@@ -1,14 +1,13 @@
 package com.example.projectviolet;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
-import com.example.projectviolet.models.Post;
 import com.example.projectviolet.util.OnSwipeTouchListener;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -20,7 +19,6 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     private TextView tvNumPosts;
     private TextView tvUsername;
     private ImageView ivProfilePic;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +49,6 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         tvNumPosts.setText(String.valueOf(user.getInt("numOfPosts")));
         ParseFile profileImage = user.getParseFile("profileImage");
         Glide.with(this).load(profileImage.getUrl()).circleCrop().into(ivProfilePic);
-
-
 
     }
 }

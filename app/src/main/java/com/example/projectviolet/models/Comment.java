@@ -14,6 +14,7 @@ public class Comment extends ParseObject {
 
     public static final String KEY_COMMENT_CONTENT = "commentContent";
     public static final String TIMESTAMP = "createdAt";
+    public static final String KEY_POST_ID = "postID";
     public static final String KEY_PROFILE_PIC = "profileImage";
     public static final String KEY_USER = "user";
 
@@ -21,9 +22,19 @@ public class Comment extends ParseObject {
     public String getCommentContent(){
         return getString(KEY_COMMENT_CONTENT);
     }
+    public void setContent(String content){
+        put(KEY_COMMENT_CONTENT, content);
+    }
 
     public ParseUser getCommentUser() {
         return getParseUser(KEY_USER);
+    }
+    public void setUser(ParseUser user){
+        put(KEY_USER, user);
+    }
+
+    public void setObjectID(String objectId){
+        put(KEY_POST_ID, objectId);
     }
 
     public String getCommentCreatorUsername(){

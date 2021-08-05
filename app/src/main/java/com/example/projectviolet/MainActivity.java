@@ -1,14 +1,12 @@
 package com.example.projectviolet;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.projectviolet.fragments.FeedFragment;
 import com.example.projectviolet.fragments.ProfileFragment;
@@ -30,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NotNull MenuItem item) {
@@ -58,10 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
         bottomNavigationView.setSelectedItemId(R.id.action_Home);
     }
-
-
-
 }

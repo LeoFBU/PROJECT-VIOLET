@@ -61,7 +61,6 @@ public class AttachGameTagActivity extends AppCompatActivity {
                 returnTagIntent.putExtra("chosenGame", selectedGame);
                 setResult(RESULT_OK, returnTagIntent);
                 finish();
-
             }
         });
 

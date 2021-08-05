@@ -1,7 +1,5 @@
 package com.example.projectviolet;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -20,15 +20,12 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private EditText etUsername;
     private EditText etPassword;
-    private EditText etEmail;
     private Button btnCreateAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-
-
 
         etUsername = findViewById(R.id.etCreateUsername);
         etPassword = findViewById(R.id.etCreatePassword);
@@ -59,13 +56,13 @@ public class CreateAccountActivity extends AppCompatActivity {
                         }
                     }
                 });
+
             }
         });
 
     }
 
     private void goMainActivity() {
-
         Intent intent = new Intent(this, SelectGameTagsActivity.class);
         finish();
         startActivity(intent);
@@ -79,7 +76,9 @@ public class CreateAccountActivity extends AppCompatActivity {
         if(etPassword.getText().toString().length() < 3){
             return false;
         }
-        else
-        return true;
+        else {
+            return true;
+        }
+
     }
 }

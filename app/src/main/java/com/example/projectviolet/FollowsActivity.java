@@ -1,21 +1,16 @@
 package com.example.projectviolet;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.projectviolet.adapters.FollowsAdapter;
 import com.example.projectviolet.adapters.FollowsPagerAdapter;
 import com.example.projectviolet.fragments.FollowersFragment;
-import com.example.projectviolet.models.Post;
 import com.google.android.material.tabs.TabLayout;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -74,6 +69,7 @@ public class FollowsActivity extends AppCompatActivity implements FollowersFragm
                 passedAdapter.notifyDataSetChanged();
             }
         });
+
     }
 
     @Override

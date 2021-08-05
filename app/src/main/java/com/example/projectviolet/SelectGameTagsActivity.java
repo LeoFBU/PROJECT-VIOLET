@@ -28,11 +28,9 @@ public class SelectGameTagsActivity extends AppCompatActivity {
 
     private ArrayList<GameTag> GameTagsList;
     private List<String> preferredTags;
-
     protected GameTagsAdapter adapter;
     RecyclerView rvGameTags;
     Context context;
-
     private Button btnSubmitTags;
 
     @Override
@@ -48,23 +46,21 @@ public class SelectGameTagsActivity extends AppCompatActivity {
 
         GameTagsList = new ArrayList<>();
         preferredTags = user.getList("prefferedTags");
-        //preferredTags = new ArrayList<>();
 
         adapter = new GameTagsAdapter(context, GameTagsList, preferredTags);
         rvGameTags.setAdapter(adapter);
-
         LinearLayoutManager Manager = new LinearLayoutManager(context);
         rvGameTags.setLayoutManager(Manager);
 
         verticalSpacingItem.VerticalSpacingItemDecorator itemDecorator = new verticalSpacingItem.VerticalSpacingItemDecorator(5);
         rvGameTags.addItemDecoration(itemDecorator);
 
-        queryTags(0);
+        queryTags();
 
         btnSubmitTags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // iterate through gametags list if GameTags object .checked == true, add to new array
+                // if GameTags object .checked == true, add to new array
                 preferredTags = adapter.getArrayList();
                 for (int i = 0; i < preferredTags.size(); i++){
                     Log.d(TAG, "testlol:" + preferredTags.get(i));
@@ -75,21 +71,17 @@ public class SelectGameTagsActivity extends AppCompatActivity {
                 user.put("prefferedTags", preferredTags);
                 user.saveInBackground();
 
-                Intent i = new Intent(context, MainActivity.class);
-                finish();
-                startActivity(i);
+                StartMainActivity(context);
             }
         });
 
     }
 
-    private void queryTags(int i) {
+    private void queryTags() {
 
         ParseQuery<GameTag> query = ParseQuery.getQuery(GameTag.class);
         // might want to create a query limit somehow
         // maybe even add the endless scroll to the specific recyclerview
-
-
         query.addAscendingOrder("gameName");
         query.findInBackground(new FindCallback<GameTag>() {
             @Override
