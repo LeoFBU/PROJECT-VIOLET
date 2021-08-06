@@ -2,7 +2,7 @@
 In the works.
 
 
-Original App Design Project - README Template
+README
 ===
 
 # Highlight
